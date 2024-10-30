@@ -1,0 +1,2 @@
+# Ignoriere die Umgebungsdatei, um sensible Informationen zu schützen
+.env
