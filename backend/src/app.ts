@@ -1,5 +1,5 @@
 import express from 'express';
-import listsRouter from './routes/lists.routes'; // Importiere den Router für die Listen
+import listsRouter from './routes/shoppingLists.routes'; // Importiere den Router für die Listen
 
 const app = express();
 const PORT = process.env.PORT || 3000;

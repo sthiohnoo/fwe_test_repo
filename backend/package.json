@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/app.ts"
+    "start": "ts-node src/app.ts",
+    "db:generate": "drizzle-kit generate --schema ./src/db/schema.ts --out=./src/db/migrations --dialect postgresql",
+    "db:migrate": "ts-node ./src/db/migrate.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.8.4",
+    "@types/pg": "^8.11.10",
+    "drizzle-kit": "^0.27.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },

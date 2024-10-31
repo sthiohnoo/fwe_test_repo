@@ -1,2 +1,3 @@
-# Ignoriere die Umgebungsdatei, um sensible Informationen zu schützen
+# Alles was in diesem Ordner ist, wird nicht in das Git-Repository hochgeladen
 .env
+/node_modules
