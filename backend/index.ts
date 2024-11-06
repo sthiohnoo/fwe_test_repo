@@ -1,19 +1,10 @@
-import express from 'express';
-import { ENV } from './src/config/env.config';
+import { DI, initializeDependencyInjection } from './dependency-injection';
 
-const app = express();
+initializeDependencyInjection();
 
-// Middleware
-app.use((req, _res, next) => {
-    console.info(`New request to ${req.path}`);
-    next();
-});
-
-app.get('/', (_req, res) => {
-    res.send('Willkommen zur Einkaufslisten-App! juhu');
-});
-
-// Server starten
-app.listen(ENV.PORT, () => {
-    console.log(`Server läuft auf http://localhost:${ENV.PORT}`);
-});
+try {
+  DI.server.start();
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}
