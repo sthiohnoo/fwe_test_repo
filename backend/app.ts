@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 
-import { globalErrorHandler } from './src/middleware/global-error';
+import { globalErrorHandler } from './src/utils/global-error';
 
 export class App {
   private app: Application;
@@ -9,6 +9,10 @@ export class App {
     this.app = express();
     this._registerMiddlewares();
     this._registerErrorHandlers();
+  }
+
+  public listen(port: number, callback: () => void) {
+    return this.app.listen(port, callback);
   }
 
   private _registerMiddlewares() {
@@ -23,9 +27,5 @@ export class App {
   private _registerErrorHandlers() {
     // The errorHandler could also be injected via constructor which would be even better and easily testable
     this.app.use(globalErrorHandler);
-  }
-
-  public listen(port: number, callback: () => void) {
-    return this.app.listen(port, callback);
   }
 }
