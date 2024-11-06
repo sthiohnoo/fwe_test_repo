@@ -1,18 +1,17 @@
 import express from 'express';
-import listsRouter from './src/routes/shoppingLists.routes'; // Importiere den Router für die Listen
 import { ENV } from './src/config/env.config';
 
 const app = express();
 
-console.log(ENV);
+// Middleware
+app.use((req, _res, next) => {
+    console.info(`New request to ${req.path}`);
+    next();
+});
 
-// Beispielroute
 app.get('/', (_req, res) => {
     res.send('Willkommen zur Einkaufslisten-App! juhu');
 });
-
-// Füge den Listen-Router hinzu
-app.use('/api/lists', listsRouter); // Hier fügst du die Listen-Routen hinzu
 
 // Server starten
 app.listen(ENV.PORT, () => {
