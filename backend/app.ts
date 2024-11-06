@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 
-import { globalErrorHandler } from './utils/global-error';
+import { globalErrorHandler } from './src/middleware/global-error';
 
 export class App {
   private app: Application;
