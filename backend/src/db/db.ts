@@ -1,18 +1,11 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { Pool } from 'pg';
-import * as dotenv from 'dotenv';
+import { ENV } from '../config/env.config';
+import { databaseSchema } from './schema';
 
-// Lade Umgebungsvariablen
-dotenv.config();
-
-const pool = new Pool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: Number(process.env.DB_PORT)
+export const db = drizzle({
+    connection : ENV.DATABASE_URL,
+    schema: databaseSchema,
+    casing: 'snake_case',
 });
 
-const db = drizzle(pool);
-
-export default db;
+export type Database = typeof db;

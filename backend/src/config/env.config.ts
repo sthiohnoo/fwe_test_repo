@@ -1,9 +1,10 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './src/.env' });
 import { z } from 'zod';
 
 
 const envSchema = z.object({
-  // DATABASE_URL: z.string().url().min(1),
+  DATABASE_URL: z.string().url().min(1),
   PORT: z.coerce.number().int().positive().default(3000),
   //JWT_SECRET: z.string().min(32),
 });

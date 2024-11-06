@@ -8,8 +8,8 @@
     "dev": "tsx watch index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "db:generate": "drizzle-kit generate --schema ./src/db/schema.ts --out=./src/db/migrations --dialect postgresql",
-    "db:migrate": "ts-node ./src/db/migrate.ts",
+    "db:generate": "drizzle-kit generate --config=src/config/drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=src/config/drizzle.config.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format:fix": "prettier --write \"src/**/*.ts\""
