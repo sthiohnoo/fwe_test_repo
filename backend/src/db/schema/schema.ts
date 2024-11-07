@@ -1,22 +1,28 @@
-import { relations } from "drizzle-orm";
-import { uuid, integer, text, timestamp, boolean, pgTable } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  pgTable,
+  timestamp,
+  uuid,
+} from 'drizzle-orm/pg-core';
+import { commonSchema } from './common.schema';
 
-export const shoppingLists = pgTable("shopping_lists", {
-    id: uuid("id").primaryKey().defaultRandom(),
-    name: text("name").notNull(),
-    description: text("description"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
+export const shoppingLists = pgTable('shopping_lists', {
+  ...commonSchema,
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-export const items = pgTable("items", {
-    id: uuid("id").primaryKey().defaultRandom(),
-    name: text("name").notNull(),
-    description: text("description"),
+export const items = pgTable('items', {
+  ...commonSchema,
 });
 
-export const shoppingListItems = pgTable("shopping_list_items", {
-    listId: uuid("list_id").references(() => shoppingLists.id).notNull(),
-    itemId: uuid("item_id").references(() => items.id).notNull(),
-    quantity: integer("quantity").notNull(),
-    isPurchased: boolean("is_purchased").default(false).notNull(),
+export const shoppingListItems = pgTable('shopping_list_items', {
+  listId: uuid('list_id')
+    .references(() => shoppingLists.id)
+    .notNull(),
+  itemId: uuid('item_id')
+    .references(() => items.id)
+    .notNull(),
+  quantity: integer('quantity').notNull(),
+  isPurchased: boolean('is_purchased').default(false).notNull(),
 });
