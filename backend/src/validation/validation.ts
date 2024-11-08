@@ -1,8 +1,10 @@
-import { createInsertSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 import { user } from '../db/schema/user.schema';
 import { DI } from '../../dependency-injection';
+
+export const selectUserZodSchema = createSelectSchema(user);
 
 export const createUserZodSchema = createInsertSchema(user, {
   email: z.string().email(),
@@ -21,4 +23,5 @@ export const loginZodSchema = z.object({
   password: z.string().min(8),
 });
 
+export type DbUser = z.infer<typeof selectUserZodSchema>;
 export type CreateUser = z.infer<typeof createUserZodSchema>;
