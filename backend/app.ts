@@ -1,13 +1,15 @@
 import express, { Application } from 'express';
+import { Routes } from './src/routes/routes';
 
 import { globalErrorHandler } from './src/utils/global-error';
 
 export class App {
   private app: Application;
 
-  constructor() {
+  constructor(private readonly routes: Routes) {
     this.app = express();
     this._registerMiddlewares();
+    this._registerRoutes();
     this._registerErrorHandlers();
   }
 
@@ -22,6 +24,10 @@ export class App {
       console.info(`New request to ${req.path}`);
       next();
     });
+  }
+
+  private _registerRoutes() {
+    this.app.use('/api', this.routes.getRouter());
   }
 
   private _registerErrorHandlers() {
