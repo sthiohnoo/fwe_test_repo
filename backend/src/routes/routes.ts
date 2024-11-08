@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { AuthController } from '../controller/auth.controller';
 import { HealthController } from '../controller/health.controller';
+import { ItemController } from '../controller/item.controller';
 
 export class Routes {
   private router: Router;
@@ -9,6 +10,7 @@ export class Routes {
   constructor(
     private readonly authController: AuthController,
     private readonly healthController: HealthController,
+    private readonly itemController: ItemController,
   ) {
     this.router = Router();
     this.initializeRoutes();
@@ -37,6 +39,12 @@ export class Routes {
     this.router.get(
       '/health',
       this.healthController.getHealthStatus.bind(this.healthController),
+    );
+
+    // Item routes
+    this.router.get(
+      '/items',
+      this.itemController.getItems.bind(this.itemController),
     );
   }
 }

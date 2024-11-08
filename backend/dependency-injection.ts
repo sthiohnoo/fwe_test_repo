@@ -1,9 +1,11 @@
 import { App } from './app';
 import { ENV } from './src/config/env.config';
+import { Database, db } from './src/db/db';
 import { AuthController } from './src/controller/auth.controller';
 import { HealthController } from './src/controller/health.controller';
-import { Database, db } from './src/db/db';
+import { ItemController } from './src/controller/item.controller';
 import { UserRepository } from './src/db/repository/user.repository';
+import { ItemRepository } from './src/db/repository/item.repository';
 import { Routes } from './src/routes/routes';
 
 import { Server } from './server';
@@ -17,10 +19,12 @@ export const DI = {} as {
   routes: Routes;
   repositories: {
     user: UserRepository;
+    item: ItemRepository;
   };
   controllers: {
     auth: AuthController;
     health: HealthController;
+    item: ItemController;
   };
   utils: {
     passwordHasher: PasswordHasher;
@@ -44,6 +48,7 @@ export function initializeDependencyInjection() {
   // Initialize repositories
   DI.repositories = {
     user: new UserRepository(DI.db),
+    item: new ItemRepository(DI.db),
   };
 
   // Initialize controllers
@@ -54,10 +59,15 @@ export function initializeDependencyInjection() {
       DI.utils.jwt,
     ),
     health: new HealthController(),
+    item: new ItemController(DI.repositories.item),
   };
 
   // Initialize routes
-  DI.routes = new Routes(DI.controllers.auth, DI.controllers.health);
+  DI.routes = new Routes(
+    DI.controllers.auth,
+    DI.controllers.health,
+    DI.controllers.item,
+  );
 
   // Initialize app
   DI.app = new App(DI.routes);
