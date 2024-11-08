@@ -1,6 +1,7 @@
 import { App } from './app';
 import { ENV } from './src/config/env.config';
 import { AuthController } from './src/controller/auth.controller';
+import { HealthController } from './src/controller/health.controller';
 import { Database, db } from './src/db/db';
 import { UserRepository } from './src/db/repository/user.repository';
 import { Routes } from './src/routes/routes';
@@ -19,6 +20,7 @@ export const DI = {} as {
   };
   controllers: {
     auth: AuthController;
+    health: HealthController;
   };
   utils: {
     passwordHasher: PasswordHasher;
@@ -51,10 +53,11 @@ export function initializeDependencyInjection() {
       DI.utils.passwordHasher,
       DI.utils.jwt,
     ),
+    health: new HealthController(),
   };
 
   // Initialize routes
-  DI.routes = new Routes(DI.controllers.auth);
+  DI.routes = new Routes(DI.controllers.auth, DI.controllers.health);
 
   // Initialize app
   DI.app = new App(DI.routes);

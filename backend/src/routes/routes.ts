@@ -1,11 +1,15 @@
 import { Router } from 'express';
 
 import { AuthController } from '../controller/auth.controller';
+import { HealthController } from '../controller/health.controller';
 
 export class Routes {
   private router: Router;
 
-  constructor(private readonly authController: AuthController) {
+  constructor(
+    private readonly authController: AuthController,
+    private readonly healthController: HealthController,
+  ) {
     this.router = Router();
     this.initializeRoutes();
   }
@@ -27,6 +31,12 @@ export class Routes {
     this.router.post(
       '/auth/login',
       this.authController.loginUser.bind(this.authController),
+    );
+
+    // Health routes
+    this.router.get(
+      '/health',
+      this.healthController.getHealthStatus.bind(this.healthController),
     );
   }
 }

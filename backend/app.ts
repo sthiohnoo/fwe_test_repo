@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import { Routes } from './src/routes/routes';
+import helmet from 'helmet';
 
 import { globalErrorHandler } from './src/utils/global-error';
 
@@ -18,6 +19,7 @@ export class App {
   }
 
   private _registerMiddlewares() {
+    this.app.use(helmet());
     this.app.use(express.json());
 
     this.app.use((req, _res, next) => {
