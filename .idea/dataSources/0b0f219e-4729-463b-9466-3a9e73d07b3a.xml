@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>773</IntrospectionStateNumber>
+      <IntrospectionStateNumber>775</IntrospectionStateNumber>
       <ServerVersion>17.0</ServerVersion>
       <StartupTime>1730893882</StartupTime>
       <TimeZones>true ACDT
@@ -800,7 +800,7 @@ false Zulu
 14704||10|C|G
 14704||-9223372036854775808|U|G
 14704||10|U|G</Grants>
-      <IntrospectionStateNumber>773</IntrospectionStateNumber>
+      <IntrospectionStateNumber>775</IntrospectionStateNumber>
       <ObjectId>16389</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4232,8 +4232,8 @@ false Zulu
     <schema id="266" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>773</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2024-11-09.10:46:57</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>775</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2024-11-09.11:16:29</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>532</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4278,11 +4278,10 @@ false Zulu
       <TypeId>1043</TypeId>
     </column>
     <column id="273" parent="267" name="description">
-      <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>767</StateNumber>
-      <StoredType>varchar(256)|0s</StoredType>
-      <TypeId>1043</TypeId>
+      <StateNumber>774</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
     </column>
     <index id="274" parent="267" name="items_pkey">
       <ColNames>id</ColNames>
@@ -4315,11 +4314,10 @@ false Zulu
       <TypeId>1043</TypeId>
     </column>
     <column id="278" parent="268" name="description">
-      <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>767</StateNumber>
-      <StoredType>varchar(256)|0s</StoredType>
-      <TypeId>1043</TypeId>
+      <StateNumber>774</StateNumber>
+      <StoredType>text|0s</StoredType>
+      <TypeId>25</TypeId>
     </column>
     <column id="279" parent="268" name="created_at">
       <DefaultExpression>now()</DefaultExpression>
