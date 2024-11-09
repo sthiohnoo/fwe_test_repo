@@ -1,12 +1,12 @@
 import { eq } from 'drizzle-orm';
 import type { Database } from '../db';
-import { shoppingLists } from '../schema/schema';
+import { shoppingList } from '../schema/shoppingList.schema';
 
 export class ShoppingListRepository {
   constructor(private readonly db: Database) {}
 
   async getShoppingList(includeRelations = true) {
-    return this.db.query.shoppingLists.findMany({
+    return this.db.query.shoppingList.findMany({
       with: includeRelations
         ? {
             shoppingListItems: {
@@ -21,8 +21,8 @@ export class ShoppingListRepository {
   }
 
   async getShoppingListById(shoppingListId: string, includeRelations = true) {
-    return this.db.query.shoppingLists.findFirst({
-      where: (shoppingLists, { eq }) => eq(shoppingLists.id, shoppingListId),
+    return this.db.query.shoppingList.findFirst({
+      where: (shoppingList, { eq }) => eq(shoppingList.id, shoppingListId),
       with: includeRelations
         ? {
             shoppingListItems: {
@@ -38,7 +38,7 @@ export class ShoppingListRepository {
 
   async deleteShoppingListById(shoppingListId: string) {
     return this.db
-      .delete(shoppingLists)
-      .where(eq(shoppingLists.id, shoppingListId));
+      .delete(shoppingList)
+      .where(eq(shoppingList.id, shoppingListId));
   }
 }

@@ -8,21 +8,21 @@ import {
 
 import { commonSchema } from './common.schema';
 
-export const shoppingLists = pgTable('shopping_lists', {
+export const shoppingList = pgTable('shopping_lists', {
   ...commonSchema,
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-export const items = pgTable('items', {
+export const item = pgTable('items', {
   ...commonSchema,
 });
 
-export const shoppingListItems = pgTable('shopping_list_items', {
+export const shoppingListItem = pgTable('shopping_list_items', {
   listId: uuid('list_id')
-    .references(() => shoppingLists.id)
+    .references(() => shoppingList.id)
     .notNull(),
   itemId: uuid('item_id')
-    .references(() => items.id)
+    .references(() => item.id)
     .notNull(),
   quantity: integer('quantity').notNull(),
   isPurchased: boolean('is_purchased').default(false).notNull(),
