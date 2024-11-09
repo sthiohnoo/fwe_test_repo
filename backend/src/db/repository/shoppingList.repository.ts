@@ -70,6 +70,12 @@ export class ShoppingListRepository {
       .where(eq(shoppingList.id, shoppingListId));
   }
 
+  async deleteShoppingListItemsById(shoppingListId: string) {
+    return this.db
+      .delete(shoppingListItem)
+      .where(eq(shoppingListItem.listId, shoppingListId));
+  }
+
   async associateItemsWithShoppingList(
     shoppingListId: string,
     itemIds: string[],
