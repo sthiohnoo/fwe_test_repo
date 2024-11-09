@@ -27,11 +27,7 @@ export class ItemRepository {
     });
   }
 
-  async createItems(data: string[]) {
-    return this.db
-      .insert(item)
-      .values(data.map((name) => ({ name })))
-      .onConflictDoNothing()
-      .returning();
+  async createItems(data: { name: string; description?: string }[]) {
+    return this.db.insert(item).values(data).onConflictDoNothing().returning();
   }
 }

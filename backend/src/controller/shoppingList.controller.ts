@@ -55,21 +55,24 @@ export class ShoppingListController {
         if (item.id) {
           itemsWithId.push(item.id);
         } else if (item.name) {
-          itemsWithName.push(item.name);
+          itemsWithName.push({
+            name: item.name,
+            description: item.description,
+          });
         }
       }
     }
 
     // Create possibly new items if there are any items with only names
     if (itemsWithName.length > 0) {
-      await this.itemRepository.createItems(itemsWithName.map((t) => t));
+      await this.itemRepository.createItems(itemsWithName);
     }
 
     // Associate tags with the diary entry if there are any tags
     if (itemsWithId.length > 0) {
       // Get all tags with given names or ids to make sure we have all ids and they exist and are associated with the user
       const items = await this.itemRepository.getItemsByNamesOrIds(
-        itemsWithName,
+        itemsWithName.map((t) => t.name),
         itemsWithId,
       );
       await this.shoppingListRepository.associateItemsWithShoppingList(
