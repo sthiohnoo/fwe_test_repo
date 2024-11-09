@@ -65,7 +65,8 @@ export class ShoppingListController {
 
     // Create possibly new items if there are any items with only names
     if (itemsWithName.length > 0) {
-      await this.itemRepository.createItems(itemsWithName);
+      const createdItems = await this.itemRepository.createItems(itemsWithName);
+      itemsWithId.push(...createdItems.map((item) => item.id));
     }
 
     // Associate tags with the diary entry if there are any tags
