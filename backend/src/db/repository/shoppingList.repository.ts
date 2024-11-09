@@ -11,7 +11,10 @@ export class ShoppingListRepository {
         ? {
             shoppingListItems: {
               with: {
-                state: true,
+                item: true,
+              },
+              columns: {
+                quantity: true,
                 isPurchased: true,
               },
             },
@@ -27,7 +30,10 @@ export class ShoppingListRepository {
         ? {
             shoppingListItems: {
               with: {
-                state: true,
+                item: true,
+              },
+              columns: {
+                quantity: true,
                 isPurchased: true,
               },
             },
