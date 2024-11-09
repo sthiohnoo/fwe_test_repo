@@ -3,15 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <Grants>1||-9223372036854775808|c|G
-1||10|c|G
-1||10|C|G
-1||10|T|G
-4||-9223372036854775808|c|G
-4||10|c|G
-4||10|C|G
-4||10|T|G</Grants>
-      <IntrospectionStateNumber>768</IntrospectionStateNumber>
+      <IntrospectionStateNumber>773</IntrospectionStateNumber>
       <ServerVersion>17.0</ServerVersion>
       <StartupTime>1730893882</StartupTime>
       <TimeZones>true ACDT
@@ -808,7 +800,7 @@ false Zulu
 14704||10|C|G
 14704||-9223372036854775808|U|G
 14704||10|U|G</Grants>
-      <IntrospectionStateNumber>768</IntrospectionStateNumber>
+      <IntrospectionStateNumber>773</IntrospectionStateNumber>
       <ObjectId>16389</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4240,27 +4232,27 @@ false Zulu
     <schema id="266" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>768</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2024-11-07.16:46:30</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>773</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2024-11-09.10:46:57</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>532</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
-    <table id="267" parent="266" name="items">
+    <table id="267" parent="266" name="item">
       <ObjectId>16400</ObjectId>
-      <StateNumber>767</StateNumber>
+      <StateNumber>770</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <table id="268" parent="266" name="shopping_list_items">
-      <ObjectId>16408</ObjectId>
-      <StateNumber>761</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>postgres</OwnerName>
-    </table>
-    <table id="269" parent="266" name="shopping_lists">
+    <table id="268" parent="266" name="shopping_list">
       <ObjectId>16412</ObjectId>
-      <StateNumber>767</StateNumber>
+      <StateNumber>770</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <table id="269" parent="266" name="shopping_list_item">
+      <ObjectId>16408</ObjectId>
+      <StateNumber>770</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
@@ -4302,56 +4294,12 @@ false Zulu
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="275" parent="267" name="items_pkey">
-      <NameSurrogate>1</NameSurrogate>
       <ObjectId>16407</ObjectId>
       <Primary>1</Primary>
       <StateNumber>760</StateNumber>
       <UnderlyingIndexId>16406</UnderlyingIndexId>
     </key>
-    <column id="276" parent="268" name="list_id">
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>760</StateNumber>
-      <StoredType>uuid|0s</StoredType>
-      <TypeId>2950</TypeId>
-    </column>
-    <column id="277" parent="268" name="item_id">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StateNumber>760</StateNumber>
-      <StoredType>uuid|0s</StoredType>
-      <TypeId>2950</TypeId>
-    </column>
-    <column id="278" parent="268" name="quantity">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>760</StateNumber>
-      <StoredType>integer|0s</StoredType>
-      <TypeId>23</TypeId>
-    </column>
-    <column id="279" parent="268" name="is_purchased">
-      <DefaultExpression>false</DefaultExpression>
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>760</StateNumber>
-      <StoredType>boolean|0s</StoredType>
-      <TypeId>16</TypeId>
-    </column>
-    <foreign-key id="280" parent="268" name="shopping_list_items_list_id_shopping_lists_id_fk">
-      <ColNames>list_id</ColNames>
-      <ObjectId>16421</ObjectId>
-      <StateNumber>761</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16412</RefTableId>
-    </foreign-key>
-    <foreign-key id="281" parent="268" name="shopping_list_items_item_id_items_id_fk">
-      <ColNames>item_id</ColNames>
-      <ObjectId>16426</ObjectId>
-      <StateNumber>762</StateNumber>
-      <RefKeyColPositions>1</RefKeyColPositions>
-      <RefTableId>16400</RefTableId>
-    </foreign-key>
-    <column id="282" parent="269" name="id">
+    <column id="276" parent="268" name="id">
       <DefaultExpression>gen_random_uuid()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -4359,21 +4307,21 @@ false Zulu
       <StoredType>uuid|0s</StoredType>
       <TypeId>2950</TypeId>
     </column>
-    <column id="283" parent="269" name="name">
+    <column id="277" parent="268" name="name">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="284" parent="269" name="description">
+    <column id="278" parent="268" name="description">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="285" parent="269" name="created_at">
+    <column id="279" parent="268" name="created_at">
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
@@ -4381,7 +4329,7 @@ false Zulu
       <StoredType>timestamp|0s</StoredType>
       <TypeId>1114</TypeId>
     </column>
-    <index id="286" parent="269" name="shopping_lists_pkey">
+    <index id="280" parent="268" name="shopping_lists_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16419</ObjectId>
@@ -4390,13 +4338,55 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="287" parent="269" name="shopping_lists_pkey">
-      <NameSurrogate>1</NameSurrogate>
+    <key id="281" parent="268" name="shopping_lists_pkey">
       <ObjectId>16420</ObjectId>
       <Primary>1</Primary>
       <StateNumber>760</StateNumber>
       <UnderlyingIndexId>16419</UnderlyingIndexId>
     </key>
+    <column id="282" parent="269" name="list_id">
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>760</StateNumber>
+      <StoredType>uuid|0s</StoredType>
+      <TypeId>2950</TypeId>
+    </column>
+    <column id="283" parent="269" name="item_id">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>760</StateNumber>
+      <StoredType>uuid|0s</StoredType>
+      <TypeId>2950</TypeId>
+    </column>
+    <column id="284" parent="269" name="quantity">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>760</StateNumber>
+      <StoredType>integer|0s</StoredType>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="285" parent="269" name="is_purchased">
+      <DefaultExpression>false</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>760</StateNumber>
+      <StoredType>boolean|0s</StoredType>
+      <TypeId>16</TypeId>
+    </column>
+    <foreign-key id="286" parent="269" name="shopping_list_item_list_id_shopping_list_id_fk">
+      <ColNames>list_id</ColNames>
+      <ObjectId>16472</ObjectId>
+      <StateNumber>771</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16412</RefTableId>
+    </foreign-key>
+    <foreign-key id="287" parent="269" name="shopping_list_item_item_id_item_id_fk">
+      <ColNames>item_id</ColNames>
+      <ObjectId>16477</ObjectId>
+      <StateNumber>772</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16400</RefTableId>
+    </foreign-key>
     <column id="288" parent="270" name="id">
       <DefaultExpression>gen_random_uuid()</DefaultExpression>
       <NotNull>1</NotNull>
