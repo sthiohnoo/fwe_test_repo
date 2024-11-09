@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
+import { createShoppingListZodSchema } from '../validation/validation';
 
 import { ShoppingListRepository } from '../db/repository/shoppingList.repository';
 import { ItemRepository } from '../db/repository/item.repository';
@@ -38,6 +39,51 @@ export class ShoppingListController {
       withRelations,
     );
     res.send(shoppingLists);
+  }
+
+  async createShoppingList(req: Request, res: Response): Promise<void> {
+    const validatedData = createShoppingListZodSchema.parse(req.body);
+
+    const createdShoppingList =
+      await this.shoppingListRepository.createShoppingList(validatedData);
+
+    const itemsWithName = [];
+    const itemsWithId = [];
+
+    if (validatedData.items) {
+      for (const item of validatedData.items) {
+        if (item.id) {
+          itemsWithId.push(item.id);
+        } else if (item.name) {
+          itemsWithName.push(item.name);
+        }
+      }
+    }
+
+    // Create possibly new items if there are any items with only names
+    if (itemsWithName.length > 0) {
+      await this.itemRepository.createItems(itemsWithName.map((t) => t));
+    }
+
+    // Associate tags with the diary entry if there are any tags
+    if (itemsWithId.length > 0) {
+      // Get all tags with given names or ids to make sure we have all ids and they exist and are associated with the user
+      const items = await this.itemRepository.getItemsByNamesOrIds(
+        itemsWithName,
+        itemsWithId,
+      );
+      await this.shoppingListRepository.associateItemsWithShoppingList(
+        createdShoppingList.id,
+        items.map((t) => t.id),
+      );
+    }
+
+    const shoppingListWithItems =
+      await this.shoppingListRepository.getShoppingListById(
+        createdShoppingList.id,
+      );
+
+    res.status(201).send(shoppingListWithItems);
   }
 
   async deleteShoppingListById(req: Request, res: Response): Promise<void> {

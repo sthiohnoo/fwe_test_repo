@@ -20,4 +20,16 @@ export class ItemController {
 
     res.status(200).send(item);
   }
+
+  async getItemByName(req: Request, res: Response): Promise<void> {
+    const itemName = req.params.itemName;
+    const item = await this.itemRepository.getItemByName(itemName);
+
+    if (!item) {
+      res.status(404).send({ errors: ['Item not found'] });
+      return;
+    }
+
+    res.status(200).send(item);
+  }
 }

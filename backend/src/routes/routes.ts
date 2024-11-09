@@ -48,11 +48,31 @@ export class Routes {
       '/items',
       this.itemController.getItems.bind(this.itemController),
     );
+    this.router.get(
+      '/items/:itemId',
+      this.itemController.getItemById.bind(this.itemController),
+    );
+    this.router.get(
+      '/items/name/:itemName',
+      this.itemController.getItemByName.bind(this.itemController),
+    );
 
     // Shopping list routes
     this.router.get(
       '/shoppingLists',
       this.shoppingListController.getShoppingLists.bind(
+        this.shoppingListController,
+      ),
+    );
+    this.router.get(
+      '/shoppingLists/:shoppingListId',
+      this.shoppingListController.getShoppingListById.bind(
+        this.shoppingListController,
+      ),
+    );
+    this.router.post(
+      '/shoppingLists',
+      this.shoppingListController.createShoppingList.bind(
         this.shoppingListController,
       ),
     );
