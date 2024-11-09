@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { AuthController } from '../controller/auth.controller';
 import { HealthController } from '../controller/health.controller';
 import { ItemController } from '../controller/item.controller';
+import { ShoppingListController } from '../controller/shoppingList.controller';
 
 export class Routes {
   private router: Router;
@@ -11,6 +12,7 @@ export class Routes {
     private readonly authController: AuthController,
     private readonly healthController: HealthController,
     private readonly itemController: ItemController,
+    private readonly shoppingListController: ShoppingListController,
   ) {
     this.router = Router();
     this.initializeRoutes();
@@ -45,6 +47,20 @@ export class Routes {
     this.router.get(
       '/items',
       this.itemController.getItems.bind(this.itemController),
+    );
+
+    // Shopping list routes
+    this.router.get(
+      '/shoppingLists',
+      this.shoppingListController.getShoppingLists.bind(
+        this.shoppingListController,
+      ),
+    );
+    this.router.delete(
+      '/shoppingLists/:shoppingListId',
+      this.shoppingListController.deleteShoppingListById.bind(
+        this.shoppingListController,
+      ),
     );
   }
 }

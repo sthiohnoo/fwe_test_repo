@@ -4,8 +4,10 @@ import { Database, db } from './src/db/db';
 import { AuthController } from './src/controller/auth.controller';
 import { HealthController } from './src/controller/health.controller';
 import { ItemController } from './src/controller/item.controller';
+import { ShoppingListController } from './src/controller/shoppingList.controller';
 import { UserRepository } from './src/db/repository/user.repository';
 import { ItemRepository } from './src/db/repository/item.repository';
+import { ShoppingListRepository } from './src/db/repository/shoppingList.repository';
 import { Routes } from './src/routes/routes';
 
 import { Server } from './server';
@@ -20,11 +22,13 @@ export const DI = {} as {
   repositories: {
     user: UserRepository;
     item: ItemRepository;
+    shoppingList: ShoppingListRepository;
   };
   controllers: {
     auth: AuthController;
     health: HealthController;
     item: ItemController;
+    shoppingList: ShoppingListController;
   };
   utils: {
     passwordHasher: PasswordHasher;
@@ -49,6 +53,7 @@ export function initializeDependencyInjection() {
   DI.repositories = {
     user: new UserRepository(DI.db),
     item: new ItemRepository(DI.db),
+    shoppingList: new ShoppingListRepository(DI.db),
   };
 
   // Initialize controllers
@@ -60,6 +65,10 @@ export function initializeDependencyInjection() {
     ),
     health: new HealthController(),
     item: new ItemController(DI.repositories.item),
+    shoppingList: new ShoppingListController(
+      DI.repositories.shoppingList,
+      DI.repositories.item,
+    ),
   };
 
   // Initialize routes
@@ -67,6 +76,7 @@ export function initializeDependencyInjection() {
     DI.controllers.auth,
     DI.controllers.health,
     DI.controllers.item,
+    DI.controllers.shoppingList,
   );
 
   // Initialize app

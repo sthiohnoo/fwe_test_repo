@@ -5,6 +5,7 @@ import {
   timestamp,
   uuid,
 } from 'drizzle-orm/pg-core';
+
 import { commonSchema } from './common.schema';
 
 export const shoppingLists = pgTable('shopping_lists', {
