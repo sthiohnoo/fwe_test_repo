@@ -17,7 +17,7 @@ export class ShoppingListController {
       .default(true)
       .parse(
         req.query.withRelations === 'true' ||
-          req.query.withRelations === 'undefined',
+          req.query.withRelations === undefined,
       );
 
     const shoppingLists =
@@ -31,7 +31,7 @@ export class ShoppingListController {
       .default(true)
       .parse(
         req.query.withRelations === 'true' ||
-          req.query.withRelations === 'undefined',
+          req.query.withRelations === undefined,
       );
 
     const shoppingLists = await this.shoppingListRepository.getShoppingListById(
