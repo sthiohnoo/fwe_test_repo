@@ -76,6 +76,12 @@ export class Routes {
         this.shoppingListController,
       ),
     );
+    this.router.put(
+      '/shoppingLists/:shoppingListId',
+      this.shoppingListController.updateShoppingListById.bind(
+        this.shoppingListController,
+      ),
+    );
     this.router.delete(
       '/shoppingLists/:shoppingListId',
       this.shoppingListController.deleteShoppingListById.bind(

@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
-import { createShoppingListZodSchema } from '../validation/validation';
+import {
+  createShoppingListZodSchema,
+  updateShoppingListZodSchema,
+} from '../validation/validation';
 
 import { ShoppingListRepository } from '../db/repository/shoppingList.repository';
 import { ItemRepository } from '../db/repository/item.repository';
@@ -88,6 +91,31 @@ export class ShoppingListController {
       );
 
     res.status(201).send(shoppingListWithItems);
+  }
+
+  async updateShoppingListById(req: Request, res: Response): Promise<void> {
+    const { shoppingListId } = req.params;
+
+    const validateId = z
+      .string()
+      .uuid({ message: 'Invalid id format. please provide a valid UUID' })
+      .parse(shoppingListId);
+
+    const existingShoppingList =
+      await this.shoppingListRepository.getShoppingListById(validateId);
+    if (!existingShoppingList) {
+      res.status(404).json({ errors: ['shoppingList not found'] });
+      return;
+    }
+
+    const validatedData = updateShoppingListZodSchema.parse(req.body);
+
+    const updatedShoppingList =
+      await this.shoppingListRepository.updateShoppingListById(
+        validateId,
+        validatedData,
+      );
+    res.send(updatedShoppingList);
   }
 
   async deleteShoppingListById(req: Request, res: Response): Promise<void> {

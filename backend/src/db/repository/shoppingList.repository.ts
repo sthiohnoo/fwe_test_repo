@@ -2,7 +2,10 @@ import { eq } from 'drizzle-orm';
 import type { Database } from '../db';
 import { shoppingList } from '../schema/shoppingList.schema';
 import { shoppingListItem } from '../schema/shoppingListItem.schema';
-import { CreateShoppingList } from '../../validation/validation';
+import {
+  CreateShoppingList,
+  UpdateShoppingList,
+} from '../../validation/validation';
 
 export class ShoppingListRepository {
   constructor(private readonly db: Database) {}
@@ -47,6 +50,18 @@ export class ShoppingListRepository {
   async createShoppingList(data: CreateShoppingList) {
     const [entry] = await this.db.insert(shoppingList).values(data).returning();
     return entry;
+  }
+
+  async updateShoppingListById(
+    shoppingListId: string,
+    data: UpdateShoppingList,
+  ) {
+    const [updatedList] = await this.db
+      .update(shoppingList)
+      .set(data)
+      .where(eq(shoppingList.id, shoppingListId))
+      .returning();
+    return updatedList;
   }
 
   async deleteShoppingListById(shoppingListId: string) {

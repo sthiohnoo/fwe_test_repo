@@ -48,6 +48,15 @@ export const createShoppingListZodSchema = createInsertSchema(shoppingList, {
       .optional(),
   });
 
+export const updateShoppingListZodSchema = createInsertSchema(shoppingList, {
+  name: z.string().min(1),
+  description: z.string().optional(),
+}).pick({
+  name: true,
+  description: true,
+});
+
 export type DbUser = z.infer<typeof selectUserZodSchema>;
 export type CreateUser = z.infer<typeof createUserZodSchema>;
 export type CreateShoppingList = z.infer<typeof createShoppingListZodSchema>;
+export type UpdateShoppingList = z.infer<typeof updateShoppingListZodSchema>;
