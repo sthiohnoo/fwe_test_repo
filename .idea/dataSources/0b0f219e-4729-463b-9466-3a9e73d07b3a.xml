@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.53">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>775</IntrospectionStateNumber>
+      <IntrospectionStateNumber>777</IntrospectionStateNumber>
       <ServerVersion>17.0</ServerVersion>
       <StartupTime>1730893882</StartupTime>
       <TimeZones>true ACDT
@@ -800,7 +800,7 @@ false Zulu
 14704||10|C|G
 14704||-9223372036854775808|U|G
 14704||10|U|G</Grants>
-      <IntrospectionStateNumber>775</IntrospectionStateNumber>
+      <IntrospectionStateNumber>777</IntrospectionStateNumber>
       <ObjectId>16389</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4232,8 +4232,8 @@ false Zulu
     <schema id="266" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>775</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2024-11-09.11:16:29</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>777</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2024-11-09.12:22:47</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>532</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
@@ -4385,7 +4385,22 @@ false Zulu
       <RefKeyColPositions>1</RefKeyColPositions>
       <RefTableId>16400</RefTableId>
     </foreign-key>
-    <column id="288" parent="270" name="id">
+    <index id="288" parent="269" name="shopping_list_item_list_id_item_id_pk">
+      <ColNames>list_id
+item_id</ColNames>
+      <ObjectId>16482</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>776</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="289" parent="269" name="shopping_list_item_list_id_item_id_pk">
+      <ObjectId>16483</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>776</StateNumber>
+      <UnderlyingIndexId>16482</UnderlyingIndexId>
+    </key>
+    <column id="290" parent="270" name="id">
       <DefaultExpression>gen_random_uuid()</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -4393,35 +4408,35 @@ false Zulu
       <StoredType>uuid|0s</StoredType>
       <TypeId>2950</TypeId>
     </column>
-    <column id="289" parent="270" name="email">
+    <column id="291" parent="270" name="email">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="290" parent="270" name="password">
+    <column id="292" parent="270" name="password">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="291" parent="270" name="first_name">
+    <column id="293" parent="270" name="first_name">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <column id="292" parent="270" name="last_name">
+    <column id="294" parent="270" name="last_name">
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>767</StateNumber>
       <StoredType>varchar(256)|0s</StoredType>
       <TypeId>1043</TypeId>
     </column>
-    <index id="293" parent="270" name="user_pkey">
+    <index id="295" parent="270" name="user_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16446</ObjectId>
@@ -4430,7 +4445,7 @@ false Zulu
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="294" parent="270" name="user_pkey">
+    <key id="296" parent="270" name="user_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16447</ObjectId>
       <Primary>1</Primary>
