@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { Database } from '../db';
 import { shoppingList } from '../schema/shoppingList.schema';
 import { shoppingListItem } from '../schema/shoppingListItem.schema';
@@ -62,6 +62,24 @@ export class ShoppingListRepository {
       .where(eq(shoppingList.id, shoppingListId))
       .returning();
     return updatedList;
+  }
+
+  async updateListItemById(
+    listId: string,
+    itemId: string,
+    data: { quantity?: number; isPurchased?: boolean },
+  ) {
+    const [updatedItem] = await this.db
+      .update(shoppingListItem)
+      .set(data)
+      .where(
+        and(
+          eq(shoppingListItem.itemId, itemId),
+          eq(shoppingListItem.listId, listId),
+        ),
+      )
+      .returning();
+    return updatedItem;
   }
 
   async deleteShoppingListById(shoppingListId: string) {

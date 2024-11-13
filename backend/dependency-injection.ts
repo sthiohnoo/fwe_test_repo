@@ -8,6 +8,7 @@ import { ShoppingListController } from './src/controller/shoppingList.controller
 import { UserRepository } from './src/db/repository/user.repository';
 import { ItemRepository } from './src/db/repository/item.repository';
 import { ShoppingListRepository } from './src/db/repository/shoppingList.repository';
+import { ShoppingListItemRepository } from './src/db/repository/shoppingListItem.repository';
 import { Routes } from './src/routes/routes';
 
 import { Server } from './server';
@@ -23,6 +24,7 @@ export const DI = {} as {
     user: UserRepository;
     item: ItemRepository;
     shoppingList: ShoppingListRepository;
+    shoppingListItem: ShoppingListItemRepository;
   };
   controllers: {
     auth: AuthController;
@@ -54,6 +56,7 @@ export function initializeDependencyInjection() {
     user: new UserRepository(DI.db),
     item: new ItemRepository(DI.db),
     shoppingList: new ShoppingListRepository(DI.db),
+    shoppingListItem: new ShoppingListItemRepository(DI.db),
   };
 
   // Initialize controllers
@@ -68,6 +71,7 @@ export function initializeDependencyInjection() {
     shoppingList: new ShoppingListController(
       DI.repositories.shoppingList,
       DI.repositories.item,
+      DI.repositories.shoppingListItem,
     ),
   };
 

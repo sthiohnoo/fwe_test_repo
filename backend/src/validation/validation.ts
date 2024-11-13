@@ -49,12 +49,26 @@ export const createShoppingListZodSchema = createInsertSchema(shoppingList, {
   });
 
 export const updateShoppingListZodSchema = createInsertSchema(shoppingList, {
-  name: z.string().min(1),
+  name: z.string().min(1).optional(),
   description: z.string().optional(),
-}).pick({
-  name: true,
-  description: true,
-});
+})
+  .pick({
+    name: true,
+    description: true,
+  })
+  .extend({
+    items: z
+      .array(
+        z.object({
+          id: z.string().uuid({
+            message: 'Invalid item-id format. please provide a valid UUID',
+          }),
+          quantity: z.number().min(1).optional(),
+          isPurchased: z.boolean().optional(),
+        }),
+      )
+      .optional(),
+  });
 
 export type DbUser = z.infer<typeof selectUserZodSchema>;
 export type CreateUser = z.infer<typeof createUserZodSchema>;
