@@ -98,7 +98,7 @@ export class ShoppingListController {
   async updateShoppingListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
 
-    const validateId = z
+    const validatedId = z
       .string()
       .uuid({
         message: 'Invalid shoppingList-id format. please provide a valid UUID',
@@ -106,7 +106,7 @@ export class ShoppingListController {
       .parse(shoppingListId);
 
     const existingShoppingList =
-      await this.shoppingListRepository.getShoppingListById(validateId);
+      await this.shoppingListRepository.getShoppingListById(validatedId);
     if (!existingShoppingList) {
       res.status(404).json({ errors: ['shoppingList not found'] });
       return;
@@ -115,17 +115,26 @@ export class ShoppingListController {
     const validatedData = updateShoppingListZodSchema.parse(req.body);
 
     if (validatedData.items) {
+      const existingListInList =
+        await this.shoppingListItemRepository.getListInListById(validatedId);
+      if (!existingListInList) {
+        res.status(404).json({
+          errors: [
+            'Update canceled! updating list not found in the shoppingList',
+          ],
+        });
+        return;
+      }
+
       for (const item of validatedData.items) {
-        const existingItem =
+        const existingItemInList =
           await this.shoppingListItemRepository.getItemInListById(item.id);
-        if (!existingItem) {
-          res
-            .status(404)
-            .json({
-              errors: [
-                'Update canceled! updating item not found in the shoppingList',
-              ],
-            });
+        if (!existingItemInList) {
+          res.status(404).json({
+            errors: [
+              'Update canceled! updating item not found in the shoppingList',
+            ],
+          });
           return;
         }
       }
@@ -133,14 +142,14 @@ export class ShoppingListController {
 
     const updatedShoppingList =
       await this.shoppingListRepository.updateShoppingListById(
-        validateId,
+        validatedId,
         validatedData,
       );
 
     if (validatedData.items) {
       for (const item of validatedData.items) {
-        await this.shoppingListRepository.updateListItemById(
-          validateId,
+        await this.shoppingListItemRepository.updateListItemById(
+          validatedId,
           item.id,
           {
             quantity: item.quantity,
@@ -152,23 +161,31 @@ export class ShoppingListController {
     res.send(updatedShoppingList);
   }
 
+  async deleteItemInListById(req: Request, res: Response): Promise<void> {
+    const { shoppingListId } = req.params;
+    const validatedId = z
+      .string()
+      .uuid({ message: 'Invalid id format. please provide a valid UUID' })
+      .parse(shoppingListId);
+  }
+
   async deleteShoppingListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
-    const validateId = z
+    const validatedId = z
       .string()
       .uuid({ message: 'Invalid id format. please provide a valid UUID' })
       .parse(shoppingListId);
 
     const existingShoppingList =
-      await this.shoppingListRepository.getShoppingListById(validateId);
+      await this.shoppingListRepository.getShoppingListById(validatedId);
 
     if (!existingShoppingList) {
       res.status(404).json({ errors: ['shoppingList not found'] });
       return;
     }
 
-    await this.shoppingListRepository.deleteShoppingListItemsById(validateId);
-    await this.shoppingListRepository.deleteShoppingListById(validateId);
+    await this.shoppingListItemRepository.deleteListInListById(validatedId);
+    await this.shoppingListRepository.deleteShoppingListById(validatedId);
     res.status(204).send({});
   }
 }
