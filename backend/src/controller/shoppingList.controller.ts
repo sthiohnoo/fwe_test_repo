@@ -162,11 +162,38 @@ export class ShoppingListController {
   }
 
   async deleteItemInListById(req: Request, res: Response): Promise<void> {
-    const { shoppingListId } = req.params;
-    const validatedId = z
+    const { shoppingListId, itemId } = req.params;
+    const validatedShoppingListId = z
       .string()
-      .uuid({ message: 'Invalid id format. please provide a valid UUID' })
+      .uuid({
+        message: 'Invalid shoppingListId format. please provide a valid UUID',
+      })
       .parse(shoppingListId);
+
+    const validatedItemId = z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+
+    const existingListInList =
+      await this.shoppingListItemRepository.getListInListById(
+        validatedShoppingListId,
+      );
+    if (!existingListInList) {
+      res.status(404).json({ errors: ['ShoppingList has no Items'] });
+      return;
+    }
+
+    const deletedItem =
+      await this.shoppingListItemRepository.deleteItemInListById(
+        validatedShoppingListId,
+        validatedItemId,
+      );
+    if (deletedItem.rowCount === 0) {
+      res.status(404).json({ errors: ['Item not found in the ShoppingList'] });
+      return;
+    }
+    res.status(204).send({});
   }
 
   async deleteShoppingListById(req: Request, res: Response): Promise<void> {

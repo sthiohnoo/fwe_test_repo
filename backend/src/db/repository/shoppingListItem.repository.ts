@@ -41,9 +41,14 @@ export class ShoppingListItemRepository {
       .where(eq(shoppingListItem.listId, shoppingListId));
   }
 
-  async deleteItemInListById(itemId: string) {
+  async deleteItemInListById(listId: string, itemId: string) {
     return this.db
       .delete(shoppingListItem)
-      .where(eq(shoppingListItem.itemId, itemId));
+      .where(
+        and(
+          eq(shoppingListItem.listId, listId),
+          eq(shoppingListItem.itemId, itemId),
+        ),
+      );
   }
 }
