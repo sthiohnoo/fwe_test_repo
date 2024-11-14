@@ -1,6 +1,7 @@
 import type { Database } from '../db';
 import { shoppingListItem } from '../schema/shoppingListItem.schema';
 import { and, eq } from 'drizzle-orm';
+import { AddItemToList } from '../../validation/validation';
 
 export class ShoppingListItemRepository {
   constructor(private readonly db: Database) {}
@@ -33,6 +34,14 @@ export class ShoppingListItemRepository {
       )
       .returning();
     return updatedItem;
+  }
+
+  async addItemToList(data: AddItemToList) {
+    const [entry] = await this.db
+      .insert(shoppingListItem)
+      .values(data)
+      .returning();
+    return entry;
   }
 
   async deleteListInListById(shoppingListId: string) {

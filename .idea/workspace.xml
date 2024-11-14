@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/backend/src/controller/shoppingList.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controller/shoppingList.controller.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/db/repository/shoppingListItem.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/repository/shoppingListItem.repository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/validation/validation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/validation/validation.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,42 +44,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.env.config.ts.executor": "Run",
-    "Node.js.index.ts.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "code.cleanup.on.save": "true",
-    "credentialsType com.jetbrains.php.remote.interpreter.ui.PhpCreateRemoteSdkForm": "Docker",
-    "credentialsType com.jetbrains.php.remote.interpreter.ui.PhpInplaceEditRemoteSdkForm": "Docker",
-    "git-widget-placeholder": "main",
-    "javascript.nodejs.core.library.configured.version": "22.11.0",
-    "javascript.nodejs.core.library.typings.version": "22.8.4",
-    "last_opened_file_path": "C:/Dateien/h_da/5.Semester/FWE/fwe-ws-24-25-1120617/backend/src/db/repository/shoppingListItem.repository.ts",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.stylelint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.stylelint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "C:\\Dateien\\h_da\\5.Semester\\FWE\\fwe-ws-24-25-1120617\\backend\\node_modules\\prettier",
-    "rearrange.code.on.save": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "ts.external.directory.path": "C:\\Dateien\\h_da\\5.Semester\\FWE\\fwe-ws-24-25-1120617\\backend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.env.config.ts.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.index.ts.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpCreateRemoteSdkForm&quot;: &quot;Docker&quot;,
+    &quot;credentialsType com.jetbrains.php.remote.interpreter.ui.PhpInplaceEditRemoteSdkForm&quot;: &quot;Docker&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;22.11.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.8.4&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Dateien/h_da/5.Semester/FWE/fwe-ws-24-25-1120617/backend/src/db/repository/shoppingListItem.repository.ts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Dateien\\h_da\\5.Semester\\FWE\\fwe-ws-24-25-1120617\\backend\\node_modules\\prettier&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Dateien\\h_da\\5.Semester\\FWE\\fwe-ws-24-25-1120617\\backend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Dateien\h_da\5.Semester\FWE\fwe-ws-24-25-1120617\backend\src\db\schema" />
@@ -122,7 +123,8 @@
       <workItem from="1731324014941" duration="1013000" />
       <workItem from="1731502877011" duration="15098000" />
       <workItem from="1731520330998" duration="169000" />
-      <workItem from="1731531610173" duration="8348000" />
+      <workItem from="1731531610173" duration="11192000" />
+      <workItem from="1731577519460" duration="7698000" />
     </task>
     <task id="LOCAL-00001" summary="init project">
       <option name="closed" value="true" />

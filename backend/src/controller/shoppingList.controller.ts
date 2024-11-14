@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 import {
+  addItemToListZodSchema,
   createShoppingListZodSchema,
   updateShoppingListZodSchema,
 } from '../validation/validation';
@@ -159,6 +160,47 @@ export class ShoppingListController {
       }
     }
     res.send(updatedShoppingList);
+  }
+
+  async addItemToList(req: Request, res: Response): Promise<void> {
+    const { shoppingListId, itemId } = req.params;
+
+    const validatedData = addItemToListZodSchema.parse({
+      ...req.body,
+      listId: shoppingListId,
+      itemId: itemId,
+    });
+
+    const existingShoppingList =
+      await this.shoppingListRepository.getShoppingListById(
+        validatedData.listId,
+      );
+    if (!existingShoppingList) {
+      res.status(404).json({ errors: ['ShoppingList not found'] });
+      return;
+    }
+
+    const existingItem = await this.itemRepository.getItemById(
+      validatedData.itemId,
+    );
+    if (!existingItem) {
+      res.status(404).json({ errors: ['Item not found'] });
+      return;
+    }
+
+    const existingItemInList =
+      await this.shoppingListItemRepository.getItemInListById(
+        validatedData.itemId,
+      );
+    if (existingItemInList) {
+      res.status(409).json({ errors: ['Item already in the ShoppingList'] });
+      return;
+    }
+
+    const addedItemInList =
+      await this.shoppingListItemRepository.addItemToList(validatedData);
+
+    res.status(201).send(addedItemInList);
   }
 
   async deleteItemInListById(req: Request, res: Response): Promise<void> {

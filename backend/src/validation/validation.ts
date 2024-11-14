@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { user } from '../db/schema/user.schema';
 import { shoppingList } from '../db/schema/shoppingList.schema';
+import { shoppingListItem } from '../db/schema/shoppingListItem.schema';
 import { DI } from '../../dependency-injection';
 
 export const selectUserZodSchema = createSelectSchema(user);
@@ -61,7 +62,7 @@ export const updateShoppingListZodSchema = createInsertSchema(shoppingList, {
       .array(
         z.object({
           id: z.string().uuid({
-            message: 'Invalid item-id format. please provide a valid UUID',
+            message: 'Invalid itemId format. please provide a valid UUID',
           }),
           quantity: z.number().min(1).optional(),
           isPurchased: z.boolean().optional(),
@@ -70,7 +71,19 @@ export const updateShoppingListZodSchema = createInsertSchema(shoppingList, {
       .optional(),
   });
 
+export const addItemToListZodSchema = createInsertSchema(shoppingListItem, {
+  listId: z.string().uuid({
+    message: 'Invalid shoppingListId format. please provide a valid UUID',
+  }),
+  itemId: z.string().uuid({
+    message: 'Invalid itemId format. please provide a valid UUID',
+  }),
+  quantity: z.number().min(1),
+  isPurchased: z.boolean().default(false).optional(),
+});
+
 export type DbUser = z.infer<typeof selectUserZodSchema>;
 export type CreateUser = z.infer<typeof createUserZodSchema>;
 export type CreateShoppingList = z.infer<typeof createShoppingListZodSchema>;
 export type UpdateShoppingList = z.infer<typeof updateShoppingListZodSchema>;
+export type AddItemToList = z.infer<typeof addItemToListZodSchema>;
