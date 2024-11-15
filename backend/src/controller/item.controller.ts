@@ -1,9 +1,18 @@
 import { Request, Response } from 'express';
 import { ItemRepository } from '../db/repository/item.repository';
-import { createItemZodSchema } from '../validation/validation';
+import { ShoppingListItemRepository } from '../db/repository/shoppingListItem.repository';
+
+import { z } from 'zod';
+import {
+  createItemsZodSchema,
+  updateItemZodSchema,
+} from '../validation/validation';
 
 export class ItemController {
-  constructor(private readonly itemRepository: ItemRepository) {}
+  constructor(
+    private readonly itemRepository: ItemRepository,
+    private readonly shoppingListItemRepository: ShoppingListItemRepository,
+  ) {}
 
   async getItems(_req: Request, res: Response): Promise<void> {
     const items = await this.itemRepository.getItems();
@@ -35,14 +44,14 @@ export class ItemController {
   }
 
   async createItem(req: Request, res: Response): Promise<void> {
-    const validatedData = createItemZodSchema.parse(req.body);
+    const validatedData = createItemsZodSchema.parse(req.body);
 
     for (const item of validatedData) {
       const existingItem = await this.itemRepository.getItemByName(item.name);
       if (existingItem) {
         res
           .status(409)
-          .send({ errors: ['Create canceled! Item already exists'] });
+          .send({ errors: ['Creation canceled! Item already exists'] });
         return;
       }
     }
@@ -55,5 +64,59 @@ export class ItemController {
     const createdItems = await this.itemRepository.createItems(transformedData);
 
     res.status(201).send(createdItems);
+  }
+
+  async updateItemById(req: Request, res: Response): Promise<void> {
+    const { itemId } = req.params;
+
+    const validatedItemId = z
+      .string()
+      .uuid({
+        message: 'Invalid itemId format. please provide a valid UUID',
+      })
+      .parse(itemId);
+
+    const existingItem = await this.itemRepository.getItemById(validatedItemId);
+    if (!existingItem) {
+      res.status(404).send({ errors: ['Item not found'] });
+      return;
+    }
+
+    const validatedData = updateItemZodSchema.parse(req.body);
+
+    const updatedItem = await this.itemRepository.updateItemById(
+      validatedItemId,
+      validatedData,
+    );
+
+    res.send(updatedItem);
+  }
+
+  async deleteItemById(req: Request, res: Response): Promise<void> {
+    const { itemId } = req.params;
+
+    const validatedItemId = z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+
+    const existingItem = await this.itemRepository.getItemById(validatedItemId);
+    if (!existingItem) {
+      res.status(404).send({ errors: ['Item not found'] });
+      return;
+    }
+
+    const existingItemInList =
+      await this.shoppingListItemRepository.getItemInListById(validatedItemId);
+    if (existingItemInList) {
+      res
+        .status(409)
+        .send({ errors: ['Deletion canceled. Item exists in a ShoppingList'] });
+      return;
+    }
+
+    await this.itemRepository.deleteItemById(validatedItemId);
+
+    res.status(204).send({});
   }
 }

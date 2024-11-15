@@ -67,7 +67,10 @@ export function initializeDependencyInjection() {
       DI.utils.jwt,
     ),
     health: new HealthController(),
-    item: new ItemController(DI.repositories.item),
+    item: new ItemController(
+      DI.repositories.item,
+      DI.repositories.shoppingListItem,
+    ),
     shoppingList: new ShoppingListController(
       DI.repositories.shoppingList,
       DI.repositories.item,

@@ -60,6 +60,14 @@ export class Routes {
       '/items',
       this.itemController.createItem.bind(this.itemController),
     );
+    this.router.put(
+      '/items/:itemId',
+      this.itemController.updateItemById.bind(this.itemController),
+    );
+    this.router.delete(
+      '/items/:itemId',
+      this.itemController.deleteItemById.bind(this.itemController),
+    );
 
     // Shopping list routes
     this.router.get(

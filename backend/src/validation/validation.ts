@@ -26,12 +26,17 @@ export const loginZodSchema = z.object({
   password: z.string().min(8),
 });
 
-export const createItemZodSchema = z.array(
+export const createItemsZodSchema = z.array(
   createInsertSchema(item, {
     name: z.string().min(1),
     description: z.string().optional(),
   }),
 );
+
+export const updateItemZodSchema = createInsertSchema(item, {
+  name: z.string().min(1).optional(),
+  description: z.string().optional(),
+});
 
 export const createShoppingListZodSchema = createInsertSchema(shoppingList, {
   name: z.string().min(1),
@@ -95,3 +100,4 @@ export type CreateUser = z.infer<typeof createUserZodSchema>;
 export type CreateShoppingList = z.infer<typeof createShoppingListZodSchema>;
 export type UpdateShoppingList = z.infer<typeof updateShoppingListZodSchema>;
 export type AddItemToList = z.infer<typeof addItemToListZodSchema>;
+export type UpdateItem = z.infer<typeof updateItemZodSchema>;

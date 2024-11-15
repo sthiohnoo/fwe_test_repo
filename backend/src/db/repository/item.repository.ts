@@ -1,5 +1,7 @@
 import type { Database } from '../db';
+import { eq } from 'drizzle-orm';
 import { item } from '../schema/item.schema';
+import { UpdateItem } from '../../validation/validation';
 
 export class ItemRepository {
   constructor(private readonly db: Database) {}
@@ -29,5 +31,18 @@ export class ItemRepository {
 
   async createItems(data: { name: string; description?: string }[]) {
     return this.db.insert(item).values(data).onConflictDoNothing().returning();
+  }
+
+  async updateItemById(itemId: string, data: UpdateItem) {
+    const [updatedItem] = await this.db
+      .update(item)
+      .set(data)
+      .where(eq(item.id, itemId))
+      .returning();
+    return updatedItem;
+  }
+
+  async deleteItemById(itemId: string) {
+    await this.db.delete(item).where(eq(item.id, itemId));
   }
 }
