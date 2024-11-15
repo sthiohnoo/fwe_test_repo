@@ -56,6 +56,10 @@ export class Routes {
       '/items/name/:itemName',
       this.itemController.getItemByName.bind(this.itemController),
     );
+    this.router.post(
+      '/items',
+      this.itemController.createItem.bind(this.itemController),
+    );
 
     // Shopping list routes
     this.router.get(

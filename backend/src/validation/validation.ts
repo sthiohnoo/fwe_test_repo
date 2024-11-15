@@ -2,6 +2,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 import { user } from '../db/schema/user.schema';
+import { item } from '../db/schema/item.schema';
 import { shoppingList } from '../db/schema/shoppingList.schema';
 import { shoppingListItem } from '../db/schema/shoppingListItem.schema';
 import { DI } from '../../dependency-injection';
@@ -24,6 +25,13 @@ export const loginZodSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
+
+export const createItemZodSchema = z.array(
+  createInsertSchema(item, {
+    name: z.string().min(1),
+    description: z.string().optional(),
+  }),
+);
 
 export const createShoppingListZodSchema = createInsertSchema(shoppingList, {
   name: z.string().min(1),

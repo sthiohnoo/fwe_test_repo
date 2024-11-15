@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ItemRepository } from '../db/repository/item.repository';
+import { createItemZodSchema } from '../validation/validation';
 
 export class ItemController {
   constructor(private readonly itemRepository: ItemRepository) {}
@@ -31,5 +32,28 @@ export class ItemController {
     }
 
     res.status(200).send(item);
+  }
+
+  async createItem(req: Request, res: Response): Promise<void> {
+    const validatedData = createItemZodSchema.parse(req.body);
+
+    for (const item of validatedData) {
+      const existingItem = await this.itemRepository.getItemByName(item.name);
+      if (existingItem) {
+        res
+          .status(409)
+          .send({ errors: ['Create canceled! Item already exists'] });
+        return;
+      }
+    }
+
+    const transformedData = validatedData.map((item) => ({
+      ...item,
+      description: item.description ?? undefined,
+    }));
+
+    const createdItems = await this.itemRepository.createItems(transformedData);
+
+    res.status(201).send(createdItems);
   }
 }

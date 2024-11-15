@@ -75,9 +75,7 @@ export class ShoppingListController {
       itemsWithId.push(...createdItems.map((item) => item.id));
     }
 
-    // Associate tags with the diary entry if there are any tags
     if (itemsWithId.length > 0) {
-      // Get all tags with given names or ids to make sure we have all ids and they exist and are associated with the user
       const items = await this.itemRepository.getItemsByNamesOrIds(
         itemsWithName.map((t) => t.name),
         itemsWithId,
