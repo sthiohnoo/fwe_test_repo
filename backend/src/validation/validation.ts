@@ -1,30 +1,9 @@
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-import { user } from '../db/schema/user.schema';
 import { item } from '../db/schema/item.schema';
 import { shoppingList } from '../db/schema/shoppingList.schema';
 import { shoppingListItem } from '../db/schema/shoppingListItem.schema';
-import { DI } from '../../dependency-injection';
-
-export const selectUserZodSchema = createSelectSchema(user);
-
-export const createUserZodSchema = createInsertSchema(user, {
-  email: z.string().email(),
-  password: z.string().min(8),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-}).transform(async (data) => {
-  return {
-    ...data,
-    password: await DI.utils.passwordHasher.hashPassword(data.password),
-  };
-});
-
-export const loginZodSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
 
 export const createItemsZodSchema = z.array(
   createInsertSchema(item, {
@@ -95,8 +74,6 @@ export const addItemToListZodSchema = createInsertSchema(shoppingListItem, {
   isPurchased: z.boolean().default(false).optional(),
 });
 
-export type DbUser = z.infer<typeof selectUserZodSchema>;
-export type CreateUser = z.infer<typeof createUserZodSchema>;
 export type CreateShoppingList = z.infer<typeof createShoppingListZodSchema>;
 export type UpdateShoppingList = z.infer<typeof updateShoppingListZodSchema>;
 export type AddItemToList = z.infer<typeof addItemToListZodSchema>;
