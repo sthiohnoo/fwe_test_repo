@@ -6,7 +6,17 @@ import { AddItemToList } from '../../validation/validation';
 export class ShoppingListItemRepository {
   constructor(private readonly db: Database) {}
 
-  async getItemInListById(itemId: string) {
+  async getItemInListById(listId: string, itemId: string) {
+    return this.db.query.shoppingListItem.findFirst({
+      where: (shoppingListItem, { and, eq }) =>
+        and(
+          eq(shoppingListItem.listId, listId),
+          eq(shoppingListItem.itemId, itemId),
+        ),
+    });
+  }
+
+  async getItemInAllListsById(itemId: string) {
     return this.db.query.shoppingListItem.findFirst({
       where: (shoppingListItem, { eq }) => eq(shoppingListItem.itemId, itemId),
     });
@@ -15,6 +25,12 @@ export class ShoppingListItemRepository {
   async getListInListById(listId: string) {
     return this.db.query.shoppingListItem.findFirst({
       where: (shoppingListItem, { eq }) => eq(shoppingListItem.listId, listId),
+    });
+  }
+
+  async getListsInListByItemId(itemId: string) {
+    return this.db.query.shoppingListItem.findMany({
+      where: (shoppingListItem, { eq }) => eq(shoppingListItem.itemId, itemId),
     });
   }
 

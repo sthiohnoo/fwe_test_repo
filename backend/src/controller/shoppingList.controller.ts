@@ -47,6 +47,34 @@ export class ShoppingListController {
     res.send(shoppingLists);
   }
 
+  async getShoppingListsWithSearchingItemById(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    const { itemId } = req.params;
+
+    const validatedItemId = z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+
+    const existingListWithItem =
+      await this.shoppingListItemRepository.getItemInAllListsById(
+        validatedItemId,
+      );
+    if (!existingListWithItem) {
+      res.status(404).json({ errors: ['Item not found in ShoppingLists'] });
+      return;
+    }
+
+    const shoppingLists =
+      await this.shoppingListItemRepository.getListsInListByItemId(
+        validatedItemId,
+      );
+
+    res.send(shoppingLists);
+  }
+
   async createShoppingList(req: Request, res: Response): Promise<void> {
     const validatedData = createShoppingListZodSchema.parse(req.body);
 
@@ -127,7 +155,7 @@ export class ShoppingListController {
 
       for (const item of validatedData.items) {
         const existingItemInList =
-          await this.shoppingListItemRepository.getItemInListById(item.id);
+          await this.shoppingListItemRepository.getItemInAllListsById(item.id);
         if (!existingItemInList) {
           res.status(404).json({
             errors: [
@@ -188,6 +216,7 @@ export class ShoppingListController {
 
     const existingItemInList =
       await this.shoppingListItemRepository.getItemInListById(
+        validatedData.listId,
         validatedData.itemId,
       );
     if (existingItemInList) {

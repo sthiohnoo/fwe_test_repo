@@ -107,7 +107,9 @@ export class ItemController {
     }
 
     const existingItemInList =
-      await this.shoppingListItemRepository.getItemInListById(validatedItemId);
+      await this.shoppingListItemRepository.getItemInAllListsById(
+        validatedItemId,
+      );
     if (existingItemInList) {
       res
         .status(409)

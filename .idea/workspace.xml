@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="42a5c6e9-238f-4b61-b790-1a663270eaad" name="Changes" comment="init project">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/dependency-injection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/dependency-injection.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/controller/item.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controller/item.controller.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/repository/item.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/repository/item.repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/controller/shoppingList.controller.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/controller/shoppingList.controller.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/repository/shoppingListItem.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/repository/shoppingListItem.repository.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/routes/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/validation/validation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/validation/validation.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +124,7 @@
       <workItem from="1731502877011" duration="15098000" />
       <workItem from="1731520330998" duration="169000" />
       <workItem from="1731531610173" duration="11192000" />
-      <workItem from="1731577519460" duration="17176000" />
+      <workItem from="1731577519460" duration="21096000" />
     </task>
     <task id="LOCAL-00001" summary="init project">
       <option name="closed" value="true" />
