@@ -21,7 +21,13 @@ export class ItemController {
 
   async getItemById(req: Request, res: Response): Promise<void> {
     const itemId = req.params.itemId;
-    const item = await this.itemRepository.getItemById(itemId);
+
+    const validatedItemId = z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+
+    const item = await this.itemRepository.getItemById(validatedItemId);
 
     if (!item) {
       res.status(404).send({ errors: ['Item not found'] });
