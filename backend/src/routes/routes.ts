@@ -88,6 +88,12 @@ export class Routes {
         this.shoppingListController,
       ),
     );
+    this.router.get(
+      '/shoppingLists/:name/:description',
+      this.shoppingListController.searchShoppingListsWithNameOrDescription.bind(
+        this.shoppingListController,
+      ),
+    );
     this.router.post(
       '/shoppingLists',
       this.shoppingListController.createShoppingList.bind(

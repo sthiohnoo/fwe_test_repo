@@ -75,6 +75,26 @@ export class ShoppingListController {
     res.send(shoppingLists);
   }
 
+  async searchShoppingListsWithNameOrDescription(
+    req: Request,
+    res: Response,
+  ): Promise<void> {
+    const { name, description } = req.params;
+    const validatedName = z.string().optional().parse(name);
+    const validatedDescription = z.string().optional().parse(description);
+
+    const shoppingLists = await this.shoppingListRepository.searchShoppingLists(
+      validatedName,
+      validatedDescription,
+    );
+
+    if (shoppingLists.length === 0) {
+      res.status(404).json({ errors: ['ShoppingList not found'] });
+      return;
+    }
+    res.status(200).send(shoppingLists);
+  }
+
   async createShoppingList(req: Request, res: Response): Promise<void> {
     const validatedData = createShoppingListZodSchema.parse(req.body);
 

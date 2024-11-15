@@ -47,6 +47,18 @@ export class ShoppingListRepository {
     });
   }
 
+  async searchShoppingLists(name?: string, description?: string) {
+    return this.db.query.shoppingList.findMany({
+      where: (shoppingList, { or, like }) =>
+        or(
+          name ? like(shoppingList.name, `%${name}%`) : undefined,
+          description
+            ? like(shoppingList.description, `%${description}%`)
+            : undefined,
+        ),
+    });
+  }
+
   async createShoppingList(data: CreateShoppingList) {
     const [entry] = await this.db.insert(shoppingList).values(data).returning();
     return entry;
