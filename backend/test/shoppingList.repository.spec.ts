@@ -246,12 +246,12 @@ describe('ShoppingListRepository Integration Tests', () => {
       );
 
       // Assert
-      expect(result).toBeUndefined(); //TODO: not sure if undefined is the right beheaviour for this case
+      expect(result).toBeUndefined(); //TODO: not sure if undefined is the right behaviour for this case
     });
   });
 
   describe('deleteShoppingListById', () => {
-    it('should successfully delete a shopping list', async () => {
+    it('should successfully delete a shoppingList', async () => {
       // Arrange
       const testShoppingList = {
         name: 'Delete Shopping List',
@@ -271,23 +271,21 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    /**
-         * TODO: Should I test this beahviour here?
-         it('should return an error with non-existent shoppingList', async () => {
-         // Act
-         const result = await repository.deleteShoppingListById(
-         TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-         );
-         console.log(result);
+    //TODO: Should I test this behaviour here?
+    it('should return undefined with non-existent shoppingList', async () => {
+      // Act
+      const result = await repository.deleteShoppingListById(
+        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
+      console.log(result);
 
-         // Assert
-         expect(result).toBeDefined();
-         expect(result).toBeInstanceOf(Error);
-         });*/
+      // Assert
+      expect(result).toBeUndefined();
+    });
   });
 
   describe('searchShoppingLists', () => {
-    it('should successfully search shopping lists by name', async () => {
+    it('should successfully search shoppingLists by name', async () => {
       // Arrange
       const testShoppingList = {
         name: 'Search Shopping List',
@@ -307,7 +305,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(results[0].name).toBe(testShoppingList.name);
     });
 
-    it('should successfully search shopping lists by part of description', async () => {
+    it('should successfully search shoppingLists by part of description', async () => {
       // Arrange
       const testShoppingList = {
         name: 'Search Shopping List',
