@@ -87,6 +87,7 @@ export class ShoppingListController {
       validatedName,
       validatedDescription,
     );
+    console.log(shoppingLists);
 
     if (shoppingLists.length === 0) {
       res.status(404).json({ errors: ['ShoppingList not found'] });
