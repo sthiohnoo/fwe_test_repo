@@ -1,16 +1,16 @@
 import { App } from './app';
-import { ENV } from './src/config/env.config';
-import { Database, db } from './src/db/db';
+import { ENV } from './config/env.config';
+import { Database, db } from './db/db';
 import { Server } from './server';
 
-import { HealthController } from './src/controller/health.controller';
-import { ItemController } from './src/controller/item.controller';
-import { ShoppingListController } from './src/controller/shoppingList.controller';
+import { HealthController } from './controller/health.controller';
+import { ItemController } from './controller/item.controller';
+import { ShoppingListController } from './controller/shoppingList.controller';
 
-import { ItemRepository } from './src/db/repository/item.repository';
-import { ShoppingListRepository } from './src/db/repository/shoppingList.repository';
-import { ShoppingListItemRepository } from './src/db/repository/shoppingListItem.repository';
-import { Routes } from './src/routes/routes';
+import { ItemRepository } from './db/repository/item.repository';
+import { ShoppingListRepository } from './db/repository/shoppingList.repository';
+import { ShoppingListItemRepository } from './db/repository/shoppingListItem.repository';
+import { Routes } from './routes/routes';
 
 export const DI = {} as {
   app: App;

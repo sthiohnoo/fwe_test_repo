@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
-import { Routes } from './src/routes/routes';
+import { Routes } from './routes/routes';
 import helmet from 'helmet';
-import { globalErrorHandler } from './src/utils/global-error';
+import { globalErrorHandler } from './utils/global-error';
 
 export class App {
   private app: Application;
