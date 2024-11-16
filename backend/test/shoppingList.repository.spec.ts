@@ -271,13 +271,11 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    //TODO: Should I test this behaviour here?
     it('should return undefined with non-existent shoppingList', async () => {
       // Act
       const result = await repository.deleteShoppingListById(
         TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
       );
-      console.log(result);
 
       // Assert
       expect(result).toBeUndefined();

@@ -2,34 +2,16 @@ import { TestDatabase } from './helpers/database';
 import { ItemRepository } from '../src/db/repository/item.repository';
 
 const TEST_IDS = {
-  ITEM_1: '123e4567-e89b-12d3-a456-426614174000',
-  ITEM_2: '123e4567-e89b-12d3-a456-426614174013',
   NON_EXISTENT_ITEM: '123e4567-e89b-12d3-a456-426614174010',
 } as const;
 
 describe('ItemRepository Integration Tests', () => {
   const testDatabase = new TestDatabase();
   let repository: ItemRepository;
-  //let itemHelper: ItemTestHelper;
 
   beforeAll(async () => {
     await testDatabase.setup();
     repository = new ItemRepository(testDatabase.database);
-    //itemHelper = new ItemTestHelper(testDatabase.database);
-
-    // Create fresh test items
-    /*await itemHelper.createItem([
-                                                                                        {
-                                                                                            id: TEST_IDS.ITEM_1,
-                                                                                            name: 'item1',
-                                                                                            description: 'item1_description',
-                                                                                        },
-                                                                                        {
-                                                                                            id: TEST_IDS.ITEM_2,
-                                                                                            name: 'item2',
-                                                                                            description: 'item2_description',
-                                                                                        },
-                                                                                    ]);*/
   }, 30000);
 
   afterEach(async () => {
@@ -315,13 +297,11 @@ describe('ItemRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    //TODO: Should I test this behaviour here?
     it('should return undefined with non-existent item', async () => {
       // Act
       const result = await repository.deleteItemById(
         TEST_IDS.NON_EXISTENT_ITEM,
       );
-      console.log(result);
 
       // Assert
       expect(result).toBeUndefined();
