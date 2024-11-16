@@ -174,4 +174,7 @@ out
 # SvelteKit build / generate output
 .svelte-kit
 
+# Ignore the entire .idea folder
+.idea/
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,node
