@@ -86,7 +86,7 @@ specific steps helps remove ambiguity and gets people to using your project as q
 specific context like a particular programming language version or operating system or has dependencies that have to be
 installed manually, also add a Requirements subsection._
 
-### Prerequisites
+### Step 0: Preparations
 
 Ensure the following software components are installed on your PC:
 
@@ -147,7 +147,15 @@ Install the necessary dependencies using npm:
 npm install
 ```
 
-### Step 3: Set Up the Database
+### Step 3: Set Up Environment Variables
+
+To configure the application to use the database in Docker, follow these steps:
+
+1. Create a `.env` file in the src directory and copy the `.env.example` file content into it.
+2. Edit the `.env` file and replace the placeholders(user, password, database) with the actual values from
+   `docker-compose.yml`
+
+### Step 4: Set Up the Database
 
 Set up the database using Docker Compose:
 
@@ -155,7 +163,7 @@ Set up the database using Docker Compose:
 docker-compose up -d
 ```
 
-### Step 4: Migrate the Database
+### Step 5: Migrate the Database
 
 Run the database migrations to create the necessary tables:
 
@@ -163,7 +171,7 @@ Run the database migrations to create the necessary tables:
 npm run db:migrate
 ```
 
-### Step 5: Start the Application
+### Step 6: Start the Application
 
 Start the application:
 
