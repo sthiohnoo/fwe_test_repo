@@ -43,6 +43,6 @@ export class ItemRepository {
   }
 
   async deleteItemById(itemId: string) {
-    await this.db.delete(item).where(eq(item.id, itemId));
+    return this.db.delete(item).where(eq(item.id, itemId));
   }
 }

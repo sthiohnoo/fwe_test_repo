@@ -77,7 +77,7 @@ export class ShoppingListRepository {
   }
 
   async deleteShoppingListById(shoppingListId: string) {
-    await this.db
+    return this.db
       .delete(shoppingList)
       .where(eq(shoppingList.id, shoppingListId));
   }

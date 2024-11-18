@@ -272,14 +272,19 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return undefined with non-existent shoppingList', async () => {
+    it('should delete nothing with non-existent shoppingList', async () => {
+      // Arrange
+      const countBeforeDeletion = (await repository.getShoppingList()).length;
+
       // Act
-      const result = await repository.deleteShoppingListById(
+      await repository.deleteShoppingListById(
         TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
       );
+      const countAfterDeletion = (await repository.getShoppingList()).length;
 
       // Assert
-      expect(result).toBeUndefined();
+      expect(countAfterDeletion).toBeDefined();
+      expect(countAfterDeletion).toBe(countBeforeDeletion);
     });
   });
 

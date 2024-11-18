@@ -297,14 +297,26 @@ describe('ItemRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should return undefined with non-existent item', async () => {
+    it('should delete nothing with non-existent item', async () => {
+      // Arrange
+      const testItem = {
+        name: 'Test Item',
+        description: 'Test Description',
+      };
+      await repository.createItems([testItem]);
+
+      const countBeforeDeletion = (await repository.getItems()).length;
+
       // Act
-      const result = await repository.deleteItemById(
-        TEST_IDS.NON_EXISTENT_ITEM,
-      );
+      await repository.deleteItemById(TEST_IDS.NON_EXISTENT_ITEM);
+      const countAfterDeletion = (await repository.getItems()).length;
 
       // Assert
-      expect(result).toBeUndefined();
+      expect(countBeforeDeletion).toBeDefined();
+      expect(countBeforeDeletion).toBe(1);
+
+      expect(countAfterDeletion).toBeDefined();
+      expect(countAfterDeletion).toBe(1);
     });
   });
 });
