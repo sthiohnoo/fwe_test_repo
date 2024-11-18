@@ -320,7 +320,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       );
 
       // Assert
-      expect(result).toBeUndefined(); //TODO: not sure if undefined is the right behaviour for this case
+      expect(result).toBeUndefined();
     });
 
     it('should return undefined with non-existent item', async () => {
@@ -338,7 +338,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       );
 
       // Assert
-      expect(result).toBeUndefined(); //TODO: not sure if undefined is the right behaviour for this case
+      expect(result).toBeUndefined();
     });
   });
 

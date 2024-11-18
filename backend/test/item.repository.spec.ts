@@ -274,7 +274,7 @@ describe('ItemRepository Integration Tests', () => {
       );
 
       // Assert
-      expect(result).toBeUndefined(); //TODO: not sure if undefined is the right behaviour for this case
+      expect(result).toBeUndefined();
     });
   });
 
