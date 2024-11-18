@@ -362,18 +362,25 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    /**
-         //TODO: should i change return to await to get undefined???
-         it('should return undefined with non-existent shoppingList', async () => {
-         // Act
-         const result = await repository.deleteListInListById(
-         TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-         );
+    it('should delete nothing with non-existent shoppingList', async () => {
+      // Arrange
+      const listEntry = {
+        listId: TEST_IDS.LIST_1,
+        itemId: TEST_IDS.ITEM_1,
+        quantity: 1,
+        isPurchased: false,
+      };
+      await repository.addItemToList(listEntry);
+      const countBeforeDeletion = (await repository.getAllEntries()).length;
 
-         // Assert
-         expect(result).toBeUndefined();
-         });
-         */
+      // Act
+      await repository.deleteListInListById(TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
+      const countAfterDeletion = (await repository.getAllEntries()).length;
+
+      // Assert
+      expect(countAfterDeletion).toBeDefined();
+      expect(countAfterDeletion).toBe(countBeforeDeletion);
+    });
   });
 
   describe('deleteItemInListById', () => {
@@ -399,18 +406,52 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       expect(result).toBeUndefined();
     });
 
-    /**
-         //TODO: should i change return to await to get undefined???
-         it('should return undefined with non-existent shoppingList', async () => {
-         // Act
-         const result = await repository.deleteItemInListById(
-         TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-         TEST_IDS.ITEM_1,
-         );
+    it('should delete nothing with non-existent shoppingList', async () => {
+      // Arrange
+      const listEntry = {
+        listId: TEST_IDS.LIST_1,
+        itemId: TEST_IDS.ITEM_1,
+        quantity: 1,
+        isPurchased: false,
+      };
+      await repository.addItemToList(listEntry);
 
-         // Assert
-         expect(result).toBeUndefined();
-         });
-         */
+      const countBeforeDeletion = (await repository.getAllEntries()).length;
+
+      // Act
+      await repository.deleteItemInListById(
+        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+        TEST_IDS.ITEM_1,
+      );
+      const countAfterDeletion = (await repository.getAllEntries()).length;
+
+      // Assert
+      expect(countAfterDeletion).toBeDefined();
+      expect(countAfterDeletion).toBe(countBeforeDeletion);
+    });
+
+    it('should delete nothing with non-existent item', async () => {
+      // Arrange
+      const listEntry = {
+        listId: TEST_IDS.LIST_1,
+        itemId: TEST_IDS.ITEM_1,
+        quantity: 1,
+        isPurchased: false,
+      };
+      await repository.addItemToList(listEntry);
+
+      const countBeforeDeletion = (await repository.getAllEntries()).length;
+
+      // Act
+      await repository.deleteItemInListById(
+        TEST_IDS.LIST_1,
+        TEST_IDS.NON_EXISTENT_ITEM,
+      );
+      const countAfterDeletion = (await repository.getAllEntries()).length;
+
+      // Assert
+      expect(countAfterDeletion).toBeDefined();
+      expect(countAfterDeletion).toBe(countBeforeDeletion);
+    });
   });
 });
