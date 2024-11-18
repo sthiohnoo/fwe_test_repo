@@ -96,6 +96,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(retrievedSLItems?.id).toBe(createdSL_WithItems.id);
       expect(retrievedSLItems?.name).toBe(testSL_WithItems.name);
       expect(retrievedSLItems?.description).toBe(testSL_WithItems.description);
+
       /**
              * TODO: Not sure how to assert created items of the list, is it even possible here?
              expect(retrievedSLItems?.shoppingListItems).toBeDefined();
@@ -321,24 +322,24 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(results[0].name).toBe(testShoppingList.name);
     });
 
-    /**
-         * TODO: Expecting an empty array, but getting always one shoppingList
-         it('should return an empty array with nothing to search', async () => {
-         // Arrange
-         const testShoppingList = {
-         name: 'Search Shopping List',
-         description: 'Search Description',
-         createdAt: new Date(),
-         };
-         await repository.createShoppingList(testShoppingList);
+    it('should return all shoppingLists with nothing to search', async () => {
+      // Arrange
+      const testShoppingList = {
+        name: 'Search Shopping List',
+        description: 'Search Description',
+        createdAt: new Date(),
+      };
+      await repository.createShoppingList(testShoppingList);
 
-         // Act
-         const results = await repository.searchShoppingLists(undefined, undefined);
+      // Act
+      const results = await repository.searchShoppingLists(
+        undefined,
+        undefined,
+      );
 
-         // Assert
-         expect(results).toBeDefined();
-         expect(results.length).toBe(0);
-         });
-         */
+      // Assert
+      expect(results).toBeDefined();
+      expect(results.length).toBe(1);
+    });
   });
 });

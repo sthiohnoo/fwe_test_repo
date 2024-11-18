@@ -86,7 +86,7 @@ specific steps helps remove ambiguity and gets people to using your project as q
 specific context like a particular programming language version or operating system or has dependencies that have to be
 installed manually, also add a Requirements subsection._
 
-### Step 0: Preparations
+### Step 0: Prerequisites
 
 Ensure the following software components are installed on your PC:
 
@@ -141,6 +141,8 @@ cd fwe-ws-24-25-1120617
 
 ### Step 2: Install Dependencies
 
+# TODO: Ab hier muss alles in backend-Ordner gemacht werden. Sollte ich das Projekt aufsetzten in fornt- und backend trennen?
+
 Install the necessary dependencies using npm:
 
 ```bash
@@ -178,6 +180,18 @@ Start the application:
 ```bash
 npm start
 ```
+
+## Application Functionalities
+
+### Main Functionalities
+
+- __Manage Shopping Lists__: Create, read, update, and delete shopping lists.
+- __Manage Items__: Create, read, update, and delete items in the shopping list.
+
+### Additional Functionalities
+
+- __Database Connection__: Connects to a PostgreSQL database to store and retrieve data.
+- __Health Check__: Checks the status of the application.
 
 ## Usage
 

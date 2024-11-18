@@ -79,9 +79,11 @@ export class ShoppingListController {
     req: Request,
     res: Response,
   ): Promise<void> {
-    const { name, description } = req.params;
+    const { name, description } = req.query;
+    console.log(name, description);
     const validatedName = z.string().optional().parse(name);
     const validatedDescription = z.string().optional().parse(description);
+    console.log(validatedName, validatedDescription);
 
     const shoppingLists = await this.shoppingListRepository.searchShoppingLists(
       validatedName,
