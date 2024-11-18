@@ -1,36 +1,17 @@
 import { TestDatabase } from './helpers/database';
-import { ItemTestHelper } from './helpers/item';
 import { ShoppingListRepository } from '../src/db/repository/shoppingList.repository';
 
 const TEST_IDS = {
-  ITEM_1: '123e4567-e89b-12d3-a456-426614174000',
-  ITEM_2: '123e4567-e89b-12d3-a456-426614174013',
   NON_EXISTENT_SHOPPINGLIST: '123e4567-e89b-12d3-a456-426614174010',
 } as const;
 
 describe('ShoppingListRepository Integration Tests', () => {
   const testDatabase = new TestDatabase();
   let repository: ShoppingListRepository;
-  let itemHelper: ItemTestHelper;
 
   beforeAll(async () => {
     await testDatabase.setup();
     repository = new ShoppingListRepository(testDatabase.database);
-    itemHelper = new ItemTestHelper(testDatabase.database);
-
-    // Create fresh test items
-    await itemHelper.createItem([
-      {
-        id: TEST_IDS.ITEM_1,
-        name: 'item1',
-        description: 'item1_description',
-      },
-      {
-        id: TEST_IDS.ITEM_2,
-        name: 'item2',
-        description: 'item2_description',
-      },
-    ]);
   }, 30000);
 
   afterEach(async () => {
@@ -44,18 +25,10 @@ describe('ShoppingListRepository Integration Tests', () => {
   describe('getShoppingList', () => {
     it('should successfully retrieve all shoppingLists', async () => {
       // Arrange
-      const testSL_WithItems = {
-        name: 'Test Shopping List with items',
-        description: 'Test Description with items',
+      const testSL_WithDescription = {
+        name: 'Test Shopping List 1',
+        description: 'Test Description',
         createdAt: new Date(),
-        items: [
-          {
-            id: TEST_IDS.ITEM_1,
-          },
-          {
-            id: TEST_IDS.ITEM_2,
-          },
-        ],
       };
 
       const testSL_WithoutDescription = {
@@ -63,19 +36,11 @@ describe('ShoppingListRepository Integration Tests', () => {
         createdAt: new Date(),
       };
 
-      const createdSL_WithItems =
-        await repository.createShoppingList(testSL_WithItems);
+      const createdSL_WithDesc = await repository.createShoppingList(
+        testSL_WithDescription,
+      );
       const createdSL_WithoutDesc = await repository.createShoppingList(
         testSL_WithoutDescription,
-      );
-
-      const items = [
-        { id: TEST_IDS.ITEM_1 /*, quantity: 1, isPurchased: false*/ },
-        { id: TEST_IDS.ITEM_2 /*, quantity: 1, isPurchased: false */ },
-      ];
-      await repository.associateItemsWithShoppingList(
-        createdSL_WithItems.id,
-        items.map((item) => item.id),
       );
 
       // Act
@@ -86,44 +51,18 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(result.length).toBe(2);
 
       const retrievedSLItems = result.find(
-        (list) => list.id === createdSL_WithItems.id,
+        (list) => list.id === createdSL_WithDesc.id,
       );
       const retrievedSLNoDesc = result.find(
         (list) => list.id === createdSL_WithoutDesc.id,
       );
 
       expect(retrievedSLItems).toBeDefined();
-      expect(retrievedSLItems?.id).toBe(createdSL_WithItems.id);
-      expect(retrievedSLItems?.name).toBe(testSL_WithItems.name);
-      expect(retrievedSLItems?.description).toBe(testSL_WithItems.description);
-
-      /**
-             * TODO: Not sure how to assert created items of the list, is it even possible here?
-             expect(retrievedSLItems?.shoppingListItems).toBeDefined();
-             expect(retrievedSLItems?.shoppingListItems.length).toBe(2);
-             expect(retrievedSLItems?.shoppingListItems).toEqual(
-             expect.arrayContaining([
-             expect.objectContaining({
-             quantity: 1,
-             isPurchased: false,
-             item: expect.objectContaining({
-             id: TEST_IDS.ITEM_1,
-             name: 'item1',
-             description: 'item1_description',
-             }),
-             }),
-             expect.objectContaining({
-             quantity: 1,
-             isPurchased: false,
-             item: expect.objectContaining({
-             id: TEST_IDS.ITEM_2,
-             name: 'item2',
-             description: 'item2_description',
-             }),
-             }),
-             ]),
-             );
-             */
+      expect(retrievedSLItems?.id).toBe(createdSL_WithDesc.id);
+      expect(retrievedSLItems?.name).toBe(testSL_WithDescription.name);
+      expect(retrievedSLItems?.description).toBe(
+        testSL_WithDescription.description,
+      );
 
       expect(retrievedSLNoDesc).toBeDefined();
       expect(retrievedSLNoDesc?.id).toBe(createdSL_WithoutDesc.id);
