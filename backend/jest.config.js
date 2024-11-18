@@ -4,7 +4,7 @@ module.exports = {
     transform: {
         '^.+.tsx?$': ['ts-jest', {}],
     },
-    // ignore files from test/helpers
-    testPathIgnorePatterns: ['<rootDir>/test/helpers/'],
-    coveragePathIgnorePatterns: ['<rootDir>/test/helpers/'],
+    // ignore files from test/helpers and dist
+    testPathIgnorePatterns: ['<rootDir>/test/helpers/', '<rootDir>/dist/'],
+    coveragePathIgnorePatterns: ['<rootDir>/test/helpers/', '<rootDir>/dist/'],
 };
