@@ -45,33 +45,6 @@ describe('ShoppingListController Integration Tests', () => {
       itemRepository,
       shoppingListItemRepository,
     );
-
-    // Create fresh test items
-    await itemHelper.createItem([
-      {
-        id: TEST_IDS.ITEM_1,
-        name: 'item1',
-        description: 'item1_description',
-      },
-      {
-        id: TEST_IDS.ITEM_2,
-        name: 'item2',
-        description: 'item2_description',
-      },
-    ]);
-
-    // Create fresh test shoppingLists
-    await shoppingListHelper.createShoppingList({
-      id: TEST_IDS.LIST_1,
-      name: 'shoppingList1',
-      description: 'shoppingList1_description',
-    });
-
-    await shoppingListHelper.createShoppingList({
-      id: TEST_IDS.LIST_2,
-      name: 'shoppingList2',
-      description: 'shoppingList2_description',
-    });
   }, 30000);
 
   beforeEach(async () => {
@@ -108,6 +81,33 @@ describe('ShoppingListController Integration Tests', () => {
       '/shoppingLists/:shoppingListId',
       controller.deleteShoppingListById.bind(controller),
     );
+
+    // Create fresh test items
+    await itemHelper.createItem([
+      {
+        id: TEST_IDS.ITEM_1,
+        name: 'item1',
+        description: 'item1_description',
+      },
+      {
+        id: TEST_IDS.ITEM_2,
+        name: 'item2',
+        description: 'item2_description',
+      },
+    ]);
+
+    // Create fresh test shoppingLists
+    await shoppingListHelper.createShoppingList({
+      id: TEST_IDS.LIST_1,
+      name: 'shoppingList1',
+      description: 'shoppingList1_description',
+    });
+
+    await shoppingListHelper.createShoppingList({
+      id: TEST_IDS.LIST_2,
+      name: 'shoppingList2',
+      description: 'shoppingList2_description',
+    });
   });
 
   afterEach(async () => {
@@ -176,7 +176,7 @@ describe('ShoppingListController Integration Tests', () => {
     expect(countItemAfterCreation).toBe(countItemBeforeCreation + 2);
   });
 
-  describe('GET /shoppingLists/:shoppingListId', () => {
+  describe('GET /shoppingLists', () => {
     it('should return 200 with empty array without a shoppingList', async () => {
       // Arrange
       await testDatabase.clear();
@@ -189,6 +189,16 @@ describe('ShoppingListController Integration Tests', () => {
       expect(response.body).toEqual([]);
     });
 
+    it('should return 200 with shoppingList', async () => {
+      // Act
+      const response = await request(app).get('/shoppingLists');
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThan(0);
+    });
+  });
+  describe('GET /shoppingLists/:shoppingListId', () => {
     it('should return 404 for non-existent shoppingList', async () => {
       // Act
       const _response = await request(app).get(
@@ -199,6 +209,4 @@ describe('ShoppingListController Integration Tests', () => {
       //expect(response.status).toBe(404);
     });
   });
-
-  // Weitere Tests für andere Endpunkte
 });
