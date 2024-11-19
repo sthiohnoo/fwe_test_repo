@@ -8,6 +8,7 @@ import { ShoppingListController } from '../src/controller/shoppingList.controlle
 import { ShoppingListItemRepository } from '../src/db/repository/shoppingListItem.repository';
 import { ItemRepository } from '../src/db/repository/item.repository';
 import { ShoppingListRepository } from '../src/db/repository/shoppingList.repository';
+import { globalErrorHandler } from '../src/utils/global-error';
 
 const TEST_IDS = {
   ITEM_1: '123e4567-e89b-12d3-a456-426614174000',
@@ -16,6 +17,7 @@ const TEST_IDS = {
   LIST_2: '123e4567-e89b-12d3-a456-426614174002',
   NON_EXISTENT_SHOPPINGLIST: '123e4567-e89b-12d3-a456-426614174010',
   NON_EXISTENT_ITEM: '123e4567-e89b-12d3-a456-426614174011',
+  INVALID_ID: 'invalid-id',
 } as const;
 
 describe('ShoppingListController Integration Tests', () => {
@@ -81,6 +83,8 @@ describe('ShoppingListController Integration Tests', () => {
       '/shoppingLists/:shoppingListId',
       controller.deleteShoppingListById.bind(controller),
     );
+
+    app.use(globalErrorHandler);
 
     // Create fresh test items
     await itemHelper.createItem([
@@ -189,7 +193,7 @@ describe('ShoppingListController Integration Tests', () => {
       expect(response.body).toEqual([]);
     });
 
-    it('should return 200 with shoppingList', async () => {
+    it('should return 200 with shoppingLists', async () => {
       // Act
       const response = await request(app).get('/shoppingLists');
 
@@ -199,14 +203,49 @@ describe('ShoppingListController Integration Tests', () => {
     });
   });
   describe('GET /shoppingLists/:shoppingListId', () => {
-    it('should return 404 for non-existent shoppingList', async () => {
+    it('should return 200 with shoppingList', async () => {
       // Act
-      const _response = await request(app).get(
-        '/shopping-lists/non-existent-id',
+      const response = await request(app).get(
+        '/shoppingLists/' + TEST_IDS.LIST_1,
       );
 
       // Assert
-      //expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
+      expect(typeof response.body).toBe('object');
+      expect(Array.isArray(response.body)).toBe(false);
+      expect(response.body.id).toBe(TEST_IDS.LIST_1);
+    });
+
+    it('should return 400  with message for invalid id format', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/' + TEST_IDS.INVALID_ID,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message:
+              'Invalid shoppingList-id format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 with message for non-existent shoppingList', async () => {
+      // Arrange
+      await testDatabase.clear();
+
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
     });
   });
 });

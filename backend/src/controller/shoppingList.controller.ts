@@ -32,6 +32,8 @@ export class ShoppingListController {
   }
 
   async getShoppingListById(req: Request, res: Response): Promise<void> {
+    const { shoppingListId } = req.params;
+
     const withRelations = z
       .boolean()
       .default(true)
@@ -40,10 +42,22 @@ export class ShoppingListController {
           req.query.withRelations === undefined,
       );
 
+    const validatedShoppingListId = z
+      .string()
+      .uuid({
+        message: 'Invalid shoppingList-id format. please provide a valid UUID',
+      })
+      .parse(shoppingListId);
+
     const shoppingLists = await this.shoppingListRepository.getShoppingListById(
-      req.params.shoppingListId,
+      validatedShoppingListId,
       withRelations,
     );
+
+    if (!shoppingLists) {
+      res.status(404).json({ errors: ['ShoppingList not found'] });
+      return;
+    }
     res.send(shoppingLists);
   }
 
