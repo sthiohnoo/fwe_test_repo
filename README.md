@@ -220,6 +220,11 @@ npm start
   specified and optionally the status "isPurchased" can be set. Errors such as "invalid ID format for both ShoppingList
   and Item", "non-existent Item/ShoppingList", or "Item already exists in the ShoppingList" are caught and the process
   is aborted.
+- __deleteItemInListById :__
+  Method deletes an item from a shopping list by its ID and returns 204 with No Content.
+  If the shopping list has no items, or if the shopping list does not contain the item to be deleted, this is caught and
+  an error is returned.
+  Errors such as invalid ID formats are also caught.
 
 ## Usage
 
