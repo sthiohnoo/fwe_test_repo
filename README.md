@@ -233,6 +233,26 @@ npm start
   non-existent shopping list" are caught and an error is returned. If the shopping list had items, the corresponding
   entry in the relation table is also deleted.
 
+### Functionalities item.controller
+
+- __getItems :__
+  Method retrieves all items and returns them. If no item is found, an empty array is returned.
+- __getItemsById :__
+  Method retrieves an item by its ID and returns it. If no item is found, a 404 error is returned. If the ID is not in
+  the correct format, a 400 error is returned.
+- __getItemsByName :__
+  Method retrieves items with a specific name and returns them. If no item is found, a 404 error is returned.
+- __createItem :__
+  Method creates a new item and returns it. We need to specify a name with a minimum length of one character, but the
+  description is optional. If you try to create an item that already exists, you will receive a 409 error.
+- __updateItemById :__
+  Method updates an item by its ID and returns it. The method can optionally change the name and the description.
+  Errors such as "invalid ID format" or "non-existent Item" are caught and the update process is aborted.
+- __deleteItemById :__
+  Method deletes an item by its ID and returns 204 with No Content. If the item is not found, a 404 error is returned.
+  If the ID is not in the correct format, a 400 error is returned. If the item to be deleted is used in a shopping list,
+  you will receive a 409 error.
+
 ## Usage
 
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of
