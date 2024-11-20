@@ -17,3 +17,6 @@ package-lock.json
 
 # Ignore other generated files
 coverage/
+
+# Ignore migrations
+src/db/migrations/
