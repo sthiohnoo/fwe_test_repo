@@ -195,8 +195,12 @@ npm start
 
 ### Functionalities shoppingList.controller
 
+- __getShoppingLists :__
+  Method retrieves all shopping lists with its relations and returns them. If no shopping list is found, an empty array
+  is returned.
 - __getShoppingListsById :__
-  Method retrieves a shopping list by its ID and returns it. If no shopping list is found, a 404 error is returned. If
+  Method retrieves a shopping list by its ID with its relation and returns it. If no shopping list is found, a 404 error
+  is returned. If
   the ID is not in the correct format, a 400 error is returned.
 - __getShoppingListsWithSearchingItemById :__
   Method retrieves shopping lists containing a specific item by its ID and returns them. If no shopping list is found, a
@@ -223,8 +227,11 @@ npm start
 - __deleteItemInListById :__
   Method deletes an item from a shopping list by its ID and returns 204 with No Content.
   If the shopping list has no items, or if the shopping list does not contain the item to be deleted, this is caught and
-  an error is returned.
-  Errors such as invalid ID formats are also caught.
+  an error is returned. Errors such as invalid ID formats are also caught.
+- __deleteShoppingListById :__
+  This method deletes a shopping list by its ID and returns 204 with No Content. Errors such as "invalid ID format" or "
+  non-existent shopping list" are caught and an error is returned. If the shopping list had items, the corresponding
+  entry in the relation table is also deleted.
 
 ## Usage
 

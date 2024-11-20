@@ -38,7 +38,7 @@ export class ShoppingListController {
     const validatedShoppingListId = z
       .string()
       .uuid({
-        message: 'Invalid shoppingList-id format. please provide a valid UUID',
+        message: 'Invalid shoppingListId format. please provide a valid UUID',
       })
       .parse(shoppingListId);
 
@@ -143,7 +143,7 @@ export class ShoppingListController {
     const validatedId = z
       .string()
       .uuid({
-        message: 'Invalid shoppingList-id format. please provide a valid UUID',
+        message: 'Invalid shoppingListId format. please provide a valid UUID',
       })
       .parse(shoppingListId);
 
@@ -267,13 +267,13 @@ export class ShoppingListController {
     const { shoppingListId } = req.params;
     const validatedId = z
       .string()
-      .uuid({ message: 'Invalid id format. please provide a valid UUID' })
+      .uuid({ message: 'Invalid shoppingListId format. please provide a valid UUID' })
       .parse(shoppingListId);
 
     const existingShoppingList = await this.shoppingListRepository.getShoppingListById(validatedId);
 
     if (!existingShoppingList) {
-      res.status(404).json({ errors: ['shoppingList not found'] });
+      res.status(404).json({ errors: ['ShoppingList not found'] });
       return;
     }
 

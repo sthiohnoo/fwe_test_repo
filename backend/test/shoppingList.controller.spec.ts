@@ -208,7 +208,7 @@ describe('ShoppingListController Integration Tests', () => {
       expect(response.body.errors).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            message: 'Invalid shoppingList-id format. please provide a valid UUID',
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
           }),
         ]),
       );
@@ -418,7 +418,7 @@ describe('ShoppingListController Integration Tests', () => {
       expect(response.body.errors).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            message: 'Invalid shoppingList-id format. please provide a valid UUID',
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
           }),
         ]),
       );
@@ -747,6 +747,63 @@ describe('ShoppingListController Integration Tests', () => {
       // Assert
       expect(response.status).toBe(404);
       expect(response.body.errors).toContain('Item not found in the ShoppingList');
+    });
+  });
+
+  describe('DELETE /shoppingLists/:shoppingListId', () => {
+    it('should return 204 and delete the shoppingList with its relation', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      const countRelationsBeforeDeletion = (await shoppingListItemRepository.getAllEntries())
+        .length;
+      const countListsBeforeDeletion = (await shoppingListRepository.getShoppingList()).length;
+
+      // Act
+      const response = await request(app).delete('/shoppingLists/' + createdShoppingList.body.id);
+
+      const countRelationsAfterDeletion = (await shoppingListItemRepository.getAllEntries()).length;
+      const countListsAfterDeletion = (await shoppingListRepository.getShoppingList()).length;
+
+      // Assert
+      expect(response.status).toBe(204);
+      expect(response.body).toEqual({});
+      expect(countListsAfterDeletion).toBe(countListsBeforeDeletion - 1);
+      expect(countRelationsAfterDeletion).toBe(countRelationsBeforeDeletion - 1);
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app).delete('/shoppingLists/' + TEST_IDS.INVALID_ID);
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 when shoppingList does not exist', async () => {
+      // Act
+      const response = await request(app).delete(
+        '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
     });
   });
 });
