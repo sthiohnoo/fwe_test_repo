@@ -94,16 +94,13 @@ export class ShoppingListController {
     res: Response,
   ): Promise<void> {
     const { name, description } = req.query;
-    console.log(name, description);
     const validatedName = z.string().optional().parse(name);
     const validatedDescription = z.string().optional().parse(description);
-    console.log(validatedName, validatedDescription);
 
     const shoppingLists = await this.shoppingListRepository.searchShoppingLists(
       validatedName,
       validatedDescription,
     );
-    console.log(shoppingLists);
 
     if (shoppingLists.length === 0) {
       res.status(404).json({ errors: ['ShoppingList not found'] });

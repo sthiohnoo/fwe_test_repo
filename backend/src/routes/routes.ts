@@ -65,6 +65,13 @@ export class Routes {
       ),
     );
     this.router.get(
+      //need to be defined before /shoppingLists/:shoppingListId
+      '/shoppingLists/search',
+      this.shoppingListController.searchShoppingListsWithNameOrDescription.bind(
+        this.shoppingListController,
+      ),
+    );
+    this.router.get(
       '/shoppingLists/:shoppingListId',
       this.shoppingListController.getShoppingListById.bind(
         this.shoppingListController,
@@ -73,12 +80,6 @@ export class Routes {
     this.router.get(
       '/shoppingLists/items/:itemId',
       this.shoppingListController.getShoppingListsWithSearchingItemById.bind(
-        this.shoppingListController,
-      ),
-    );
-    this.router.get(
-      '/shoppingLists/:name/:description',
-      this.shoppingListController.searchShoppingListsWithNameOrDescription.bind(
         this.shoppingListController,
       ),
     );

@@ -55,16 +55,16 @@ describe('ShoppingListController Integration Tests', () => {
 
     app.get('/shoppingLists', controller.getShoppingLists.bind(controller));
     app.get(
+      '/shoppingLists/search',
+      controller.searchShoppingListsWithNameOrDescription.bind(controller),
+    );
+    app.get(
       '/shoppingLists/:shoppingListId',
       controller.getShoppingListById.bind(controller),
     );
     app.get(
       '/shoppingLists/items/:itemId',
       controller.getShoppingListsWithSearchingItemById.bind(controller),
-    );
-    app.get(
-      '/shoppingLists/:name/:description',
-      controller.searchShoppingListsWithNameOrDescription.bind(controller),
     );
     app.post('/shoppingLists', controller.createShoppingList.bind(controller));
     app.put(
@@ -235,12 +235,152 @@ describe('ShoppingListController Integration Tests', () => {
     });
 
     it('should return 404 with message for non-existent shoppingList', async () => {
-      // Arrange
-      await testDatabase.clear();
-
       // Act
       const response = await request(app).get(
         '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
+    });
+  });
+
+  describe('GET /shoppingLists/items/:itemId', () => {
+    it('should return 200 with shoppingLists', async () => {
+      // Arrange
+      const newShoppingList_1 = {
+        name: 'shoppingList 1 with ITEM_1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const newShoppingList_2 = {
+        name: 'shoppingList 2 with ITEM_1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList_1 = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList_1)
+        .set('Accept', 'application/json');
+      const createdShoppingList_2 = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList_2)
+        .set('Accept', 'application/json');
+
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/items/' + TEST_IDS.ITEM_1,
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(2);
+
+      expect(response.body[0].listId).toBe(createdShoppingList_1.body.id);
+      expect(response.body[0].itemId).toBe(TEST_IDS.ITEM_1);
+      expect(response.body[1].listId).toBe(createdShoppingList_2.body.id);
+      expect(response.body[1].itemId).toBe(TEST_IDS.ITEM_1);
+    });
+
+    it('should return 400 with message for invalid id format', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/items/' + TEST_IDS.INVALID_ID,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid itemId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 for item not in any shoppingList', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/items/' + TEST_IDS.ITEM_1,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('Item not found in ShoppingLists');
+    });
+  });
+
+  describe('GET /shoppingLists/search', () => {
+    it('should return 200 with a shoppingList with only the name', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=shoppingList1&description=/' + undefined,
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(1);
+      expect(response.body[0].id).toBe(TEST_IDS.LIST_1);
+      expect(response.body[0].name).toBe('shoppingList1');
+      expect(response.body[0].description).toBe('shoppingList1_description');
+    });
+
+    it('should return 200 with a shoppingList with only the description', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=' +
+          undefined +
+          '&description=shoppingList2_description',
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(1);
+      expect(response.body[0].id).toBe(TEST_IDS.LIST_2);
+      expect(response.body[0].name).toBe('shoppingList2');
+      expect(response.body[0].description).toBe('shoppingList2_description');
+    });
+
+    it('should return 200 with a shoppingList matching the given name and description', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=shoppingList1&description=shoppingList1_description',
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(1);
+      expect(response.body[0].id).toBe(TEST_IDS.LIST_1);
+      expect(response.body[0].name).toBe('shoppingList1');
+      expect(response.body[0].description).toBe('shoppingList1_description');
+    });
+
+    it('should return 200 with all shoppingLists matching with part of the name', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=List&description=/' + undefined,
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBe(2);
+    });
+
+    it('should return 200 with all shoppingLists with empty name and description', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=&description=',
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    it('should return 404 with message with no matching name and description', async () => {
+      // Act
+      const response = await request(app).get(
+        '/shoppingLists/search?name=non_existent_name&description=non_existent_description',
       );
 
       // Assert
