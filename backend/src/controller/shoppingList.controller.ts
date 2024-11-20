@@ -169,7 +169,7 @@ export class ShoppingListController {
     const existingShoppingList =
       await this.shoppingListRepository.getShoppingListById(validatedId);
     if (!existingShoppingList) {
-      res.status(404).json({ errors: ['shoppingList not found'] });
+      res.status(404).json({ errors: ['ShoppingList not found'] });
       return;
     }
 
@@ -180,9 +180,7 @@ export class ShoppingListController {
         await this.shoppingListItemRepository.getListInListById(validatedId);
       if (!existingListInList) {
         res.status(404).json({
-          errors: [
-            'Update canceled! updating list not found in the shoppingList',
-          ],
+          errors: ['Update canceled! Updating list has no items'],
         });
         return;
       }

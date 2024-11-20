@@ -193,6 +193,19 @@ npm start
 - __Database Connection__: Connects to a PostgreSQL database to store and retrieve data.
 - __Health Check__: Checks the status of the application.
 
+### Functionalities shoppingList.controller
+
+- __getShoppingListsById :__
+  Method looks for a shopping list by its ID and returns it. If no shopping list is found, a 404 error is returned. If
+  the ID ist not in the correct format, a 400 error is returned.
+- __getShoppingListsWithSearchingItemById :__
+  Method looks for shopping lists with a specific item by its ID and returns them. If no shopping list is found, a 404
+  error is returned. If
+  the ID ist not in the correct format, a 400 error is returned.
+- __searchShoppingListsWithNameOrDescription :__
+  Method looks for shopping lists with a specific name or description and returns them. If no shopping list is found, a
+  404 error is returned. If name and description are empty, all shopping lists are returned.
+
 ## Usage
 
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of

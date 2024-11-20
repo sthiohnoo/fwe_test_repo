@@ -388,4 +388,187 @@ describe('ShoppingListController Integration Tests', () => {
       expect(response.body.errors).toContain('ShoppingList not found');
     });
   });
+
+  describe('PUT /shoppingLists/:shoppingListId', () => {
+    it('should return 200 and update the shopping list, including item quantity and state', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      const shoppingListBeforeUpdate = await request(app).get(
+        '/shoppingLists/' + createdShoppingList.body.id,
+      );
+
+      const updatedShoppingList = {
+        name: 'updated shoppingList',
+        description: 'updated shoppingList description',
+        items: [
+          {
+            id: TEST_IDS.ITEM_1,
+            quantity: 100,
+            isPurchased: true,
+          },
+        ],
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + createdShoppingList.body.id)
+        .send(updatedShoppingList)
+        .set('Accept', 'application/json');
+      const shoppingListAfterUpdate = await request(app).get(
+        '/shoppingLists/' + createdShoppingList.body.id,
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(createdShoppingList.body.id);
+      expect(response.body.name).not.toBe(createdShoppingList.body.name);
+      expect(response.body.name).toBe(updatedShoppingList.name);
+      expect(response.body.description).toBe(updatedShoppingList.description);
+      expect(shoppingListBeforeUpdate.body.shoppingListItems[0].quantity).toBe(
+        1,
+      );
+      expect(
+        shoppingListBeforeUpdate.body.shoppingListItems[0].isPurchased,
+      ).toBe(false);
+      expect(shoppingListAfterUpdate.body.shoppingListItems[0].quantity).toBe(
+        100,
+      );
+      expect(
+        shoppingListAfterUpdate.body.shoppingListItems[0].isPurchased,
+      ).toBe(true);
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app).put(
+        '/shoppingLists/' + TEST_IDS.INVALID_ID,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message:
+              'Invalid shoppingList-id format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 400 with message for invalid item id format', async () => {
+      // Arrange
+      const updatedShoppingList = {
+        name: 'updated shoppingList',
+        description: 'updated shoppingList description',
+        items: [
+          {
+            id: TEST_IDS.INVALID_ID,
+            quantity: 100,
+            isPurchased: true,
+          },
+        ],
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1)
+        .send(updatedShoppingList)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid itemId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 with message for non-existent shoppingList', async () => {
+      // Act
+      const response = await request(app).put(
+        '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
+    });
+
+    it('should return 404 with message when updating list has no items', async () => {
+      // Arrange
+      const updatedShoppingList = {
+        name: 'updated shoppingList',
+        description: 'updated shoppingList description',
+        items: [
+          {
+            id: TEST_IDS.ITEM_1,
+            quantity: 100,
+            isPurchased: true,
+          },
+        ],
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1)
+        .send(updatedShoppingList)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain(
+        'Update canceled! Updating list has no items',
+      );
+    });
+
+    it('should return 404 with message when updating a list that does not contain the specific item', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      const updatedShoppingList = {
+        name: 'updated shoppingList',
+        description: 'updated shoppingList description',
+        items: [
+          {
+            id: TEST_IDS.ITEM_2,
+            quantity: 100,
+            isPurchased: true,
+          },
+        ],
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + createdShoppingList.body.id)
+        .send(updatedShoppingList)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain(
+        'Update canceled! updating item not found in the shoppingList',
+      );
+    });
+  });
 });
