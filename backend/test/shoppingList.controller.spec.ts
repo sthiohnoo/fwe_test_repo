@@ -40,7 +40,11 @@ describe('ShoppingListController Integration Tests', () => {
     itemRepository = new ItemRepository(testDatabase.database);
     shoppingListItemRepository = new ShoppingListItemRepository(testDatabase.database);
 
-    controller = new ShoppingListController(shoppingListRepository, itemRepository, shoppingListItemRepository);
+    controller = new ShoppingListController(
+      shoppingListRepository,
+      itemRepository,
+      shoppingListItemRepository,
+    );
   }, 30000);
 
   beforeEach(async () => {
@@ -48,14 +52,29 @@ describe('ShoppingListController Integration Tests', () => {
     app.use(express.json());
 
     app.get('/shoppingLists', controller.getShoppingLists.bind(controller));
-    app.get('/shoppingLists/search', controller.searchShoppingListsWithNameOrDescription.bind(controller));
+    app.get(
+      '/shoppingLists/search',
+      controller.searchShoppingListsWithNameOrDescription.bind(controller),
+    );
     app.get('/shoppingLists/:shoppingListId', controller.getShoppingListById.bind(controller));
-    app.get('/shoppingLists/items/:itemId', controller.getShoppingListsWithSearchingItemById.bind(controller));
+    app.get(
+      '/shoppingLists/items/:itemId',
+      controller.getShoppingListsWithSearchingItemById.bind(controller),
+    );
     app.post('/shoppingLists', controller.createShoppingList.bind(controller));
     app.put('/shoppingLists/:shoppingListId', controller.updateShoppingListById.bind(controller));
-    app.put('/shoppingLists/:shoppingListId/items/:itemId', controller.addItemToList.bind(controller));
-    app.delete('/shoppingLists/:shoppingListId/items/:itemId', controller.deleteItemInListById.bind(controller));
-    app.delete('/shoppingLists/:shoppingListId', controller.deleteShoppingListById.bind(controller));
+    app.put(
+      '/shoppingLists/:shoppingListId/items/:itemId',
+      controller.addItemToList.bind(controller),
+    );
+    app.delete(
+      '/shoppingLists/:shoppingListId/items/:itemId',
+      controller.deleteItemInListById.bind(controller),
+    );
+    app.delete(
+      '/shoppingLists/:shoppingListId',
+      controller.deleteShoppingListById.bind(controller),
+    );
 
     app.use(globalErrorHandler);
 
@@ -105,7 +124,10 @@ describe('ShoppingListController Integration Tests', () => {
       };
 
       // Act
-      const response = await request(app).post('/shoppingLists').send(newShoppingList).set('Accept', 'application/json');
+      const response = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
 
       // Assert
       expect(response.status).toBe(201);
@@ -128,7 +150,10 @@ describe('ShoppingListController Integration Tests', () => {
     const countItemBeforeCreation = (await itemRepository.getItems()).length;
 
     // Act
-    const response = await request(app).post('/shoppingLists').send(newShoppingList).set('Accept', 'application/json');
+    const response = await request(app)
+      .post('/shoppingLists')
+      .send(newShoppingList)
+      .set('Accept', 'application/json');
     const countItemAfterCreation = (await itemRepository.getItems()).length;
 
     // Assert
@@ -191,7 +216,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 404 with message for non-existent shoppingList', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
+      const response = await request(app).get(
+        '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
 
       // Assert
       expect(response.status).toBe(404);
@@ -210,8 +237,14 @@ describe('ShoppingListController Integration Tests', () => {
         name: 'shoppingList 2 with ITEM_1',
         items: [{ id: TEST_IDS.ITEM_1 }],
       };
-      const createdShoppingList_1 = await request(app).post('/shoppingLists').send(newShoppingList_1).set('Accept', 'application/json');
-      const createdShoppingList_2 = await request(app).post('/shoppingLists').send(newShoppingList_2).set('Accept', 'application/json');
+      const createdShoppingList_1 = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList_1)
+        .set('Accept', 'application/json');
+      const createdShoppingList_2 = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList_2)
+        .set('Accept', 'application/json');
 
       // Act
       const response = await request(app).get('/shoppingLists/items/' + TEST_IDS.ITEM_1);
@@ -254,7 +287,9 @@ describe('ShoppingListController Integration Tests', () => {
   describe('GET /shoppingLists/search', () => {
     it('should return 200 with a shoppingList with only the name', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/search?name=shoppingList1&description=/' + undefined);
+      const response = await request(app).get(
+        '/shoppingLists/search?name=shoppingList1&description=/' + undefined,
+      );
 
       // Assert
       expect(response.status).toBe(200);
@@ -266,7 +301,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 200 with a shoppingList with only the description', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/search?name=' + undefined + '&description=shoppingList2_description');
+      const response = await request(app).get(
+        '/shoppingLists/search?name=' + undefined + '&description=shoppingList2_description',
+      );
 
       // Assert
       expect(response.status).toBe(200);
@@ -278,7 +315,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 200 with a shoppingList matching the given name and description', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/search?name=shoppingList1&description=shoppingList1_description');
+      const response = await request(app).get(
+        '/shoppingLists/search?name=shoppingList1&description=shoppingList1_description',
+      );
 
       // Assert
       expect(response.status).toBe(200);
@@ -290,7 +329,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 200 with all shoppingLists matching with part of the name', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/search?name=List&description=/' + undefined);
+      const response = await request(app).get(
+        '/shoppingLists/search?name=List&description=/' + undefined,
+      );
 
       // Assert
       expect(response.status).toBe(200);
@@ -308,7 +349,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 404 with message with no matching name and description', async () => {
       // Act
-      const response = await request(app).get('/shoppingLists/search?name=non_existent_name&description=non_existent_description');
+      const response = await request(app).get(
+        '/shoppingLists/search?name=non_existent_name&description=non_existent_description',
+      );
 
       // Assert
       expect(response.status).toBe(404);
@@ -324,9 +367,14 @@ describe('ShoppingListController Integration Tests', () => {
         description: 'Test Description 1',
         items: [{ id: TEST_IDS.ITEM_1 }],
       };
-      const createdShoppingList = await request(app).post('/shoppingLists').send(newShoppingList).set('Accept', 'application/json');
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
 
-      const shoppingListBeforeUpdate = await request(app).get('/shoppingLists/' + createdShoppingList.body.id);
+      const shoppingListBeforeUpdate = await request(app).get(
+        '/shoppingLists/' + createdShoppingList.body.id,
+      );
 
       const updatedShoppingList = {
         name: 'updated shoppingList',
@@ -345,7 +393,9 @@ describe('ShoppingListController Integration Tests', () => {
         .put('/shoppingLists/' + createdShoppingList.body.id)
         .send(updatedShoppingList)
         .set('Accept', 'application/json');
-      const shoppingListAfterUpdate = await request(app).get('/shoppingLists/' + createdShoppingList.body.id);
+      const shoppingListAfterUpdate = await request(app).get(
+        '/shoppingLists/' + createdShoppingList.body.id,
+      );
 
       // Assert
       expect(response.status).toBe(200);
@@ -407,7 +457,9 @@ describe('ShoppingListController Integration Tests', () => {
 
     it('should return 404 with message for non-existent shoppingList', async () => {
       // Act
-      const response = await request(app).put('/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
+      const response = await request(app).put(
+        '/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
+      );
 
       // Assert
       expect(response.status).toBe(404);
@@ -446,7 +498,10 @@ describe('ShoppingListController Integration Tests', () => {
         description: 'Test Description 1',
         items: [{ id: TEST_IDS.ITEM_1 }],
       };
-      const createdShoppingList = await request(app).post('/shoppingLists').send(newShoppingList).set('Accept', 'application/json');
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
 
       const updatedShoppingList = {
         name: 'updated shoppingList',
@@ -468,7 +523,136 @@ describe('ShoppingListController Integration Tests', () => {
 
       // Assert
       expect(response.status).toBe(404);
-      expect(response.body.errors).toContain('Update canceled! updating item not found in the shoppingList');
+      expect(response.body.errors).toContain(
+        'Update canceled! updating item not found in the shoppingList',
+      );
+    });
+  });
+
+  describe('PUT /shoppingLists/:shoppingListId/items/:itemId', () => {
+    it('should return 201 and add an item in the shoppingList', async () => {
+      // Arrange
+      const itemProperties = {
+        quantity: 100,
+        isPurchased: true,
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.ITEM_1)
+        .send(itemProperties)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(201);
+      expect(response.body.listId).toBe(TEST_IDS.LIST_1);
+      expect(response.body.itemId).toBe(TEST_IDS.ITEM_1);
+      expect(response.body.quantity).toBe(itemProperties.quantity);
+      expect(response.body.isPurchased).toBe(itemProperties.isPurchased);
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app).put(
+        '/shoppingLists/' + TEST_IDS.INVALID_ID + '/items/' + TEST_IDS.ITEM_1,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 400 with message for invalid item id format', async () => {
+      // Act
+      const response = await request(app).put(
+        '/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.INVALID_ID,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid itemId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 with message for non-existent shoppingList', async () => {
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.NON_EXISTENT_SHOPPINGLIST + '/items/' + TEST_IDS.ITEM_1)
+        .send({ quantity: 100 })
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
+    });
+
+    it('should return 404 with message for non-existent item', async () => {
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.NON_EXISTENT_ITEM)
+        .send({ quantity: 100 })
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('Item not found');
+    });
+
+    it('should return 409 with message for item already in the shoppingList', async () => {
+      // Arrange
+      const itemProperties = {
+        quantity: 100,
+        isPurchased: true,
+      };
+
+      // Act
+      await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.ITEM_1)
+        .send(itemProperties)
+        .set('Accept', 'application/json');
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.ITEM_1)
+        .send(itemProperties)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(409);
+      expect(response.body.errors).toContain('Item already in the ShoppingList');
+    });
+
+    it('should return 400 with invalid quantity', async () => {
+      // Arrange
+      const itemProperties = {
+        quantity: -1,
+        isPurchased: true,
+      };
+
+      // Act
+      const response = await request(app)
+        .put('/shoppingLists/' + TEST_IDS.LIST_1 + '/items/' + TEST_IDS.ITEM_1)
+        .send(itemProperties)
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Number must be greater than or equal to 1',
+          }),
+        ]),
+      );
     });
   });
 });

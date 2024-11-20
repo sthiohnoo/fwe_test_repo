@@ -185,26 +185,41 @@ npm start
 
 ### Main Functionalities
 
-- __Manage Shopping Lists__: Create, read, update, and delete shopping lists.
-- __Manage Items__: Create, read, update, and delete items in the shopping list.
+- __Manage Shopping Lists:__ Create, read, update, and delete shopping lists.
+- __Manage Items:__ Create, read, update, and delete items in the shopping list.
 
 ### Additional Functionalities
 
-- __Database Connection__: Connects to a PostgreSQL database to store and retrieve data.
-- __Health Check__: Checks the status of the application.
+- __Database Connection:__ Connects to a PostgreSQL database to store and retrieve data.
+- __Health Check:__ Checks the status of the application.
 
 ### Functionalities shoppingList.controller
 
 - __getShoppingListsById :__
-  Method looks for a shopping list by its ID and returns it. If no shopping list is found, a 404 error is returned. If
-  the ID ist not in the correct format, a 400 error is returned.
+  Method retrieves a shopping list by its ID and returns it. If no shopping list is found, a 404 error is returned. If
+  the ID is not in the correct format, a 400 error is returned.
 - __getShoppingListsWithSearchingItemById :__
-  Method looks for shopping lists with a specific item by its ID and returns them. If no shopping list is found, a 404
-  error is returned. If
-  the ID ist not in the correct format, a 400 error is returned.
+  Method retrieves shopping lists containing a specific item by its ID and returns them. If no shopping list is found, a
+  404 error is returned. If the ID is not in the correct format, a 400 error is returned.
 - __searchShoppingListsWithNameOrDescription :__
-  Method looks for shopping lists with a specific name or description and returns them. If no shopping list is found, a
-  404 error is returned. If name and description are empty, all shopping lists are returned.
+  Method retrieves shopping lists with a specific name or description and returns them. If no shopping list is found, a
+  404 error is returned. If both name and description are empty, all shopping lists are returned.
+- __createShoppingList :__
+  Method creates a new shopping list and returns it. We need to specify a name, while the description is optional.
+  Additionally, items can be added by ID or name. If the item does not already exist, it will be automatically created.
+  If an item is added during the creation of the shopping list, its properties "quantity" and "isPurchased" will be set
+  to default values.
+- __updateShoppingListById :__
+  Method updates a shopping list by its ID and returns it. The method can optionally change the name, description, and
+  also the properties of the items. If the quantity of an item is to be changed, it is checked to ensure it is not less
+  than 1. Errors such as "invalid ID format for both ShoppingList and Item", "non-existent Item/ShoppingList", "attempt
+  to update ShoppingList without items", or "attempt to update ShoppingList that does not contain the item" are caught
+  and the update process is aborted.
+- __addItemsToShoppingListById :__
+  Method adds item to a shopping list by its ID and returns it. When adding, the quantity of the item (>1) can be
+  specified and optionally the status "isPurchased" can be set. Errors such as "invalid ID format for both ShoppingList
+  and Item", "non-existent Item/ShoppingList", or "Item already exists in the ShoppingList" are caught and the process
+  is aborted.
 
 ## Usage
 
