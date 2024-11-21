@@ -3,10 +3,7 @@ import { ItemRepository } from '../db/repository/item.repository';
 import { ShoppingListItemRepository } from '../db/repository/shoppingListItem.repository';
 
 import { z } from 'zod';
-import {
-  createItemsZodSchema,
-  updateItemZodSchema,
-} from '../validation/validation';
+import { createItemsZodSchema, updateItemZodSchema } from '../validation/validation';
 
 export class ItemController {
   constructor(
@@ -55,9 +52,7 @@ export class ItemController {
     for (const item of validatedData) {
       const existingItem = await this.itemRepository.getItemByName(item.name);
       if (existingItem) {
-        res
-          .status(409)
-          .send({ errors: ['Creation canceled! Item already exists'] });
+        res.status(409).send({ errors: ['Creation canceled! Item already exists'] });
         return;
       }
     }
@@ -90,10 +85,7 @@ export class ItemController {
 
     const validatedData = updateItemZodSchema.parse(req.body);
 
-    const updatedItem = await this.itemRepository.updateItemById(
-      validatedItemId,
-      validatedData,
-    );
+    const updatedItem = await this.itemRepository.updateItemById(validatedItemId, validatedData);
 
     res.send(updatedItem);
   }
@@ -113,13 +105,9 @@ export class ItemController {
     }
 
     const existingItemInList =
-      await this.shoppingListItemRepository.getItemInAllListsById(
-        validatedItemId,
-      );
+      await this.shoppingListItemRepository.getItemInAllListsById(validatedItemId);
     if (existingItemInList) {
-      res
-        .status(409)
-        .send({ errors: ['Deletion canceled. Item exists in a ShoppingList'] });
+      res.status(409).send({ errors: ['Deletion canceled. Item exists in a ShoppingList'] });
       return;
     }
 

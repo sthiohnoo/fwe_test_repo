@@ -74,12 +74,7 @@ export const addItemToListZodSchema = createInsertSchema(shoppingListItem, {
   isPurchased: z.boolean().default(false).optional(),
 });
 
-export const updateFavoriteStatusZodSchema = createInsertSchema(shoppingList, {
-  isFavorite: z.boolean(),
-});
-
 export type CreateShoppingList = z.infer<typeof createShoppingListZodSchema>;
 export type UpdateShoppingList = z.infer<typeof updateShoppingListZodSchema>;
 export type AddItemToList = z.infer<typeof addItemToListZodSchema>;
 export type UpdateItem = z.infer<typeof updateItemZodSchema>;
-export type UpdateFavoriteStatus = z.infer<typeof updateFavoriteStatusZodSchema>;

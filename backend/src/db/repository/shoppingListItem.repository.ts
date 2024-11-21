@@ -14,10 +14,7 @@ export class ShoppingListItemRepository {
   async getItemInListById(listId: string, itemId: string) {
     return this.db.query.shoppingListItem.findFirst({
       where: (shoppingListItem, { and, eq }) =>
-        and(
-          eq(shoppingListItem.listId, listId),
-          eq(shoppingListItem.itemId, itemId),
-        ),
+        and(eq(shoppingListItem.listId, listId), eq(shoppingListItem.itemId, itemId)),
     });
   }
 
@@ -47,38 +44,23 @@ export class ShoppingListItemRepository {
     const [updatedItem] = await this.db
       .update(shoppingListItem)
       .set(data)
-      .where(
-        and(
-          eq(shoppingListItem.itemId, itemId),
-          eq(shoppingListItem.listId, listId),
-        ),
-      )
+      .where(and(eq(shoppingListItem.itemId, itemId), eq(shoppingListItem.listId, listId)))
       .returning();
     return updatedItem;
   }
 
   async addItemToList(data: AddItemToList) {
-    const [entry] = await this.db
-      .insert(shoppingListItem)
-      .values(data)
-      .returning();
+    const [entry] = await this.db.insert(shoppingListItem).values(data).returning();
     return entry;
   }
 
   async deleteListInListById(shoppingListId: string) {
-    return this.db
-      .delete(shoppingListItem)
-      .where(eq(shoppingListItem.listId, shoppingListId));
+    return this.db.delete(shoppingListItem).where(eq(shoppingListItem.listId, shoppingListId));
   }
 
   async deleteItemInListById(listId: string, itemId: string) {
     return this.db
       .delete(shoppingListItem)
-      .where(
-        and(
-          eq(shoppingListItem.listId, listId),
-          eq(shoppingListItem.itemId, itemId),
-        ),
-      );
+      .where(and(eq(shoppingListItem.listId, listId), eq(shoppingListItem.itemId, itemId)));
   }
 }

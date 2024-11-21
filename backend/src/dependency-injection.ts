@@ -43,10 +43,7 @@ export function initializeDependencyInjection() {
   // Initialize controllers
   DI.controllers = {
     health: new HealthController(),
-    item: new ItemController(
-      DI.repositories.item,
-      DI.repositories.shoppingListItem,
-    ),
+    item: new ItemController(DI.repositories.item, DI.repositories.shoppingListItem),
     shoppingList: new ShoppingListController(
       DI.repositories.shoppingList,
       DI.repositories.item,
@@ -55,11 +52,7 @@ export function initializeDependencyInjection() {
   };
 
   // Initialize routes
-  DI.routes = new Routes(
-    DI.controllers.health,
-    DI.controllers.item,
-    DI.controllers.shoppingList,
-  );
+  DI.routes = new Routes(DI.controllers.health, DI.controllers.item, DI.controllers.shoppingList);
 
   // Initialize app
   DI.app = new App(DI.routes);

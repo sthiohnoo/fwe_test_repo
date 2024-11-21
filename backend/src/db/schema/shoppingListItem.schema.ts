@@ -1,11 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-  boolean,
-  integer,
-  pgTable,
-  primaryKey,
-  uuid,
-} from 'drizzle-orm/pg-core';
+import { boolean, integer, pgTable, primaryKey, uuid } from 'drizzle-orm/pg-core';
 import { item } from './item.schema';
 import { shoppingList } from './shoppingList.schema';
 
@@ -26,16 +20,13 @@ export const shoppingListItem = pgTable(
   }),
 );
 
-export const shoppingListItemRelations = relations(
-  shoppingListItem,
-  ({ one }) => ({
-    shoppingList: one(shoppingList, {
-      fields: [shoppingListItem.listId],
-      references: [shoppingList.id],
-    }),
-    item: one(item, {
-      fields: [shoppingListItem.itemId],
-      references: [item.id],
-    }),
+export const shoppingListItemRelations = relations(shoppingListItem, ({ one }) => ({
+  shoppingList: one(shoppingList, {
+    fields: [shoppingListItem.listId],
+    references: [shoppingList.id],
   }),
-);
+  item: one(item, {
+    fields: [shoppingListItem.itemId],
+    references: [item.id],
+  }),
+}));
