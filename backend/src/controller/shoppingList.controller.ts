@@ -281,4 +281,42 @@ export class ShoppingListController {
     await this.shoppingListRepository.deleteShoppingListById(validatedId);
     res.status(204).send({});
   }
+
+  // Freestyle task #1
+  async getAllFavoriteShoppingLists(req: Request, res: Response): Promise<void> {
+    const withRelations = z
+      .boolean()
+      .default(true)
+      .parse(req.query.withRelations === 'true' || req.query.withRelations === undefined);
+
+    const favoriteShoppingLists =
+      await this.shoppingListRepository.getAllFavoriteShoppingLists(withRelations);
+    res.send(favoriteShoppingLists);
+  }
+
+  // Freestyle task #1
+  async updateFavoriteStatus(req: Request, res: Response): Promise<void> {
+    const { shoppingListId } = req.params;
+    const { isFavorite } = req.body;
+
+    const validatedIsFavorite = z.boolean().parse(isFavorite);
+    const validatedId = z
+      .string()
+      .uuid({
+        message: 'Invalid shoppingListId format. please provide a valid UUID',
+      })
+      .parse(shoppingListId);
+
+    const existingShoppingList = await this.shoppingListRepository.getShoppingListById(validatedId);
+    if (!existingShoppingList) {
+      res.status(404).json({ errors: ['ShoppingList not found'] });
+      return;
+    }
+
+    const updatedShoppingList = await this.shoppingListRepository.setFavorite(
+      validatedId,
+      validatedIsFavorite,
+    );
+    res.send(updatedShoppingList);
+  }
 }

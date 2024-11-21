@@ -75,6 +75,16 @@ describe('ShoppingListController Integration Tests', () => {
       '/shoppingLists/:shoppingListId',
       controller.deleteShoppingListById.bind(controller),
     );
+    //Freestyle task #1
+    app.get(
+      '/shoppingLists/search/favorites',
+      controller.getAllFavoriteShoppingLists.bind(controller),
+    );
+    //Freestyle task #1
+    app.put(
+      '/shoppingLists/:shoppingListId/favorites',
+      controller.updateFavoriteStatus.bind(controller),
+    );
 
     app.use(globalErrorHandler);
 
@@ -166,7 +176,7 @@ describe('ShoppingListController Integration Tests', () => {
   });
 
   describe('GET /shoppingLists', () => {
-    it('should return 200 with empty array without a shoppingList', async () => {
+    it('should return 200 and an empty array without a shoppingList', async () => {
       // Arrange
       await testDatabase.clear();
 
@@ -804,6 +814,100 @@ describe('ShoppingListController Integration Tests', () => {
       // Assert
       expect(response.status).toBe(404);
       expect(response.body.errors).toContain('ShoppingList not found');
+    });
+  });
+
+  // Freestyle task #1
+  describe('GET /shoppingLists/search/favorites', () => {
+    it('should return 200 with all favorite shoppingLists', async () => {
+      // Arrange
+      await shoppingListRepository.setFavorite(TEST_IDS.LIST_1, true);
+
+      // Act
+      const response = await request(app).get('/shoppingLists/search/favorites');
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.length).toBeGreaterThan(0);
+    });
+
+    it('should return 200 and an empty array without a favorite shoppingList', async () => {
+      // Act
+      const response = await request(app).get('/shoppingLists/search/favorites');
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual([]);
+    });
+  });
+
+  // Freestyle task #1
+  describe('PUT /shoppingLists/:shoppingListId/favorites', () => {
+    it('should return 200 and update the favorite status of the shoppingList', async () => {
+      // Arrange
+      const shoppingListBeforeUpdate = await request(app).get(`/shoppingLists/${TEST_IDS.LIST_1}`);
+
+      // Act
+      const response = await request(app)
+        .put(`/shoppingLists/${TEST_IDS.LIST_1}/favorites`)
+        .send({ isFavorite: true })
+        .set('Accept', 'application/json');
+      const shoppingListAfterUpdate = await request(app).get(`/shoppingLists/${TEST_IDS.LIST_1}`);
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.id).toBe(TEST_IDS.LIST_1);
+      expect(response.body.isFavorite).toBe(true);
+      expect(shoppingListBeforeUpdate.body.isFavorite).toBe(false);
+      expect(shoppingListAfterUpdate.body.isFavorite).toBe(true);
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app)
+        .put(`/shoppingLists/${TEST_IDS.INVALID_ID}/favorites`)
+        .send({ isFavorite: true })
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 with message for non-existent shoppingList', async () => {
+      // Act
+      const response = await request(app)
+        .put(`/shoppingLists/${TEST_IDS.NON_EXISTENT_SHOPPINGLIST}/favorites`)
+        .send({ isFavorite: true })
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList not found');
+    });
+
+    it('should return 400 with non-boolean favorite status', async () => {
+      // Act
+      const response = await request(app)
+        .put(`/shoppingLists/${TEST_IDS.LIST_1}/favorites`)
+        .send({ isFavorite: 999 })
+        .set('Accept', 'application/json');
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Expected boolean, received number',
+          }),
+        ]),
+      );
     });
   });
 });

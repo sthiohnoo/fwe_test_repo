@@ -192,6 +192,7 @@ npm start
 
 - __Database Connection:__ Connects to a PostgreSQL database to store and retrieve data.
 - __Health Check:__ Checks the status of the application.
+- __Freestyle Task #1 / #2__
 
 ### Functionalities shoppingList.controller
 
@@ -252,6 +253,23 @@ npm start
   Method deletes an item by its ID and returns 204 with No Content. If the item is not found, a 404 error is returned.
   If the ID is not in the correct format, a 400 error is returned. If the item to be deleted is used in a shopping list,
   you will receive a 409 error.
+
+### Freestyle Task #1
+
+You might have a list of purchases that you make regularly over a certain period. Perhaps you want to save ingredients
+from recipes so you don't have to research them every time. This feature was developed exactly for that purpose. You can
+now save shopping lists as favorites, so you can easily access important shopping lists at a later time without any
+problems.
+
+- __getFavoriteShoppingLists :__
+  Method retrieves all favorite shopping lists and returns them. If no favorite shopping list is found, an empty array
+  is
+  returned.
+- __updateFavoriteStatus :__
+  The method updates the favorite status of a shopping list by its ID and returns it. Shopping lists can either be
+  marked as favorites or unfavorited. Errors such as "invalid ID format," "non-existent shopping list," or "non-boolean
+  inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
+  shopping list.
 
 ## Usage
 

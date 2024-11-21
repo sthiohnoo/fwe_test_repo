@@ -36,12 +36,8 @@ describe('ShoppingListRepository Integration Tests', () => {
         createdAt: new Date(),
       };
 
-      const createdSL_WithDesc = await repository.createShoppingList(
-        testSL_WithDescription,
-      );
-      const createdSL_WithoutDesc = await repository.createShoppingList(
-        testSL_WithoutDescription,
-      );
+      const createdSL_WithDesc = await repository.createShoppingList(testSL_WithDescription);
+      const createdSL_WithoutDesc = await repository.createShoppingList(testSL_WithoutDescription);
 
       // Act
       const result = await repository.getShoppingList();
@@ -50,19 +46,13 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(result).toBeDefined();
       expect(result.length).toBe(2);
 
-      const retrievedSLItems = result.find(
-        (list) => list.id === createdSL_WithDesc.id,
-      );
-      const retrievedSLNoDesc = result.find(
-        (list) => list.id === createdSL_WithoutDesc.id,
-      );
+      const retrievedSLItems = result.find((list) => list.id === createdSL_WithDesc.id);
+      const retrievedSLNoDesc = result.find((list) => list.id === createdSL_WithoutDesc.id);
 
       expect(retrievedSLItems).toBeDefined();
       expect(retrievedSLItems?.id).toBe(createdSL_WithDesc.id);
       expect(retrievedSLItems?.name).toBe(testSL_WithDescription.name);
-      expect(retrievedSLItems?.description).toBe(
-        testSL_WithDescription.description,
-      );
+      expect(retrievedSLItems?.description).toBe(testSL_WithDescription.description);
 
       expect(retrievedSLNoDesc).toBeDefined();
       expect(retrievedSLNoDesc?.id).toBe(createdSL_WithoutDesc.id);
@@ -94,9 +84,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       });
 
       // Act
-      const result = await repository.getShoppingListById(
-        createdShoppingList.id,
-      );
+      const result = await repository.getShoppingListById(createdShoppingList.id);
 
       // Assert
       expect(result).toBeDefined();
@@ -107,9 +95,7 @@ describe('ShoppingListRepository Integration Tests', () => {
 
     it('should return undefined for non-existent shoppingList', async () => {
       // Act
-      const result = await repository.getShoppingListById(
-        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-      );
+      const result = await repository.getShoppingListById(TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
 
       // Assert
       expect(result).toBeUndefined();
@@ -124,8 +110,7 @@ describe('ShoppingListRepository Integration Tests', () => {
         description: 'Test Description',
         createdAt: new Date(),
       };
-      const createdShoppingList =
-        await repository.createShoppingList(testShoppingList);
+      const createdShoppingList = await repository.createShoppingList(testShoppingList);
       const updatedData = {
         name: 'Updated Name',
         description: 'Updated Description',
@@ -151,8 +136,7 @@ describe('ShoppingListRepository Integration Tests', () => {
         description: 'Test Description',
         createdAt: new Date(),
       };
-      const createdShoppingList =
-        await repository.createShoppingList(testShoppingList);
+      const createdShoppingList = await repository.createShoppingList(testShoppingList);
       const updatedData = {
         name: 'Updated only Name',
       };
@@ -167,9 +151,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       expect(updatedShoppingList).toBeDefined();
       expect(updatedShoppingList?.id).toBe(createdShoppingList.id);
       expect(updatedShoppingList?.name).toBe(updatedData.name);
-      expect(updatedShoppingList?.description).toBe(
-        testShoppingList.description,
-      );
+      expect(updatedShoppingList?.description).toBe(testShoppingList.description);
     });
 
     it('should return undefined with non-existent shoppingList', async () => {
@@ -198,14 +180,11 @@ describe('ShoppingListRepository Integration Tests', () => {
         description: 'Delete Description',
         createdAt: new Date(),
       };
-      const createdShoppingList =
-        await repository.createShoppingList(testShoppingList);
+      const createdShoppingList = await repository.createShoppingList(testShoppingList);
 
       // Act
       await repository.deleteShoppingListById(createdShoppingList.id);
-      const result = await repository.getShoppingListById(
-        createdShoppingList.id,
-      );
+      const result = await repository.getShoppingListById(createdShoppingList.id);
 
       // Assert
       expect(result).toBeUndefined();
@@ -216,9 +195,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       const countBeforeDeletion = (await repository.getShoppingList()).length;
 
       // Act
-      await repository.deleteShoppingListById(
-        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-      );
+      await repository.deleteShoppingListById(TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
       const countAfterDeletion = (await repository.getShoppingList()).length;
 
       // Assert
@@ -238,9 +215,7 @@ describe('ShoppingListRepository Integration Tests', () => {
       await repository.createShoppingList(testShoppingList);
 
       // Act
-      const results = await repository.searchShoppingLists(
-        'Search Shopping List',
-      );
+      const results = await repository.searchShoppingLists('Search Shopping List');
 
       // Assert
       expect(results).toBeDefined();
@@ -276,14 +251,101 @@ describe('ShoppingListRepository Integration Tests', () => {
       await repository.createShoppingList(testShoppingList);
 
       // Act
-      const results = await repository.searchShoppingLists(
-        undefined,
-        undefined,
-      );
+      const results = await repository.searchShoppingLists(undefined, undefined);
 
       // Assert
       expect(results).toBeDefined();
       expect(results.length).toBe(1);
+    });
+  });
+
+  // Freestyle task #1
+  describe('getAllFavoriteShoppingLists', () => {
+    it('should successfully retrieve all favorite shoppingLists', async () => {
+      // Arrange
+      const testShoppingList = {
+        name: 'Favorite Shopping List',
+        description: 'Favorite Description',
+        createdAt: new Date(),
+        isFavorite: true,
+      };
+      await repository.createShoppingList(testShoppingList);
+
+      // Act
+      const results = await repository.getAllFavoriteShoppingLists();
+
+      // Assert
+      expect(results).toBeDefined();
+      expect(results.length).toBe(1);
+      expect(results[0].name).toBe(testShoppingList.name);
+      expect(results[0].description).toBe(testShoppingList.description);
+      expect(results[0].isFavorite).toBe(true);
+    });
+
+    it('should return an empty array with no favorite shoppingLists', async () => {
+      // Arrange
+      const testShoppingList = {
+        name: 'Not Favorite Shopping List',
+        description: 'Not Favorite Description',
+        createdAt: new Date(),
+        isFavorite: false,
+      };
+      await repository.createShoppingList(testShoppingList);
+
+      // Act
+      const results = await repository.getAllFavoriteShoppingLists();
+
+      // Assert
+      expect(results).toBeDefined();
+      expect(results.length).toBe(0);
+    });
+  });
+
+  describe('setFavorite', () => {
+    it('should successfully set a shoppingList as favorite', async () => {
+      // Arrange
+      const testShoppingList = {
+        name: 'Set Favorite Shopping List',
+        description: 'Set Favorite Description',
+        createdAt: new Date(),
+        isFavorite: false,
+      };
+      const createdShoppingList = await repository.createShoppingList(testShoppingList);
+
+      // Act
+      await repository.setFavorite(createdShoppingList.id, true);
+      const result = await repository.getShoppingListById(createdShoppingList.id);
+
+      // Assert
+      expect(result).toBeDefined();
+      expect(result?.isFavorite).toBe(true);
+    });
+
+    it('should successfully set a shoppingList as not favorite', async () => {
+      // Arrange
+      const testShoppingList = {
+        name: 'Set Not Favorite Shopping List',
+        description: 'Set Not Favorite Description',
+        createdAt: new Date(),
+        isFavorite: true,
+      };
+      const createdShoppingList = await repository.createShoppingList(testShoppingList);
+
+      // Act
+      await repository.setFavorite(createdShoppingList.id, false);
+      const result = await repository.getShoppingListById(createdShoppingList.id);
+
+      // Assert
+      expect(result).toBeDefined();
+      expect(result?.isFavorite).toBe(false);
+    });
+
+    it('should return undefined with non-existent shoppingList', async () => {
+      // Act
+      const result = await repository.setFavorite(TEST_IDS.NON_EXISTENT_SHOPPINGLIST, true);
+
+      // Assert
+      expect(result).toBeUndefined();
     });
   });
 });

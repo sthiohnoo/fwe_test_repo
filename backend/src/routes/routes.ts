@@ -26,32 +26,17 @@ export class Routes {
    */
   private initializeRoutes(): void {
     // Health routes
-    this.router.get(
-      '/health',
-      this.healthController.getHealthStatus.bind(this.healthController),
-    );
+    this.router.get('/health', this.healthController.getHealthStatus.bind(this.healthController));
 
     // Item routes
-    this.router.get(
-      '/items',
-      this.itemController.getItems.bind(this.itemController),
-    );
-    this.router.get(
-      '/items/:itemId',
-      this.itemController.getItemById.bind(this.itemController),
-    );
+    this.router.get('/items', this.itemController.getItems.bind(this.itemController));
+    this.router.get('/items/:itemId', this.itemController.getItemById.bind(this.itemController));
     this.router.get(
       '/items/name/:itemName',
       this.itemController.getItemByName.bind(this.itemController),
     );
-    this.router.post(
-      '/items',
-      this.itemController.createItem.bind(this.itemController),
-    );
-    this.router.put(
-      '/items/:itemId',
-      this.itemController.updateItemById.bind(this.itemController),
-    );
+    this.router.post('/items', this.itemController.createItem.bind(this.itemController));
+    this.router.put('/items/:itemId', this.itemController.updateItemById.bind(this.itemController));
     this.router.delete(
       '/items/:itemId',
       this.itemController.deleteItemById.bind(this.itemController),
@@ -60,9 +45,7 @@ export class Routes {
     // Shopping list routes
     this.router.get(
       '/shoppingLists',
-      this.shoppingListController.getShoppingLists.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.getShoppingLists.bind(this.shoppingListController),
     );
     this.router.get(
       //need to be defined before /shoppingLists/:shoppingListId
@@ -73,9 +56,7 @@ export class Routes {
     );
     this.router.get(
       '/shoppingLists/:shoppingListId',
-      this.shoppingListController.getShoppingListById.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.getShoppingListById.bind(this.shoppingListController),
     );
     this.router.get(
       '/shoppingLists/items/:itemId',
@@ -85,33 +66,34 @@ export class Routes {
     );
     this.router.post(
       '/shoppingLists',
-      this.shoppingListController.createShoppingList.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.createShoppingList.bind(this.shoppingListController),
     );
     this.router.put(
       '/shoppingLists/:shoppingListId',
-      this.shoppingListController.updateShoppingListById.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.updateShoppingListById.bind(this.shoppingListController),
     );
     this.router.put(
       '/shoppingLists/:shoppingListId/items/:itemId',
-      this.shoppingListController.addItemToList.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.addItemToList.bind(this.shoppingListController),
     );
     this.router.delete(
       '/shoppingLists/:shoppingListId/items/:itemId',
-      this.shoppingListController.deleteItemInListById.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.deleteItemInListById.bind(this.shoppingListController),
     );
     this.router.delete(
       '/shoppingLists/:shoppingListId',
-      this.shoppingListController.deleteShoppingListById.bind(
-        this.shoppingListController,
-      ),
+      this.shoppingListController.deleteShoppingListById.bind(this.shoppingListController),
+    );
+
+    //Freestyle task #1
+    this.router.get(
+      '/shoppingLists/search/favorites',
+      this.shoppingListController.getAllFavoriteShoppingLists.bind(this.shoppingListController),
+    );
+    //Freestyle task #1
+    this.router.put(
+      '/shoppingLists/:shoppingListId/favorites',
+      this.shoppingListController.updateFavoriteStatus.bind(this.shoppingListController),
     );
   }
 }
