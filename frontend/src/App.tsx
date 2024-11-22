@@ -1,5 +1,5 @@
-import { HomePage } from './pages/home/HomePage.tsx';
+import { AppRoutes } from './AppRoutes.tsx';
 
 export const App = () => {
-  return <HomePage />;
+  return <AppRoutes />;
 };

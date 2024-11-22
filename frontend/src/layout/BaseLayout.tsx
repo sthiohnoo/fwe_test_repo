@@ -6,7 +6,7 @@ const ColorModeToggle = () => {
   const { toggleColorMode } = useColorMode();
 
   const icon = useColorModeValue(<MoonIcon />, <SunIcon />);
-  const onClickToggle: MouseEventHandler<HTMLButtonElement> = (e) => {
+  const onClickToggle: MouseEventHandler<HTMLButtonElement> = () => {
     toggleColorMode();
     console.log('Toggle Color Mode');
   };
