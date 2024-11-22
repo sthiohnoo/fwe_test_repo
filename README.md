@@ -181,6 +181,28 @@ Start the application:
 npm start
 ```
 
+## Frontend Setup
+
+### Step 1: Install Dependencies
+
+Navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+Install the necessary dependencies using npm:
+
+```bash
+npm install
+```
+
+### Do I need this?
+
+```bash
+npx @chakra-ui/cli snippet add
+```
+
 ## Application Functionalities
 
 ### Main Functionalities

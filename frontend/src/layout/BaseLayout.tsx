@@ -1,5 +1,17 @@
-import React from 'react';
-import { Box, chakra, HStack } from '@chakra-ui/react';
+import React, { MouseEventHandler } from 'react';
+import { Box, Button, chakra, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+
+const ColorModeToggle = () => {
+  const { toggleColorMode } = useColorMode();
+
+  const icon = useColorModeValue(<MoonIcon />, <SunIcon />);
+  const onClickToggle: MouseEventHandler<HTMLButtonElement> = (e) => {
+    toggleColorMode();
+    console.log('Toggle Color Mode');
+  };
+  return <Button onClick={onClickToggle}>{icon}</Button>;
+};
 
 export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -15,7 +27,7 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
         <Box flex={1}></Box>
 
         <Box gap={4} display={'flex'}>
-          {/*<ColorModeToggle />*/}
+          <ColorModeToggle />
         </Box>
       </HStack>
       <chakra.main
