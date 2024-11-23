@@ -28,7 +28,6 @@ export const ReactSelectControl = <
         id={name}
         {...selectProps}
         onChange={(e) => {
-          console.log(e, 'onChange');
           helper.setValue(e);
         }}
         onKeyDown={(e) => {

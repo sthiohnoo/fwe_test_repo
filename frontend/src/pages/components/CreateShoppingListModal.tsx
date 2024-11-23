@@ -43,7 +43,6 @@ export const CreateShoppingListModal = ({
       <Formik<ShoppingListFormValues>
         initialValues={initialValues ?? { name: '', description: '', items: [] }}
         onSubmit={(e, formikHelpers) => {
-          console.log('submit');
           onSubmit?.(e);
           formikHelpers.setSubmitting(false);
         }}
@@ -64,9 +63,7 @@ export const CreateShoppingListModal = ({
                   defaultOptions: true,
                   loadOptions: async (inputValue) => {
                     const items = await client.getItems();
-                    console.log('Items:', items);
                     if (items.status === 200) {
-                      console.log('itemdaten', items.data);
                       return items.data
                         .filter((item) => item?.name?.includes(inputValue))
                         .map((item) => ({

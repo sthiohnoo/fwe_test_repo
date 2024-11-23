@@ -18,7 +18,7 @@ export class ItemRepository {
 
   async getItemByName(itemName: string) {
     return this.db.query.item.findFirst({
-      where: (item, { eq }) => eq(item.name, itemName),
+      where: (item, { like }) => like(item.name, `%${itemName}%`),
     });
   }
 
