@@ -20,12 +20,14 @@ export const ShoppingListTable = ({
   onClickUpdateShoppingList,
   onClickAddItemToShoppingList,
   onClickDeleteItem,
+  onClickToggleFavorite,
 }: {
   data: ShoppingList[];
   onClickDeleteShoppingList: (shoppingList: ShoppingList) => void;
   onClickUpdateShoppingList: (shoppingList: ShoppingList) => void;
   onClickAddItemToShoppingList: (shoppingList: ShoppingList) => void;
   onClickDeleteItem: (shoppingList: ShoppingList, itemId: string) => void;
+  onClickToggleFavorite: (shoppingList: ShoppingList) => void;
 }) => {
   const headerBg = useColorModeValue('lightblue', 'darkblue');
   const cellBg = useColorModeValue('gray.50', 'gray.700');
@@ -87,6 +89,7 @@ export const ShoppingListTable = ({
                   <IconButton
                     aria-label={'Toggle Favortie'}
                     icon={<StarIcon color={entry.isFavorite ? 'yellow.400' : 'black'} />}
+                    onClick={() => onClickToggleFavorite(entry)}
                   />{' '}
                   <IconButton
                     aria-label={'Update ShoppingList'}

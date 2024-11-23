@@ -3,14 +3,17 @@ import { useApiClient } from '../hooks/useApiClient.ts';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   PostShoppingListsRequest,
+  PutShoppingListsShoppingListIdFavoritesRequest,
   PutShoppingListsShoppingListIdItemsItemIdRequest,
   ShoppingList,
 } from '../adapter/api/__generated';
-import { Box, Button, HStack, Input, Select, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, HStack, IconButton, Input, Select, useDisclosure } from '@chakra-ui/react';
 import { ShoppingListTable } from './components/ShoppingListTable.tsx';
 import { CreateShoppingListModal } from './components/CreateShoppingListModal.tsx';
 import { AddItemFormValues, AddItemTable } from '../components/AddItemTable.tsx';
 import axios from 'axios';
+import { StarIcon } from '@chakra-ui/icons';
+import { IoHomeOutline } from 'react-icons/io5';
 
 export const ShoppingListPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -105,8 +108,8 @@ export const ShoppingListPage = () => {
       const res = await client.getShoppingListsSearch(params.name, params.description);
 
       const res2: ShoppingList[] = [];
-      for (let i = 0; i < res.data.length; i++) {
-        const shoppingListResponse = await client.getShoppingListsId(res.data[i].id);
+      for (const item of res.data) {
+        const shoppingListResponse = await client.getShoppingListsId(item.id);
         res2.push(shoppingListResponse.data);
       }
       setShoppingLists(res2.length > 0 ? res2 : []);
@@ -136,8 +139,8 @@ export const ShoppingListPage = () => {
       const res = await client.getShoppingListsItemsItemId(itemIds);
 
       const res2: ShoppingList[] = [];
-      for (let i = 0; i < res.data.length; i++) {
-        const shoppingListResponse = await client.getShoppingListsId(res.data[i].listId);
+      for (const item of res.data) {
+        const shoppingListResponse = await client.getShoppingListsId(item.listId);
         res2.push(shoppingListResponse.data);
       }
       setShoppingLists(res2.length > 0 ? res2 : []);
@@ -150,6 +153,37 @@ export const ShoppingListPage = () => {
         console.error('Unexpected error:', error);
       }
     }
+  };
+
+  const [isShowingFavorites, setIsShowingFavorites] = useState(false);
+
+  const onClickToggleFavorite = async (list: ShoppingList) => {
+    const request: PutShoppingListsShoppingListIdFavoritesRequest = {
+      isFavorite: !list.isFavorite,
+    };
+    await client.putShoppingListsShoppingListIdFavorites(list.id, request);
+
+    if (isShowingFavorites) {
+      const res = await client.getShoppingListsSearchFavorites();
+      setShoppingLists(res.data);
+    } else {
+      setShoppingLists((prevLists) =>
+        prevLists.map((item) =>
+          item.id === list.id ? { ...item, isFavorite: !item.isFavorite } : item,
+        ),
+      );
+    }
+  };
+
+  const onClickShowFavorites = async () => {
+    const res = await client.getShoppingListsSearchFavorites();
+    setShoppingLists(res.data);
+    setIsShowingFavorites(true);
+  };
+
+  const onClickShowAll = async () => {
+    await loadShoppingLists();
+    setIsShowingFavorites(false);
   };
 
   return (
@@ -191,6 +225,16 @@ export const ShoppingListPage = () => {
             borderColor="blue"
             borderRadius="md"
           />
+          <IconButton
+            aria-label={'Show Favorites'}
+            icon={<StarIcon color="yellow.400" />}
+            onClick={() => onClickShowFavorites()}
+          />{' '}
+          <IconButton
+            aria-label={'Show All'}
+            icon={<IoHomeOutline />}
+            onClick={() => onClickShowAll()}
+          />{' '}
         </HStack>
         <CreateShoppingListModal
           initialValues={shoppingListsToBeUpdated}
@@ -218,13 +262,13 @@ export const ShoppingListPage = () => {
           onClose={onItemTableClose}
           onSubmit={onAddItemToShoppingList}
         />{' '}
-        {/* Render ItemTable */}
         <ShoppingListTable
           data={shoppingLists}
           onClickDeleteShoppingList={onDeleteShoppingList}
           onClickUpdateShoppingList={onClickUpdateShoppingList}
           onClickAddItemToShoppingList={onClickAddItemToShoppingList}
           onClickDeleteItem={onClickDeleteItem}
+          onClickToggleFavorite={onClickToggleFavorite}
         />
       </Box>
     </BaseLayout>
