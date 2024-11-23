@@ -85,16 +85,6 @@ paths:
         name: id
         in: path
         required: true
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
     get:
       summary: Your GET endpoint
       tags: [ ]
@@ -179,11 +169,6 @@ paths:
         name: itemId
         in: path
         required: true
-      - schema:
-          type: string
-        name: itemId
-        in: path
-        required: true
     get:
       summary: Your GET endpoint
       tags: [ ]
@@ -230,26 +215,6 @@ paths:
           name: description
   '/shoppingLists/{shoppingListId}/items/{itemId}':
     parameters:
-      - schema:
-          type: string
-        name: shoppingListId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: itemId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: shoppingListId
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: itemId
-        in: path
-        required: true
       - schema:
           type: string
         name: shoppingListId
@@ -323,11 +288,6 @@ paths:
       parameters: [ ]
   '/shoppingLists/{shoppingListId}/favorites':
     parameters:
-      - schema:
-          type: string
-        name: shoppingListId
-        in: path
-        required: true
       - schema:
           type: string
         name: shoppingListId
@@ -417,16 +377,6 @@ paths:
                       id: fyomgc0lrdiqq
   '/items/{id}':
     parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
       - schema:
           type: string
         name: id
@@ -540,14 +490,27 @@ components:
           x-stoplight:
             id: cnu29qzl4ucoc
           default: false
-        items:
+        shoppingListItems:
           x-stoplight:
             id: aqr9ydl232aub
           type: array
           items:
-            $ref: '#/components/schemas/Item'
             x-stoplight:
               id: ibrj6dxcyxf3f
+            type: object
+            properties:
+              isPurchased:
+                x-stoplight:
+                  id: 12f3owk8y9flu
+                type: boolean
+              quantity:
+                type: integer
+                x-stoplight:
+                  id: 6g12n2m9lalq6
+              item:
+                $ref: '#/components/schemas/Item'
+                x-stoplight:
+                  id: 38oxnddeic9dj
     Item:
       title: Item
       x-stoplight:

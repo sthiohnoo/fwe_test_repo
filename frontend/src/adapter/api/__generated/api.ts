@@ -256,10 +256,10 @@ export interface ShoppingList {
     'isFavorite': boolean;
     /**
      * 
-     * @type {Array<Item>}
+     * @type {Array<ShoppingListShoppingListItemsInner>}
      * @memberof ShoppingList
      */
-    'items'?: Array<Item>;
+    'shoppingListItems'?: Array<ShoppingListShoppingListItemsInner>;
 }
 /**
  * 
@@ -292,6 +292,31 @@ export interface ShoppingListItem {
      */
     'isPurchased': boolean;
 }
+/**
+ * 
+ * @export
+ * @interface ShoppingListShoppingListItemsInner
+ */
+export interface ShoppingListShoppingListItemsInner {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ShoppingListShoppingListItemsInner
+     */
+    'isPurchased'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ShoppingListShoppingListItemsInner
+     */
+    'quantity'?: number;
+    /**
+     * 
+     * @type {Item}
+     * @memberof ShoppingListShoppingListItemsInner
+     */
+    'item'?: Item;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -303,22 +328,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteItemsId: async (id: string, id2: string, id3: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteItemsId: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('deleteItemsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('deleteItemsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('deleteItemsId', 'id3', id3)
             const localVarPath = `/items/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -345,22 +362,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShoppingListsId: async (id: string, id2: string, id3: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteShoppingListsId: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('deleteShoppingListsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('deleteShoppingListsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('deleteShoppingListsId', 'id3', id3)
             const localVarPath = `/shoppingLists/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -388,33 +397,17 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Your DELETE endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShoppingListsShoppingListIdItemsItemId: async (shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteShoppingListsShoppingListIdItemsItemId: async (shoppingListId: string, itemId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'shoppingListId' is not null or undefined
             assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'shoppingListId', shoppingListId)
             // verify required parameter 'itemId' is not null or undefined
             assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'itemId', itemId)
-            // verify required parameter 'shoppingListId2' is not null or undefined
-            assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'shoppingListId2', shoppingListId2)
-            // verify required parameter 'itemId2' is not null or undefined
-            assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'itemId2', itemId2)
-            // verify required parameter 'shoppingListId3' is not null or undefined
-            assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'shoppingListId3', shoppingListId3)
-            // verify required parameter 'itemId3' is not null or undefined
-            assertParamExists('deleteShoppingListsShoppingListIdItemsItemId', 'itemId3', itemId3)
             const localVarPath = `/shoppingLists/{shoppingListId}/items/{itemId}`
                 .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId2)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId2)))
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId3)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId3)));
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -471,22 +464,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemsId: async (id: string, id2: string, id3: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getItemsId: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('getItemsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('getItemsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('getItemsId', 'id3', id3)
             const localVarPath = `/items/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -577,22 +562,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShoppingListsId: async (id: string, id2: string, id3: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShoppingListsId: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('getShoppingListsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('getShoppingListsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('getShoppingListsId', 'id3', id3)
             const localVarPath = `/shoppingLists/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -619,18 +596,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your GET endpoint
          * @param {string} itemId 
-         * @param {string} itemId2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShoppingListsItemsItemId: async (itemId: string, itemId2: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getShoppingListsItemsItemId: async (itemId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'itemId' is not null or undefined
             assertParamExists('getShoppingListsItemsItemId', 'itemId', itemId)
-            // verify required parameter 'itemId2' is not null or undefined
-            assertParamExists('getShoppingListsItemsItemId', 'itemId2', itemId2)
             const localVarPath = `/shoppingLists/items/{itemId}`
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId2)));
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -795,23 +768,15 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putItemsId: async (id: string, id2: string, id3: string, putItemsIdRequest?: PutItemsIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putItemsId: async (id: string, putItemsIdRequest?: PutItemsIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('putItemsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('putItemsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('putItemsId', 'id3', id3)
             const localVarPath = `/items/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -841,23 +806,15 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsId: async (id: string, id2: string, id3: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putShoppingListsId: async (id: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('putShoppingListsId', 'id', id)
-            // verify required parameter 'id2' is not null or undefined
-            assertParamExists('putShoppingListsId', 'id2', id2)
-            // verify required parameter 'id3' is not null or undefined
-            assertParamExists('putShoppingListsId', 'id3', id3)
             const localVarPath = `/shoppingLists/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id2)))
-                .replace(`{${"id"}}`, encodeURIComponent(String(id3)));
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -887,19 +844,15 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * Update Favorite Status
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
-         * @param {string} shoppingListId2 
          * @param {PutShoppingListsShoppingListIdFavoritesRequest} [putShoppingListsShoppingListIdFavoritesRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsShoppingListIdFavorites: async (shoppingListId: string, shoppingListId2: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putShoppingListsShoppingListIdFavorites: async (shoppingListId: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'shoppingListId' is not null or undefined
             assertParamExists('putShoppingListsShoppingListIdFavorites', 'shoppingListId', shoppingListId)
-            // verify required parameter 'shoppingListId2' is not null or undefined
-            assertParamExists('putShoppingListsShoppingListIdFavorites', 'shoppingListId2', shoppingListId2)
             const localVarPath = `/shoppingLists/{shoppingListId}/favorites`
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)))
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId2)));
+                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -930,34 +883,18 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {PutShoppingListsShoppingListIdItemsItemIdRequest} [putShoppingListsShoppingListIdItemsItemIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsShoppingListIdItemsItemId: async (shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        putShoppingListsShoppingListIdItemsItemId: async (shoppingListId: string, itemId: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'shoppingListId' is not null or undefined
             assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'shoppingListId', shoppingListId)
             // verify required parameter 'itemId' is not null or undefined
             assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'itemId', itemId)
-            // verify required parameter 'shoppingListId2' is not null or undefined
-            assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'shoppingListId2', shoppingListId2)
-            // verify required parameter 'itemId2' is not null or undefined
-            assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'itemId2', itemId2)
-            // verify required parameter 'shoppingListId3' is not null or undefined
-            assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'shoppingListId3', shoppingListId3)
-            // verify required parameter 'itemId3' is not null or undefined
-            assertParamExists('putShoppingListsShoppingListIdItemsItemId', 'itemId3', itemId3)
             const localVarPath = `/shoppingLists/{shoppingListId}/items/{itemId}`
                 .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)))
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId2)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId2)))
-                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId3)))
-                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId3)));
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -997,13 +934,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteItemsId(id, id2, id3, options);
+        async deleteItemsId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteItemsId(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteItemsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1012,13 +947,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShoppingListsId(id, id2, id3, options);
+        async deleteShoppingListsId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShoppingListsId(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteShoppingListsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1028,15 +961,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary Your DELETE endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, options);
+        async deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.deleteShoppingListsShoppingListIdItemsItemId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1057,13 +986,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Item>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemsId(id, id2, id3, options);
+        async getItemsId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Item>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getItemsId(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getItemsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1097,13 +1024,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getShoppingListsId(id, id2, id3, options);
+        async getShoppingListsId(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShoppingListsId(id, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getShoppingListsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1112,12 +1037,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your GET endpoint
          * @param {string} itemId 
-         * @param {string} itemId2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getShoppingListsItemsItemId(itemId: string, itemId2: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ShoppingListItem>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getShoppingListsItemsItemId(itemId, itemId2, options);
+        async getShoppingListsItemsItemId(itemId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ShoppingListItem>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getShoppingListsItemsItemId(itemId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getShoppingListsItemsItemId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1178,14 +1102,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putItemsId(id: string, id2: string, id3: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Item>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.putItemsId(id, id2, id3, putItemsIdRequest, options);
+        async putItemsId(id: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Item>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.putItemsId(id, putItemsIdRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.putItemsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1194,14 +1116,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putShoppingListsId(id: string, id2: string, id3: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsId(id, id2, id3, putShoppingListsIdRequest, options);
+        async putShoppingListsId(id: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsId(id, putShoppingListsIdRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.putShoppingListsId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1210,13 +1130,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * Update Favorite Status
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
-         * @param {string} shoppingListId2 
          * @param {PutShoppingListsShoppingListIdFavoritesRequest} [putShoppingListsShoppingListIdFavoritesRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putShoppingListsShoppingListIdFavorites(shoppingListId: string, shoppingListId2: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsShoppingListIdFavorites(shoppingListId, shoppingListId2, putShoppingListsShoppingListIdFavoritesRequest, options);
+        async putShoppingListsShoppingListIdFavorites(shoppingListId: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingList>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsShoppingListIdFavorites(shoppingListId, putShoppingListsShoppingListIdFavoritesRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.putShoppingListsShoppingListIdFavorites']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1226,16 +1145,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {PutShoppingListsShoppingListIdItemsItemIdRequest} [putShoppingListsShoppingListIdItemsItemIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingListItem>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, putShoppingListsShoppingListIdItemsItemIdRequest, options);
+        async putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingListItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, putShoppingListsShoppingListIdItemsItemIdRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.putShoppingListsShoppingListIdItemsItemId']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -1254,40 +1169,32 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteItemsId(id, id2, id3, options).then((request) => request(axios, basePath));
+        deleteItemsId(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteItemsId(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Your DELETE endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteShoppingListsId(id, id2, id3, options).then((request) => request(axios, basePath));
+        deleteShoppingListsId(id: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteShoppingListsId(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Your DELETE endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, options).then((request) => request(axios, basePath));
+        deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1302,13 +1209,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): AxiosPromise<Item> {
-            return localVarFp.getItemsId(id, id2, id3, options).then((request) => request(axios, basePath));
+        getItemsId(id: string, options?: RawAxiosRequestConfig): AxiosPromise<Item> {
+            return localVarFp.getItemsId(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1333,24 +1238,21 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Your GET endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
-            return localVarFp.getShoppingListsId(id, id2, id3, options).then((request) => request(axios, basePath));
+        getShoppingListsId(id: string, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
+            return localVarFp.getShoppingListsId(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Your GET endpoint
          * @param {string} itemId 
-         * @param {string} itemId2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getShoppingListsItemsItemId(itemId: string, itemId2: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ShoppingListItem>> {
-            return localVarFp.getShoppingListsItemsItemId(itemId, itemId2, options).then((request) => request(axios, basePath));
+        getShoppingListsItemsItemId(itemId: string, options?: RawAxiosRequestConfig): AxiosPromise<Array<ShoppingListItem>> {
+            return localVarFp.getShoppingListsItemsItemId(itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1396,55 +1298,46 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putItemsId(id: string, id2: string, id3: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<Item> {
-            return localVarFp.putItemsId(id, id2, id3, putItemsIdRequest, options).then((request) => request(axios, basePath));
+        putItemsId(id: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<Item> {
+            return localVarFp.putItemsId(id, putItemsIdRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @summary Your PUT endpoint
          * @param {string} id 
-         * @param {string} id2 
-         * @param {string} id3 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsId(id: string, id2: string, id3: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
-            return localVarFp.putShoppingListsId(id, id2, id3, putShoppingListsIdRequest, options).then((request) => request(axios, basePath));
+        putShoppingListsId(id: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
+            return localVarFp.putShoppingListsId(id, putShoppingListsIdRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Update Favorite Status
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
-         * @param {string} shoppingListId2 
          * @param {PutShoppingListsShoppingListIdFavoritesRequest} [putShoppingListsShoppingListIdFavoritesRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsShoppingListIdFavorites(shoppingListId: string, shoppingListId2: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
-            return localVarFp.putShoppingListsShoppingListIdFavorites(shoppingListId, shoppingListId2, putShoppingListsShoppingListIdFavoritesRequest, options).then((request) => request(axios, basePath));
+        putShoppingListsShoppingListIdFavorites(shoppingListId: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingList> {
+            return localVarFp.putShoppingListsShoppingListIdFavorites(shoppingListId, putShoppingListsShoppingListIdFavoritesRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Add Item to ShoppingList
          * @summary Your PUT endpoint
          * @param {string} shoppingListId 
          * @param {string} itemId 
-         * @param {string} shoppingListId2 
-         * @param {string} itemId2 
-         * @param {string} shoppingListId3 
-         * @param {string} itemId3 
          * @param {PutShoppingListsShoppingListIdItemsItemIdRequest} [putShoppingListsShoppingListIdItemsItemIdRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingListItem> {
-            return localVarFp.putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, putShoppingListsShoppingListIdItemsItemIdRequest, options).then((request) => request(axios, basePath));
+        putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingListItem> {
+            return localVarFp.putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, putShoppingListsShoppingListIdItemsItemIdRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1460,28 +1353,24 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Your DELETE endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public deleteItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).deleteItemsId(id, id2, id3, options).then((request) => request(this.axios, this.basePath));
+    public deleteItemsId(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteItemsId(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Your DELETE endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public deleteShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).deleteShoppingListsId(id, id2, id3, options).then((request) => request(this.axios, this.basePath));
+    public deleteShoppingListsId(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteShoppingListsId(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1489,16 +1378,12 @@ export class DefaultApi extends BaseAPI {
      * @summary Your DELETE endpoint
      * @param {string} shoppingListId 
      * @param {string} itemId 
-     * @param {string} shoppingListId2 
-     * @param {string} itemId2 
-     * @param {string} shoppingListId3 
-     * @param {string} itemId3 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, options).then((request) => request(this.axios, this.basePath));
+    public deleteShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).deleteShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1516,14 +1401,12 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Your GET endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getItemsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getItemsId(id, id2, id3, options).then((request) => request(this.axios, this.basePath));
+    public getItemsId(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getItemsId(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1553,27 +1436,24 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Your GET endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getShoppingListsId(id: string, id2: string, id3: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getShoppingListsId(id, id2, id3, options).then((request) => request(this.axios, this.basePath));
+    public getShoppingListsId(id: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getShoppingListsId(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Your GET endpoint
      * @param {string} itemId 
-     * @param {string} itemId2 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public getShoppingListsItemsItemId(itemId: string, itemId2: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).getShoppingListsItemsItemId(itemId, itemId2, options).then((request) => request(this.axios, this.basePath));
+    public getShoppingListsItemsItemId(itemId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getShoppingListsItemsItemId(itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1628,44 +1508,39 @@ export class DefaultApi extends BaseAPI {
      * 
      * @summary Your PUT endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {PutItemsIdRequest} [putItemsIdRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public putItemsId(id: string, id2: string, id3: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).putItemsId(id, id2, id3, putItemsIdRequest, options).then((request) => request(this.axios, this.basePath));
+    public putItemsId(id: string, putItemsIdRequest?: PutItemsIdRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).putItemsId(id, putItemsIdRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @summary Your PUT endpoint
      * @param {string} id 
-     * @param {string} id2 
-     * @param {string} id3 
      * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public putShoppingListsId(id: string, id2: string, id3: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).putShoppingListsId(id, id2, id3, putShoppingListsIdRequest, options).then((request) => request(this.axios, this.basePath));
+    public putShoppingListsId(id: string, putShoppingListsIdRequest?: PutShoppingListsIdRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).putShoppingListsId(id, putShoppingListsIdRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * Update Favorite Status
      * @summary Your PUT endpoint
      * @param {string} shoppingListId 
-     * @param {string} shoppingListId2 
      * @param {PutShoppingListsShoppingListIdFavoritesRequest} [putShoppingListsShoppingListIdFavoritesRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public putShoppingListsShoppingListIdFavorites(shoppingListId: string, shoppingListId2: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).putShoppingListsShoppingListIdFavorites(shoppingListId, shoppingListId2, putShoppingListsShoppingListIdFavoritesRequest, options).then((request) => request(this.axios, this.basePath));
+    public putShoppingListsShoppingListIdFavorites(shoppingListId: string, putShoppingListsShoppingListIdFavoritesRequest?: PutShoppingListsShoppingListIdFavoritesRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).putShoppingListsShoppingListIdFavorites(shoppingListId, putShoppingListsShoppingListIdFavoritesRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -1673,17 +1548,13 @@ export class DefaultApi extends BaseAPI {
      * @summary Your PUT endpoint
      * @param {string} shoppingListId 
      * @param {string} itemId 
-     * @param {string} shoppingListId2 
-     * @param {string} itemId2 
-     * @param {string} shoppingListId3 
-     * @param {string} itemId3 
      * @param {PutShoppingListsShoppingListIdItemsItemIdRequest} [putShoppingListsShoppingListIdItemsItemIdRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, shoppingListId2: string, itemId2: string, shoppingListId3: string, itemId3: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, shoppingListId2, itemId2, shoppingListId3, itemId3, putShoppingListsShoppingListIdItemsItemIdRequest, options).then((request) => request(this.axios, this.basePath));
+    public putShoppingListsShoppingListIdItemsItemId(shoppingListId: string, itemId: string, putShoppingListsShoppingListIdItemsItemIdRequest?: PutShoppingListsShoppingListIdItemsItemIdRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).putShoppingListsShoppingListIdItemsItemId(shoppingListId, itemId, putShoppingListsShoppingListIdItemsItemIdRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
