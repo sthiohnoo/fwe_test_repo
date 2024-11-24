@@ -243,7 +243,7 @@ export const ShoppingListPage = () => {
           onSubmit={(updatedShoppingList) => {
             const updatedItems =
               updatedShoppingList.items?.map((item) => {
-                return { id: item.id ?? undefined, name: item.name };
+                return { id: item.id ?? '', name: item.name };
               }) ?? [];
 
             if (shoppingListsToBeUpdated) {
