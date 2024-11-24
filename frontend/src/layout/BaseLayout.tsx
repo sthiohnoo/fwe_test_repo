@@ -1,6 +1,15 @@
 import React, { MouseEventHandler } from 'react';
-import { Box, Button, chakra, HStack, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  chakra,
+  HStack,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { Link, useLocation } from 'react-router-dom';
 
 const ColorModeToggle = () => {
   const { toggleColorMode } = useColorMode();
@@ -14,6 +23,17 @@ const ColorModeToggle = () => {
 };
 
 export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+
+  const getTitle = () => {
+    if (location.pathname === '/shoppingLists') {
+      return 'ShoppingList';
+    } else if (location.pathname === '/items') {
+      return 'Item';
+    }
+    return '';
+  };
+
   return (
     <Box
       bg={'gray.200'}
@@ -22,11 +42,23 @@ export const BaseLayout = ({ children }: { children: React.ReactNode }) => {
       display={'flex'}
       flexDirection={'column'}
     >
-      <HStack p={4} bg={'teal.400'}>
-        <a href={'/'}>FWE 24/25</a>
-        <Box flex={1}></Box>
+      <HStack p={4} bg={'teal.400'} justifyContent="space-between" alignItems="center">
+        <a href={'/'}>FWE WS24/25</a>
+
+        <Text flex={1} textAlign="center" fontSize="2xl" fontWeight="bold">
+          {getTitle()}
+        </Text>
 
         <Box gap={4} display={'flex'}>
+          {location.pathname === '/shoppingLists' ? (
+            <Button as={Link} to="/items">
+              Item
+            </Button>
+          ) : (
+            <Button as={Link} to="/shoppingLists">
+              ShoppingList
+            </Button>
+          )}
           <ColorModeToggle />
         </Box>
       </HStack>

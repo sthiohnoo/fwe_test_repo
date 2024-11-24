@@ -29,7 +29,7 @@ export type AddItemFormValues = {
   isPurchased: boolean;
 };
 
-export const AddItemTable = ({
+export const AddItemTableModal = ({
   isOpen,
   onClose,
   onSubmit,

@@ -3,6 +3,7 @@ import { useApiClient } from '../hooks/useApiClient.ts';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   PostShoppingListsRequest,
+  PutShoppingListsIdRequest,
   PutShoppingListsShoppingListIdFavoritesRequest,
   PutShoppingListsShoppingListIdItemsItemIdRequest,
   ShoppingList,
@@ -10,7 +11,7 @@ import {
 import { Box, Button, HStack, IconButton, Input, Select, useDisclosure } from '@chakra-ui/react';
 import { ShoppingListTable } from './components/ShoppingListTable.tsx';
 import { CreateShoppingListModal } from './components/CreateShoppingListModal.tsx';
-import { AddItemFormValues, AddItemTable } from '../components/AddItemTable.tsx';
+import { AddItemFormValues, AddItemTableModal } from '../components/AddItemTableModal.tsx';
 import axios from 'axios';
 import { StarIcon } from '@chakra-ui/icons';
 import { IoHomeOutline } from 'react-icons/io5';
@@ -56,21 +57,20 @@ export const ShoppingListPage = () => {
     onOpen();
   };
 
-  const onUpdateShoppingList = async (list: PostShoppingListsRequest) => {
-    // @ts-expect-error todo
-    await client.putShoppingListsId(shoppingListsToBeUpdated?.id, list);
+  const onUpdateShoppingList = async (list: PutShoppingListsIdRequest) => {
+    await client.putShoppingListsId(shoppingListsToBeUpdated?.id ?? '', list);
 
     await loadShoppingLists();
     onClose();
     setShoppingListToBeUpdated(null);
   };
 
-  const onClickAddItemToShoppingList = async (list: ShoppingList) => {
+  const onClickOpenItemListToAdd = async (list: ShoppingList) => {
     onItemTableOpen();
     setShoppingListToBeUpdated(list);
   };
 
-  const onAddItemToShoppingList = async (values: AddItemFormValues) => {
+  const onSubmitAddItemToShoppingList = async (values: AddItemFormValues) => {
     if (shoppingListsToBeUpdated) {
       const request: PutShoppingListsShoppingListIdItemsItemIdRequest = {
         quantity: parseInt(values.quantity as unknown as string, 10),
@@ -257,16 +257,16 @@ export const ShoppingListPage = () => {
             }
           }}
         />
-        <AddItemTable
+        <AddItemTableModal
           isOpen={isItemTableOpen}
           onClose={onItemTableClose}
-          onSubmit={onAddItemToShoppingList}
+          onSubmit={onSubmitAddItemToShoppingList}
         />{' '}
         <ShoppingListTable
           data={shoppingLists}
           onClickDeleteShoppingList={onDeleteShoppingList}
           onClickUpdateShoppingList={onClickUpdateShoppingList}
-          onClickAddItemToShoppingList={onClickAddItemToShoppingList}
+          onClickAddItemToShoppingList={onClickOpenItemListToAdd}
           onClickDeleteItem={onClickDeleteItem}
           onClickToggleFavorite={onClickToggleFavorite}
         />
