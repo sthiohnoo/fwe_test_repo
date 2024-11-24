@@ -270,7 +270,8 @@ npx @chakra-ui/cli snippet add
   description is optional. If you try to create an item that already exists, you will receive a 409 error.
 - __updateItemById :__
   Method updates an item by its ID and returns it. The method can optionally change the name and the description.
-  Errors such as "invalid ID format" or "non-existent Item" are caught and the update process is aborted.
+  Errors such as "invalid ID format", "non-existent Item" or "Item with same name exists" are caught and the update
+  process is aborted.
 - __deleteItemById :__
   Method deletes an item by its ID and returns 204 with No Content. If the item is not found, a 404 error is returned.
   If the ID is not in the correct format, a 400 error is returned. If the item to be deleted is used in a shopping list,

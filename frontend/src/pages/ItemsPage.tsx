@@ -1,11 +1,12 @@
 import { BaseLayout } from '../layout/BaseLayout.tsx';
-import { Box, Button, HStack, useDisclosure, useToast } from '@chakra-ui/react';
-import { useCallback, useEffect, useState } from 'react';
+import { Box, Button, HStack, Input, useDisclosure, useToast } from '@chakra-ui/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ItemTable } from './components/ItemTable.tsx';
 import { useApiClient } from '../hooks/useApiClient.ts';
 import { Item, PostItemsRequestInner, PutItemsIdRequest } from '../adapter/api/__generated';
 import { UpdateItemModal } from '../components/updateItemModal.tsx';
 import { CreateItemModal } from './components/CreateItemModal.tsx';
+import axios from 'axios';
 
 export const ItemsPage = () => {
   const { isOpen: isCreateOpen, onOpen: onCreateOpen, onClose: onCreateClose } = useDisclosure();
@@ -30,9 +31,19 @@ export const ItemsPage = () => {
     onCreateOpen();
   };
   const onSubmitCreateItem = async (item: PostItemsRequestInner[]) => {
-    await client.postItems(item);
-    await loadItems();
-    onCreateClose();
+    try {
+      await client.postItems(item);
+      await loadItems();
+      onCreateClose();
+    } catch (_error) {
+      toast({
+        description: 'Creation canceled! Item already exists',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   };
 
   const onClickOpenUpdateItemModal = async (item: Item) => {
@@ -40,10 +51,20 @@ export const ItemsPage = () => {
     onUpdateOpen();
   };
   const onSubmitUpdateItem = async (item: PutItemsIdRequest) => {
-    await client.putItemsId(itemsToBeUpdated?.id ?? '', item);
-    await loadItems();
-    onUpdateClose();
-    setItemToBeUpdated(null);
+    try {
+      await client.putItemsId(itemsToBeUpdated?.id ?? '', item);
+      await loadItems();
+      onUpdateClose();
+      setItemToBeUpdated(null);
+    } catch (_error) {
+      toast({
+        description: 'Update canceled! ItemName already exists',
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   };
 
   const onClickDeleteItem = async (item: Item) => {
@@ -61,6 +82,28 @@ export const ItemsPage = () => {
     }
   };
 
+  const handleSearchItemChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = e.target.value;
+
+    if (searchValue === '') {
+      await loadItems();
+      return;
+    }
+
+    try {
+      const res = await client.getItemsNameItemName(searchValue);
+      setItems([res.data]);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          setItems([]);
+        }
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
+  };
+
   return (
     <BaseLayout>
       <Box>
@@ -73,41 +116,14 @@ export const ItemsPage = () => {
           >
             Create new Item(s)
           </Button>
-          {/*
-          <Box border="1px" borderColor="blue" borderRadius="md" display="flex" flex="1">
-            <Select
-              value={searchType}
-              onChange={(e) => setSearchType(e.target.value)}
-              flex=" 0 0 25%"
-            >
-              <option value="name">Name</option>
-              <option value="description">Description</option>
-            </Select>
-            <Input
-              placeholder={`Search ShoppingList by ${searchType}`}
-              onChange={handleSearchNameOrDescChange}
-              flex="1"
-              border="none"
-            />
-          </Box>
           <Input
-            placeholder="Search ShoppingList by included item"
+            placeholder="Search Item by name"
             onChange={handleSearchItemChange}
-            flex="1"
+            flex="0 0 25%"
             border="1px"
             borderColor="blue"
             borderRadius="md"
           />
-          <IconButton
-            aria-label={'Show Favorites'}
-            icon={<StarIcon color="yellow.400" />}
-            onClick={() => onClickShowFavorites()}
-          />{' '}
-          <IconButton
-            aria-label={'Show All'}
-            icon={<IoHomeOutline />}
-            onClick={() => onClickShowAll()}
-          />{' '}*/}
         </HStack>
         <CreateItemModal
           isOpen={isCreateOpen}
