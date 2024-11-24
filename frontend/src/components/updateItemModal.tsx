@@ -8,13 +8,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { object, string } from 'yup';
 
 export type UpdateItemFormValues = {
-  id: string;
   name: string;
   description: string;
 };
@@ -23,10 +23,14 @@ export const UpdateItemModal = ({
   isOpen,
   onClose,
   onSubmit,
+  itemName,
+  itemDescription,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (values: UpdateItemFormValues) => void;
+  itemName: string;
+  itemDescription: string;
 }) => {
   const UpdateItemSchema = object({
     name: string().min(1, 'Name has to be longer than 1 character').required('Name is required'),
@@ -36,10 +40,16 @@ export const UpdateItemModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Update Item: </ModalHeader>
+        <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
+          Update Item
+          <HStack justifyContent={'space-evenly'} fontWeight="normal" color={'gray'}>
+            <Text>["{itemName}"]</Text>
+            <Text>["{itemDescription}"]</Text>
+          </HStack>
+        </ModalHeader>
         <ModalCloseButton />
         <Formik<UpdateItemFormValues>
-          initialValues={{ id: '', name: '', description: '' }}
+          initialValues={{ name: '', description: '' }}
           validationSchema={UpdateItemSchema}
           onSubmit={(values, formikHelpers) => {
             formikHelpers.setSubmitting(false);

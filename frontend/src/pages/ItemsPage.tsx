@@ -3,10 +3,12 @@ import { Box, Button, HStack, useDisclosure, useToast } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 import { ItemTable } from './components/ItemTable.tsx';
 import { useApiClient } from '../hooks/useApiClient.ts';
-import { Item, PutItemsIdRequest } from '../adapter/api/__generated';
+import { Item, PostItemsRequestInner, PutItemsIdRequest } from '../adapter/api/__generated';
 import { UpdateItemModal } from '../components/updateItemModal.tsx';
+import { CreateItemModal } from './components/CreateItemModal.tsx';
 
 export const ItemsPage = () => {
+  const { isOpen: isCreateOpen, onOpen: onCreateOpen, onClose: onCreateClose } = useDisclosure();
   const { isOpen: isUpdateOpen, onOpen: onUpdateOpen, onClose: onUpdateClose } = useDisclosure();
 
   const client = useApiClient();
@@ -24,7 +26,26 @@ export const ItemsPage = () => {
     loadItems();
   }, [loadItems]);
 
-  const onClickCreateItem = async (item: Item) => {};
+  const onClickOpenCreateItemModal = async () => {
+    onCreateOpen();
+  };
+  const onSubmitCreateItem = async (item: PostItemsRequestInner[]) => {
+    await client.postItems(item);
+    await loadItems();
+    onCreateClose();
+  };
+
+  const onClickOpenUpdateItemModal = async (item: Item) => {
+    setItemToBeUpdated(item);
+    onUpdateOpen();
+  };
+  const onSubmitUpdateItem = async (item: PutItemsIdRequest) => {
+    await client.putItemsId(itemsToBeUpdated?.id ?? '', item);
+    await loadItems();
+    onUpdateClose();
+    setItemToBeUpdated(null);
+  };
+
   const onClickDeleteItem = async (item: Item) => {
     try {
       await client.deleteItemsId(item.id);
@@ -39,28 +60,17 @@ export const ItemsPage = () => {
       });
     }
   };
-  const onClickOpenUpdateItemModal = async (item: Item) => {
-    setItemToBeUpdated(item);
-    onUpdateOpen();
-  };
-
-  const onSubmitUpdateItem = async (item: PutItemsIdRequest) => {
-    const reqBody: PutItemsIdRequest = {
-      name: item.name,
-      description: item.description,
-    };
-    await client.putItemsId(itemsToBeUpdated?.id ?? '', reqBody);
-    await loadItems();
-    console.log('Updating item: ', itemsToBeUpdated?.id, reqBody);
-    onUpdateClose();
-    setItemToBeUpdated(null);
-  };
 
   return (
     <BaseLayout>
       <Box>
         <HStack spacing={3} mb={4}>
-          <Button variant={'solid'} colorScheme={'blue'} onClick={() => {}} flex="0 0 15%">
+          <Button
+            variant={'solid'}
+            colorScheme={'blue'}
+            onClick={() => onClickOpenCreateItemModal()}
+            flex="0 0 15%"
+          >
             Create new Item(s)
           </Button>
           {/*
@@ -99,10 +109,17 @@ export const ItemsPage = () => {
             onClick={() => onClickShowAll()}
           />{' '}*/}
         </HStack>
+        <CreateItemModal
+          isOpen={isCreateOpen}
+          onClose={onCreateClose}
+          onSubmit={onSubmitCreateItem}
+        />{' '}
         <UpdateItemModal
           isOpen={isUpdateOpen}
           onClose={onUpdateClose}
           onSubmit={onSubmitUpdateItem}
+          itemName={itemsToBeUpdated?.name || ''}
+          itemDescription={itemsToBeUpdated?.description || ''}
         />{' '}
         <ItemTable
           data={items}

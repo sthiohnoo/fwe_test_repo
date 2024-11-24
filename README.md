@@ -293,6 +293,17 @@ problems.
   inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
   shopping list.
 
+## Anmerkungen an den Dozenten
+
+Ideally, I would have designed the search functionality for the shopping list by item name in such a way that it allows
+searching with only part of the name. Currently, however, the full name must be entered; otherwise, an empty list is
+returned. _(Example: __ItemName:__ `Item 1`, __Input:__ `Item` &#8594; __Result:__ `Empty list`, __Input:__ `Item 1`
+&#8594; __Result__: `Shopping lists with
+Item`)_. This could be implemented by establishing the database query with "LIKE." However, this change to the existing
+code
+caused errors in other parts of the application, so I decided not to implement it. Implementing a completely new
+function for the search was not feasible due to time constraints and a lack of motivation. :)
+
 ## Usage
 
 Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of
