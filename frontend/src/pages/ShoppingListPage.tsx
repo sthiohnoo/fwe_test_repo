@@ -13,8 +13,9 @@ import { ShoppingListTable } from './components/ShoppingListTable.tsx';
 import { CreateShoppingListModal } from './components/CreateShoppingListModal.tsx';
 import { AddItemFormValues, AddItemTableModal } from '../components/AddItemTableModal.tsx';
 import axios from 'axios';
-import { StarIcon } from '@chakra-ui/icons';
+import { SearchIcon, StarIcon } from '@chakra-ui/icons';
 import { IoHomeOutline } from 'react-icons/io5';
+import { SearchOpenFoodApiModal } from '../components/SearchOpenFoodApiModal.tsx';
 
 export const ShoppingListPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,6 +24,11 @@ export const ShoppingListPage = () => {
     onOpen: onItemTableOpen,
     onClose: onItemTableClose,
   } = useDisclosure(); // Disclosure for ItemTable
+  const {
+    isOpen: isOpenFoodOpen,
+    onOpen: onOpenFoodOpen,
+    onClose: onOpenFoodClose,
+  } = useDisclosure(); // Disclosure for SearchOpenFoodApiModal
 
   const client = useApiClient();
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
@@ -174,16 +180,19 @@ export const ShoppingListPage = () => {
       );
     }
   };
-
   const onClickShowFavorites = async () => {
     const res = await client.getShoppingListsSearchFavorites();
     setShoppingLists(res.data);
     setIsShowingFavorites(true);
   };
-
   const onClickShowAll = async () => {
     await loadShoppingLists();
     setIsShowingFavorites(false);
+  };
+
+  // Freestlye Task #2
+  const onClickOpenOpenFoodApiModal = async () => {
+    onOpenFoodOpen();
   };
 
   return (
@@ -235,6 +244,11 @@ export const ShoppingListPage = () => {
             icon={<IoHomeOutline />}
             onClick={() => onClickShowAll()}
           />{' '}
+          <IconButton // Freestlye Task #2
+            aria-label={'Search Open Food'}
+            icon={<SearchIcon />}
+            onClick={() => onClickOpenOpenFoodApiModal()}
+          />{' '}
         </HStack>
         <CreateShoppingListModal
           initialValues={shoppingListsToBeUpdated}
@@ -257,6 +271,7 @@ export const ShoppingListPage = () => {
             }
           }}
         />
+        <SearchOpenFoodApiModal isOpen={isOpenFoodOpen} onClose={onOpenFoodClose} />{' '}
         <AddItemTableModal
           isOpen={isItemTableOpen}
           onClose={onItemTableClose}

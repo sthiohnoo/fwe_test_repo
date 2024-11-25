@@ -294,6 +294,35 @@ problems.
   inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
   shopping list.
 
+### Freestyle Task #2
+
+If you want to buy certain items, you might wonder if there are alternatives with better quality. For this purpose, a
+feature has been developed to search for specific items (in this case, groceries) paired with the Nutri-Score. The user
+is
+provided with a list of similar foods with the desired Nutri-Score through the search. The API from Open Food Facts is
+used to obtain external data.
+
+<div style="display: flex; align-items: center;">
+    <img src="./docs/img/frontend/searchOpenFood/searchIcon.png" alt="Search Icon" width="40" height="40" style="margin-right: 10px;">
+    <span>At the top right corner of the page, there is a search icon that you can click on</span>
+</div>
+
+
+![Search Modal](./docs/img/frontend/searchOpenFood/searchModal.png)
+
+When clicked, a modal opens where you can search for groceries by category tags and desired Nutri-Score. The search
+returns a list of food items that match the criteria. Here in the example, `Orange Juice` with Nutri-Score `c`.
+
+![Search Modal Result](./docs/img/frontend/searchOpenFood/searchModalwithResult.png)
+
+<span style="color: red;">Important Note</span>
+The website that provides this external API requires limiting the rate of API requests per minute to
+protect their infrastructure. To ensure this protection, a delay of 6 seconds between requests has been implemented
+using `Bottleneck`. However, this is not the best solution, as every request, regardless of whether previous requests
+have been made or not, must wait 6 seconds for a response. For the purposes of this project, however, this is sufficient
+for now.
+[Documentation Open Api Facts](https://openfoodfacts.github.io/openfoodfacts-server/api/).
+
 ## Anmerkungen an den Dozenten
 
 Ideally, I would have designed the search functionality for the shopping list by item name in such a way that it allows
