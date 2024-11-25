@@ -57,12 +57,10 @@ export const ShoppingListPage = () => {
   const [shoppingListsToBeUpdated, setShoppingListToBeUpdated] = useState<ShoppingList | null>(
     null,
   );
-
   const onClickUpdateShoppingList = async (list: ShoppingList) => {
     setShoppingListToBeUpdated(list);
     onOpen();
   };
-
   const onUpdateShoppingList = async (list: PutShoppingListsIdRequest) => {
     await client.putShoppingListsId(shoppingListsToBeUpdated?.id ?? '', list);
 
@@ -75,7 +73,6 @@ export const ShoppingListPage = () => {
     onItemTableOpen();
     setShoppingListToBeUpdated(list);
   };
-
   const onSubmitAddItemToShoppingList = async (values: AddItemFormValues) => {
     if (shoppingListsToBeUpdated) {
       const request: PutShoppingListsShoppingListIdItemsItemIdRequest = {
@@ -98,7 +95,6 @@ export const ShoppingListPage = () => {
   };
 
   const [searchType, setSearchType] = useState('name');
-
   const handleSearchNameOrDescChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value;
 
@@ -129,7 +125,6 @@ export const ShoppingListPage = () => {
       }
     }
   };
-
   const handleSearchItemChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value;
 
@@ -162,7 +157,6 @@ export const ShoppingListPage = () => {
   };
 
   const [isShowingFavorites, setIsShowingFavorites] = useState(false);
-
   const onClickToggleFavorite = async (list: ShoppingList) => {
     const request: PutShoppingListsShoppingListIdFavoritesRequest = {
       isFavorite: !list.isFavorite,
@@ -190,7 +184,7 @@ export const ShoppingListPage = () => {
     setIsShowingFavorites(false);
   };
 
-  // Freestlye Task #2
+  // Freestyle Task #2
   const onClickOpenOpenFoodApiModal = async () => {
     onOpenFoodOpen();
   };
@@ -244,7 +238,7 @@ export const ShoppingListPage = () => {
             icon={<IoHomeOutline />}
             onClick={() => onClickShowAll()}
           />{' '}
-          <IconButton // Freestlye Task #2
+          <IconButton // Freestyle Task #2
             aria-label={'Search Open Food'}
             icon={<SearchIcon />}
             onClick={() => onClickOpenOpenFoodApiModal()}

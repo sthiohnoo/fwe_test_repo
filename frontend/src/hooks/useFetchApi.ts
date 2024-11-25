@@ -1,4 +1,4 @@
-// Freestlye Task #2
+// Freestyle Task #2
 import { useEffect, useState } from 'react';
 import Bottleneck from 'bottleneck';
 

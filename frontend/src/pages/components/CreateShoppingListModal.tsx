@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton, TextareaControl } from 'formik-chakra-ui';
-import { PostShoppingListsRequestItemsInner, ShoppingList } from '../../adapter/api/__generated';
+import { PostShoppingListsRequest } from '../../adapter/api/__generated';
 import ReactSelectControl from '../../components/ReactSelectControl.tsx';
 import { GroupBase } from 'react-select';
 import { OptionBase } from 'chakra-react-select';
@@ -23,27 +23,40 @@ interface ItemOption extends OptionBase {
   value: string;
 }
 
-type ShoppingListFormValues = Omit<ShoppingList, 'id' | 'createdAt' | 'isFavorite'> &
-  Partial<Pick<ShoppingList, 'id'>> & {
-    items?: Array<PostShoppingListsRequestItemsInner>;
-  };
+type ShoppingListFormValues = Omit<PostShoppingListsRequest, 'items'> & {
+  items?: Array<ItemOption>;
+};
+
 export const CreateShoppingListModal = ({
   initialValues,
   onSubmit,
   ...restProps
 }: Omit<ModalProps, 'children'> & {
   initialValues: ShoppingListFormValues | null;
-  onSubmit?: (data: ShoppingListFormValues) => void;
+  onSubmit?: (data: PostShoppingListsRequest) => void;
 }) => {
   const client = useApiClient();
+
   return (
     <Modal {...restProps}>
       <ModalOverlay />
 
       <Formik<ShoppingListFormValues>
         initialValues={initialValues ?? { name: '', description: '', items: [] }}
-        onSubmit={(e, formikHelpers) => {
-          onSubmit?.(e);
+        onSubmit={(values, formikHelpers) => {
+          const transformedItems =
+            values.items?.map((item) => ({
+              name: item.value, // Verwende 'value' als 'name' für die API
+            })) ?? [];
+
+          const payload = {
+            ...values,
+            items: transformedItems,
+          };
+
+          console.log('Payload for API:', payload);
+
+          onSubmit?.(payload);
           formikHelpers.setSubmitting(false);
         }}
       >
