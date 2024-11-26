@@ -67,27 +67,29 @@ export const CreateShoppingListModal = ({
               <InputControl name={'name'} label={'Name'} />
               <TextareaControl name={'description'} label={'Description'} />
 
-              <ReactSelectControl<ItemOption, true, GroupBase<ItemOption>>
-                name="items"
-                label="Items"
-                selectProps={{
-                  isMulti: true,
-                  defaultOptions: true,
-                  loadOptions: async (inputValue) => {
-                    const items = await client.getItems();
-                    if (items.status === 200) {
-                      return items.data
-                        .filter((item) => item?.name?.includes(inputValue))
-                        .map((item) => ({
-                          id: item.id,
-                          label: item.name ?? '',
-                          value: item.name ?? '',
-                        }));
-                    }
-                    return [];
-                  },
-                }}
-              />
+              {!initialValues && (
+                <ReactSelectControl<ItemOption, true, GroupBase<ItemOption>>
+                  name="items"
+                  label="Items"
+                  selectProps={{
+                    isMulti: true,
+                    defaultOptions: true,
+                    loadOptions: async (inputValue) => {
+                      const items = await client.getItems();
+                      if (items.status === 200) {
+                        return items.data
+                          .filter((item) => item?.name?.includes(inputValue))
+                          .map((item) => ({
+                            id: item.id,
+                            label: item.name ?? '',
+                            value: item.name ?? '',
+                          }));
+                      }
+                      return [];
+                    },
+                  }}
+                />
+              )}
             </VStack>
           </ModalBody>
           <ModalFooter>

@@ -9,7 +9,7 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon, StarIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon, DeleteIcon, EditIcon, StarIcon } from '@chakra-ui/icons';
 import { format } from 'date-fns';
 import { ShoppingList } from '../../adapter/api/__generated';
 import { FaPlus } from 'react-icons/fa';
@@ -39,7 +39,7 @@ export const ShoppingListTable = ({
           <Tr>
             <Th>Name</Th>
             <Th>Description</Th>
-            <Th>Items</Th>
+            <Th textAlign="center">Items</Th>
             <Th>Created At</Th>
             <Th>Actions</Th>
           </Tr>
@@ -54,20 +54,46 @@ export const ShoppingListTable = ({
                   <Table variant="simple" size="sm">
                     <Thead>
                       <Tr>
-                        <Th bg={headerBg}>Item Name</Th>
-                        <Th bg={headerBg}>Item Description</Th>
-                        <Th bg={headerBg}>is Purchased</Th>
-                        <Th bg={headerBg}>Quantity</Th>
+                        <Th bg={headerBg} textAlign="center">
+                          Item Name
+                        </Th>
+                        <Th bg={headerBg} textAlign="center">
+                          Item Description
+                        </Th>
+                        <Th bg={headerBg} textAlign="center">
+                          is Purchased
+                        </Th>
+                        <Th bg={headerBg} textAlign="center">
+                          Quantity
+                        </Th>
                         <Th bg={headerBg}></Th>
                       </Tr>
                     </Thead>
                     <Tbody>
                       {entry.shoppingListItems?.map((item) => (
                         <Tr key={item.item?.id}>
-                          <Td bg={cellBg}>{item.item?.name}</Td>
-                          <Td bg={cellBg}>{item.item?.description}</Td>
-                          <Td bg={cellBg}>{item.isPurchased?.toString()}</Td>
-                          <Td bg={cellBg}>{item.quantity}</Td>
+                          <Td bg={cellBg} width="35%" textAlign="center">
+                            {item.item?.name}
+                          </Td>
+                          <Td bg={cellBg} width="35%" textAlign="center">
+                            {item.item?.description}
+                          </Td>
+                          <Td bg={cellBg} width="15%" textAlign="center">
+                            {item.isPurchased ? (
+                              <IconButton
+                                aria-label="Purchased"
+                                icon={<CheckIcon color="green.500" />}
+                              />
+                            ) : (
+                              <IconButton
+                                aria-label="Not Purchased"
+                                icon={<CloseIcon color="red.500" />}
+                              />
+                            )}
+                          </Td>
+                          <Td bg={cellBg} width="15%" textAlign="center">
+                            {item.quantity}
+                          </Td>
                           <Td bg={cellBg}>
                             <IconButton
                               aria-label={'Delete Item'}
