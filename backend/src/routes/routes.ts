@@ -80,6 +80,10 @@ export class Routes {
       '/shoppingLists/toggle/:shoppingListId/:itemId',
       this.shoppingListController.toggleIsPurchased.bind(this.shoppingListController),
     );
+    this.router.patch(
+      '/shoppingLists/updateQuantity/:shoppingListId/:itemId',
+      this.shoppingListController.updateQuantity.bind(this.shoppingListController),
+    );
     this.router.delete(
       '/shoppingLists/:shoppingListId/items/:itemId',
       this.shoppingListController.deleteItemInListById.bind(this.shoppingListController),

@@ -233,6 +233,7 @@ export class ShoppingListController {
 
   async deleteItemInListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId, itemId } = req.params;
+
     const validatedShoppingListId = z
       .string()
       .uuid({
@@ -323,6 +324,30 @@ export class ShoppingListController {
     res.send(updatedItem);
   }
 
+  async updateQuantity(req: Request, res: Response): Promise<void> {
+    const { shoppingListId, itemId } = req.params;
+    const { quantity } = req.body;
+
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
+    const validatedItemId = this.isValidItemId(itemId);
+    const validatedQuantity = z.number().min(1).parse(quantity);
+
+    if (!(await this.shoppingListHasItems(validatedShoppingListId, res))) {
+      return;
+    }
+    if (!(await this.ItemExistsInShoppingList(validatedShoppingListId, validatedItemId, res))) {
+      return;
+    }
+
+    const updatedItem = await this.shoppingListItemRepository.updateListItemById(
+      validatedShoppingListId,
+      validatedItemId,
+      { quantity: validatedQuantity },
+    );
+
+    res.send(updatedItem);
+  }
+
   // Freestyle task #1
   async getAllFavoriteShoppingLists(req: Request, res: Response): Promise<void> {
     const withRelations = z
@@ -359,5 +384,46 @@ export class ShoppingListController {
       validatedIsFavorite,
     );
     res.send(updatedShoppingList);
+  }
+
+  // Helper Functions
+  private isValidItemId(itemId: string): string {
+    return z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+  }
+
+  private isValidShoppingListId(shoppingListId: string): string {
+    return z
+      .string()
+      .uuid({ message: 'Invalid shoppingListId format. please provide a valid UUID' })
+      .parse(shoppingListId);
+  }
+
+  private async shoppingListHasItems(shoppingListId: string, res: Response): Promise<boolean> {
+    const existingListInList =
+      await this.shoppingListItemRepository.getListInListById(shoppingListId);
+    if (!existingListInList) {
+      res.status(404).json({ errors: ['ShoppingList has no Items'] });
+      return false;
+    }
+    return true;
+  }
+
+  private async ItemExistsInShoppingList(
+    shoppingListId: string,
+    itemId: string,
+    res: Response,
+  ): Promise<boolean> {
+    const existingItemInList = await this.shoppingListItemRepository.getItemInListById(
+      shoppingListId,
+      itemId,
+    );
+    if (!existingItemInList) {
+      res.status(404).json({ errors: ['Item not found in the ShoppingList'] });
+      return false;
+    }
+    return true;
   }
 }
