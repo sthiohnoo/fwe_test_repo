@@ -697,6 +697,44 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * toggle isPurchased State of Item in ShoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        patchToggleIsPurchased: async (shoppingListId: string, itemId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'shoppingListId' is not null or undefined
+            assertParamExists('patchToggleIsPurchased', 'shoppingListId', shoppingListId)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('patchToggleIsPurchased', 'itemId', itemId)
+            const localVarPath = `/shoppingLists/toggle/{shoppingListId}/{itemId}`
+                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)))
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Your POST endpoint
          * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -765,7 +803,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         * Update Item
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
@@ -803,7 +841,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         * Update ShoppingList
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
@@ -1073,6 +1111,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * toggle isPurchased State of Item in ShoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async patchToggleIsPurchased(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingListItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.patchToggleIsPurchased(shoppingListId, itemId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.patchToggleIsPurchased']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Your POST endpoint
          * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -1099,7 +1151,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Update Item
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
@@ -1113,7 +1165,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         * Update ShoppingList
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
@@ -1275,6 +1327,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getShoppingListsSearchFavorites(options).then((request) => request(axios, basePath));
         },
         /**
+         * toggle isPurchased State of Item in ShoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        patchToggleIsPurchased(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingListItem> {
+            return localVarFp.patchToggleIsPurchased(shoppingListId, itemId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Your POST endpoint
          * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -1295,7 +1358,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.postShoppingLists(postShoppingListsRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Update Item
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutItemsIdRequest} [putItemsIdRequest] 
@@ -1306,7 +1369,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.putItemsId(id, putItemsIdRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * Update ShoppingList
          * @summary Your PUT endpoint
          * @param {string} id 
          * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 
@@ -1481,6 +1544,19 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
+     * toggle isPurchased State of Item in ShoppingList
+     * @summary Your PATCH endpoint
+     * @param {string} shoppingListId 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public patchToggleIsPurchased(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).patchToggleIsPurchased(shoppingListId, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 
      * @summary Your POST endpoint
      * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -1505,7 +1581,7 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Update Item
      * @summary Your PUT endpoint
      * @param {string} id 
      * @param {PutItemsIdRequest} [putItemsIdRequest] 
@@ -1518,7 +1594,7 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     * Update ShoppingList
      * @summary Your PUT endpoint
      * @param {string} id 
      * @param {PutShoppingListsIdRequest} [putShoppingListsIdRequest] 

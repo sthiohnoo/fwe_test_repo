@@ -156,6 +156,12 @@ export const ShoppingListPage = () => {
     }
   };
 
+  const onClickToggleIsPurchased = async (list: ShoppingList, itemId: string) => {
+    await client.patchToggleIsPurchased(list.id, itemId);
+    await loadShoppingLists();
+  };
+
+  // Freestyle Task #1
   const [isShowingFavorites, setIsShowingFavorites] = useState(false);
   const onClickToggleFavorite = async (list: ShoppingList) => {
     const request: PutShoppingListsShoppingListIdFavoritesRequest = {
@@ -275,6 +281,7 @@ export const ShoppingListPage = () => {
           onClickAddItemToShoppingList={onClickOpenItemListToAdd}
           onClickDeleteItem={onClickDeleteItem}
           onClickToggleFavorite={onClickToggleFavorite}
+          onClickToggleIsPurchased={onClickToggleIsPurchased}
         />
       </Box>
     </BaseLayout>

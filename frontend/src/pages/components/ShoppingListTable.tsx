@@ -21,6 +21,7 @@ export const ShoppingListTable = ({
   onClickAddItemToShoppingList,
   onClickDeleteItem,
   onClickToggleFavorite,
+  onClickToggleIsPurchased,
 }: {
   data: ShoppingList[];
   onClickDeleteShoppingList: (shoppingList: ShoppingList) => void;
@@ -28,6 +29,7 @@ export const ShoppingListTable = ({
   onClickAddItemToShoppingList: (shoppingList: ShoppingList) => void;
   onClickDeleteItem: (shoppingList: ShoppingList, itemId: string) => void;
   onClickToggleFavorite: (shoppingList: ShoppingList) => void;
+  onClickToggleIsPurchased: (shoppingList: ShoppingList, itemId: string) => void;
 }) => {
   const headerBg = useColorModeValue('lightblue', 'darkblue');
   const cellBg = useColorModeValue('gray.50', 'gray.700');
@@ -83,11 +85,21 @@ export const ShoppingListTable = ({
                               <IconButton
                                 aria-label="Purchased"
                                 icon={<CheckIcon color="green.500" />}
+                                onClick={() => {
+                                  if (item.item?.id) {
+                                    onClickToggleIsPurchased(entry, item.item.id);
+                                  }
+                                }}
                               />
                             ) : (
                               <IconButton
                                 aria-label="Not Purchased"
                                 icon={<CloseIcon color="red.500" />}
+                                onClick={() => {
+                                  if (item.item?.id) {
+                                    onClickToggleIsPurchased(entry, item.item.id);
+                                  }
+                                }}
                               />
                             )}
                           </Td>

@@ -153,6 +153,7 @@ paths:
                         type: boolean
                         x-stoplight:
                           id: ldgi5w0x0r4ko
+      description: Update ShoppingList
     delete:
       summary: Your DELETE endpoint
       tags: [ ]
@@ -320,6 +321,33 @@ paths:
                   type: boolean
                   x-stoplight:
                     id: zwwn49oqbrchf
+  '/shoppingLists/toggle/{shoppingListId}/{itemId}':
+    parameters:
+      - schema:
+          type: string
+        name: shoppingListId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: itemId
+        in: path
+        required: true
+    patch:
+      summary: Your PATCH endpoint
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ShoppingListItem'
+      operationId: patchToggleIsPurchased
+      x-stoplight:
+        id: e733sd14zgjcx
+      description: toggle isPurchased State of Item in ShoppingList
   /items:
     get:
       summary: Your GET endpoint
@@ -424,6 +452,7 @@ paths:
                   type: string
                   x-stoplight:
                     id: yql54l36qjcyw
+      description: Update Item
     delete:
       summary: Your DELETE endpoint
       tags: [ ]
