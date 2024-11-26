@@ -46,15 +46,14 @@ export const CreateShoppingListModal = ({
         onSubmit={(values, formikHelpers) => {
           const transformedItems =
             values.items?.map((item) => ({
-              name: item.value, // Verwende 'value' als 'name' für die API
+              id: item.id,
+              name: item.value,
             })) ?? [];
 
           const payload = {
             ...values,
             items: transformedItems,
           };
-
-          console.log('Payload for API:', payload);
 
           onSubmit?.(payload);
           formikHelpers.setSubmitting(false);

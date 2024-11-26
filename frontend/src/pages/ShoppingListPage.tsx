@@ -256,11 +256,8 @@ export const ShoppingListPage = () => {
 
             if (shoppingListsToBeUpdated) {
               // TODO: i cannot update the items(quantity and ispurchased)
-              console.log('Updating ShoppingList:', updatedShoppingList, updatedItems);
               onUpdateShoppingList({ ...updatedShoppingList, items: updatedItems });
             } else {
-              // TODO: i cannot create new items
-              console.log('Create ShoppingList:', updatedShoppingList, updatedItems);
               onCreateShoppingList({ ...updatedShoppingList });
             }
           }}
