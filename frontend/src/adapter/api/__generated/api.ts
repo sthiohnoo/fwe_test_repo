@@ -735,6 +735,44 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * update Quantity of an item in shoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        patchUpdateQuantity: async (shoppingListId: string, itemId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'shoppingListId' is not null or undefined
+            assertParamExists('patchUpdateQuantity', 'shoppingListId', shoppingListId)
+            // verify required parameter 'itemId' is not null or undefined
+            assertParamExists('patchUpdateQuantity', 'itemId', itemId)
+            const localVarPath = `/shoppingLists/updateQuantity/{shoppingListId}/{itemId}`
+                .replace(`{${"shoppingListId"}}`, encodeURIComponent(String(shoppingListId)))
+                .replace(`{${"itemId"}}`, encodeURIComponent(String(itemId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Your POST endpoint
          * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -1125,6 +1163,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * update Quantity of an item in shoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async patchUpdateQuantity(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ShoppingListItem>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.patchUpdateQuantity(shoppingListId, itemId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.patchUpdateQuantity']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @summary Your POST endpoint
          * @param {Array<PostItemsRequestInner>} [postItemsRequestInner] 
@@ -1336,6 +1388,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         patchToggleIsPurchased(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingListItem> {
             return localVarFp.patchToggleIsPurchased(shoppingListId, itemId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * update Quantity of an item in shoppingList
+         * @summary Your PATCH endpoint
+         * @param {string} shoppingListId 
+         * @param {string} itemId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        patchUpdateQuantity(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig): AxiosPromise<ShoppingListItem> {
+            return localVarFp.patchUpdateQuantity(shoppingListId, itemId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1554,6 +1617,19 @@ export class DefaultApi extends BaseAPI {
      */
     public patchToggleIsPurchased(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).patchToggleIsPurchased(shoppingListId, itemId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * update Quantity of an item in shoppingList
+     * @summary Your PATCH endpoint
+     * @param {string} shoppingListId 
+     * @param {string} itemId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public patchUpdateQuantity(shoppingListId: string, itemId: string, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).patchUpdateQuantity(shoppingListId, itemId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -348,6 +348,32 @@ paths:
       x-stoplight:
         id: e733sd14zgjcx
       description: toggle isPurchased State of Item in ShoppingList
+  '/shoppingLists/updateQuantity/{shoppingListId}/{itemId}':
+    parameters:
+      - schema:
+          type: string
+        name: shoppingListId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: itemId
+        in: path
+        required: true
+    patch:
+      summary: Your PATCH endpoint
+      tags: [ ]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShoppingListItem'
+      operationId: patchUpdateQuantity
+      x-stoplight:
+        id: 2veqkoueizhww
+      description: update Quantity of an item in shoppingList
   /items:
     get:
       summary: Your GET endpoint
