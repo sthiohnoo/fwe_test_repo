@@ -77,7 +77,7 @@ export class Routes {
       this.shoppingListController.addItemToList.bind(this.shoppingListController),
     );
     this.router.patch(
-      '/shoppingLists/:shoppingListId/items/:itemId/toggle',
+      '/shoppingLists/toggle/:shoppingListId/:itemId',
       this.shoppingListController.toggleIsPurchased.bind(this.shoppingListController),
     );
     this.router.delete(

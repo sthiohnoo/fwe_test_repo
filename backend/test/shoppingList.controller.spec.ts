@@ -75,6 +75,11 @@ describe('ShoppingListController Integration Tests', () => {
       '/shoppingLists/:shoppingListId',
       controller.deleteShoppingListById.bind(controller),
     );
+    app.patch(
+      '/shoppingLists/toggle/:shoppingListId/:itemId',
+      controller.toggleIsPurchased.bind(controller),
+    );
+
     //Freestyle task #1
     app.get(
       '/shoppingLists/search/favorites',
@@ -814,6 +819,111 @@ describe('ShoppingListController Integration Tests', () => {
       // Assert
       expect(response.status).toBe(404);
       expect(response.body.errors).toContain('ShoppingList not found');
+    });
+  });
+
+  describe('PATCH /shoppingLists/toggle/:shoppingListId/:itemId', () => {
+    it('should return 200 and toggle the isPurchased status of the item in the shoppingList', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      console.log(createdShoppingList.body);
+
+      const shoppingListBeforeToggle = await request(app).get(
+        `/shoppingLists/${createdShoppingList.body.id}`,
+      );
+
+      // Act
+      const response = await request(app).patch(
+        `/shoppingLists/toggle/${createdShoppingList.body.id}/${TEST_IDS.ITEM_1}`,
+      );
+      const shoppingListAfterToggle = await request(app).get(
+        `/shoppingLists/${createdShoppingList.body.id}`,
+      );
+      console.log(shoppingListAfterToggle.body.shoppingListItems[0].isPurchased);
+      console.log(response.body);
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.listId).toBe(createdShoppingList.body.id);
+      expect(response.body.itemId).toBe(TEST_IDS.ITEM_1);
+      expect(shoppingListBeforeToggle.body.shoppingListItems[0].isPurchased).toBe(false);
+      expect(shoppingListAfterToggle.body.shoppingListItems[0].isPurchased).toBe(true);
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app).patch(
+        `/shoppingLists/toggle/${TEST_IDS.INVALID_ID}/${TEST_IDS.ITEM_1}`,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 400 with message for invalid item id format', async () => {
+      // Act
+      const response = await request(app).patch(
+        `/shoppingLists/toggle/${TEST_IDS.LIST_1}/${TEST_IDS.INVALID_ID}`,
+      );
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid itemId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 when shoppingList has no items', async () => {
+      // Act
+      const response = await request(app).patch(
+        `/shoppingLists/toggle/${TEST_IDS.LIST_1}/${TEST_IDS.ITEM_1}`,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList has no Items');
+    });
+
+    it('should return 404 when shoppingList does not contain the specific item', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      // Act
+      const response = await request(app).patch(
+        `/shoppingLists/toggle/${createdShoppingList.body.id}/${TEST_IDS.ITEM_2}`,
+      );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('Item not found in the ShoppingList');
     });
   });
 
