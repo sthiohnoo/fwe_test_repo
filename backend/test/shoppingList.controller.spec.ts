@@ -79,6 +79,10 @@ describe('ShoppingListController Integration Tests', () => {
       '/shoppingLists/toggle/:shoppingListId/:itemId',
       controller.toggleIsPurchased.bind(controller),
     );
+    app.patch(
+      '/shoppingLists/updateQuantity/:shoppingListId/:itemId',
+      controller.updateQuantity.bind(controller),
+    );
 
     //Freestyle task #1
     app.get(
@@ -920,6 +924,126 @@ describe('ShoppingListController Integration Tests', () => {
       const response = await request(app).patch(
         `/shoppingLists/toggle/${createdShoppingList.body.id}/${TEST_IDS.ITEM_2}`,
       );
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('Item not found in the ShoppingList');
+    });
+  });
+
+  describe('PATCH /shoppingLists/updateQuantity/:shoppingListId/:itemId', () => {
+    it('should return 200 and update the quantity of the item in the shoppingList', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      const shoppingListBeforeUpdate = await request(app).get(
+        `/shoppingLists/${createdShoppingList.body.id}`,
+      );
+
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${createdShoppingList.body.id}/${TEST_IDS.ITEM_1}`)
+        .send({ quantity: 100 });
+
+      const shoppingListAfterUpdate = await request(app).get(
+        `/shoppingLists/${createdShoppingList.body.id}`,
+      );
+
+      // Assert
+      expect(response.status).toBe(200);
+      expect(response.body.listId).toBe(createdShoppingList.body.id);
+      expect(response.body.itemId).toBe(TEST_IDS.ITEM_1);
+      expect(response.body.quantity).toBe(100);
+      expect(shoppingListBeforeUpdate.body.shoppingListItems[0].quantity).toBe(1);
+      expect(shoppingListAfterUpdate.body.shoppingListItems[0].quantity).toBe(100);
+    });
+
+    it('should return 400 with message for invalid quantity', async () => {
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${TEST_IDS.LIST_1}/${TEST_IDS.ITEM_1}`)
+        .send({ quantity: -1 });
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Number must be greater than or equal to 1',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 400 with message for invalid shoppingList id format', async () => {
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${TEST_IDS.INVALID_ID}/${TEST_IDS.ITEM_1}`)
+        .send({ quantity: 100 });
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid shoppingListId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 400 with message for invalid item id format', async () => {
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${TEST_IDS.LIST_1}/${TEST_IDS.INVALID_ID}`)
+        .send({ quantity: 100 });
+
+      // Assert
+      expect(response.status).toBe(400);
+      expect(response.body.errors).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            message: 'Invalid itemId format. please provide a valid UUID',
+          }),
+        ]),
+      );
+    });
+
+    it('should return 404 when shoppingList has no items', async () => {
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${TEST_IDS.LIST_1}/${TEST_IDS.ITEM_1}`)
+        .send({ quantity: 100 });
+
+      // Assert
+      expect(response.status).toBe(404);
+      expect(response.body.errors).toContain('ShoppingList has no Items');
+    });
+
+    it('should return 404 when shoppingList does not contain the specific item', async () => {
+      // Arrange
+      const newShoppingList = {
+        name: 'shoppingList 1',
+        description: 'Test Description 1',
+        items: [{ id: TEST_IDS.ITEM_1 }],
+      };
+      const createdShoppingList = await request(app)
+        .post('/shoppingLists')
+        .send(newShoppingList)
+        .set('Accept', 'application/json');
+
+      // Act
+      const response = await request(app)
+        .patch(`/shoppingLists/updateQuantity/${createdShoppingList.body.id}/${TEST_IDS.ITEM_2}`)
+        .send({ quantity: 100 });
 
       // Assert
       expect(response.status).toBe(404);
