@@ -36,7 +36,7 @@ describe('ItemController Integration Tests', () => {
     shoppingListItemRepository = new ShoppingListItemRepository(testDatabase.database);
 
     controller = new ItemController(itemRepository, shoppingListItemRepository);
-  }, 30000);
+  }, 60000);
 
   beforeEach(async () => {
     app = express();

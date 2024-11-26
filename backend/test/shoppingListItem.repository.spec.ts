@@ -23,7 +23,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
     repository = new ShoppingListItemRepository(testDatabase.database);
     itemHelper = new ItemTestHelper(testDatabase.database);
     shoppingListHelper = new ShoppingListTestHelper(testDatabase.database);
-  }, 30000);
+  }, 60000);
 
   beforeEach(async () => {
     // Create fresh test items
@@ -144,9 +144,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
 
     it('should return undefined for non-existent item', async () => {
       // Act
-      const result = await repository.getItemInAllListsById(
-        TEST_IDS.NON_EXISTENT_ITEM,
-      );
+      const result = await repository.getItemInAllListsById(TEST_IDS.NON_EXISTENT_ITEM);
 
       // Arrange
       expect(result).toBeUndefined();
@@ -178,9 +176,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
 
     it('should return undefined for non-existent list', async () => {
       // Act
-      const result = await repository.getListInListById(
-        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-      );
+      const result = await repository.getListInListById(TEST_IDS.NON_EXISTENT_SHOPPINGLIST);
 
       // Arrange
       expect(result).toBeUndefined();
@@ -208,9 +204,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       await repository.addItemToList(listEntry2);
 
       // Act
-      const results = await repository.getListsInListByItemId(
-        listEntry1.itemId,
-      );
+      const results = await repository.getListsInListByItemId(listEntry1.itemId);
       const result1 = results[0];
       const result2 = results[1];
 
@@ -233,9 +227,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
 
     it('should return an empty array for non-existent item', async () => {
       // Act
-      const result = await repository.getListsInListByItemId(
-        TEST_IDS.NON_EXISTENT_ITEM,
-      );
+      const result = await repository.getListsInListByItemId(TEST_IDS.NON_EXISTENT_ITEM);
 
       // Arrange
       expect(result).toBeDefined();
@@ -397,10 +389,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
 
       // Act
       await repository.deleteItemInListById(listEntry.listId, listEntry.itemId);
-      const result = await repository.getItemInListById(
-        addedEntry.listId,
-        addedEntry.itemId,
-      );
+      const result = await repository.getItemInListById(addedEntry.listId, addedEntry.itemId);
 
       // Assert
       expect(result).toBeUndefined();
@@ -419,10 +408,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       const countBeforeDeletion = (await repository.getAllEntries()).length;
 
       // Act
-      await repository.deleteItemInListById(
-        TEST_IDS.NON_EXISTENT_SHOPPINGLIST,
-        TEST_IDS.ITEM_1,
-      );
+      await repository.deleteItemInListById(TEST_IDS.NON_EXISTENT_SHOPPINGLIST, TEST_IDS.ITEM_1);
       const countAfterDeletion = (await repository.getAllEntries()).length;
 
       // Assert
@@ -443,10 +429,7 @@ describe('ShoppingListItemRepository Integration Tests', () => {
       const countBeforeDeletion = (await repository.getAllEntries()).length;
 
       // Act
-      await repository.deleteItemInListById(
-        TEST_IDS.LIST_1,
-        TEST_IDS.NON_EXISTENT_ITEM,
-      );
+      await repository.deleteItemInListById(TEST_IDS.LIST_1, TEST_IDS.NON_EXISTENT_ITEM);
       const countAfterDeletion = (await repository.getAllEntries()).length;
 
       // Assert

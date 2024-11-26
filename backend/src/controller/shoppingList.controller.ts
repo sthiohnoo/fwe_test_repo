@@ -282,6 +282,47 @@ export class ShoppingListController {
     res.status(204).send({});
   }
 
+  async toggleIsPurchased(req: Request, res: Response): Promise<void> {
+    const { shoppingListId, itemId } = req.params;
+
+    const validatedShoppingListId = z
+      .string()
+      .uuid({
+        message: 'Invalid shoppingListId format. please provide a valid UUID',
+      })
+      .parse(shoppingListId);
+
+    const validatedItemId = z
+      .string()
+      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
+      .parse(itemId);
+
+    const existingListInList =
+      await this.shoppingListItemRepository.getListInListById(validatedShoppingListId);
+    if (!existingListInList) {
+      res.status(404).json({ errors: ['ShoppingList has no Items'] });
+      return;
+    }
+
+    const existingItemInList = await this.shoppingListItemRepository.getItemInListById(
+      validatedShoppingListId,
+      validatedItemId,
+    );
+    if (!existingItemInList) {
+      res.status(404).json({ errors: ['Item not found in the ShoppingList'] });
+      return;
+    }
+
+    const newIsPurchasedStatus = !existingItemInList.isPurchased;
+    const updatedItem = await this.shoppingListItemRepository.updateListItemById(
+      validatedShoppingListId,
+      validatedItemId,
+      { isPurchased: newIsPurchasedStatus },
+    );
+
+    res.send(updatedItem);
+  }
+
   // Freestyle task #1
   async getAllFavoriteShoppingLists(req: Request, res: Response): Promise<void> {
     const withRelations = z

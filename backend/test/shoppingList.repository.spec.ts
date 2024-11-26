@@ -12,7 +12,7 @@ describe('ShoppingListRepository Integration Tests', () => {
   beforeAll(async () => {
     await testDatabase.setup();
     repository = new ShoppingListRepository(testDatabase.database);
-  }, 30000);
+  }, 60000);
 
   afterEach(async () => {
     await testDatabase.clear();

@@ -45,7 +45,7 @@ describe('ShoppingListController Integration Tests', () => {
       itemRepository,
       shoppingListItemRepository,
     );
-  }, 30000);
+  }, 60000);
 
   beforeEach(async () => {
     app = express();

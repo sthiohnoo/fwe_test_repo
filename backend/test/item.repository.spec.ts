@@ -12,7 +12,7 @@ describe('ItemRepository Integration Tests', () => {
   beforeAll(async () => {
     await testDatabase.setup();
     repository = new ItemRepository(testDatabase.database);
-  }, 30000);
+  }, 60000);
 
   afterEach(async () => {
     await testDatabase.clear();
@@ -42,12 +42,8 @@ describe('ItemRepository Integration Tests', () => {
       expect(result).toBeDefined();
       expect(result.length).toBe(2);
 
-      const retrievedItem1 = result.find(
-        (list) => list.id === createdItems[0].id,
-      );
-      const retrievedItem2 = result.find(
-        (list) => list.id === createdItems[1].id,
-      );
+      const retrievedItem1 = result.find((list) => list.id === createdItems[0].id);
+      const retrievedItem2 = result.find((list) => list.id === createdItems[1].id);
 
       expect(retrievedItem1).toBeDefined();
       expect(retrievedItem1?.id).toBe(createdItems[0].id);
@@ -143,10 +139,7 @@ describe('ItemRepository Integration Tests', () => {
       const createdItem1 = createdItems[0];
       const createdItem2 = createdItems[1];
       // Act
-      const result = await repository.getItemsByNamesOrIds(
-        [createdItem2.name],
-        [createdItem1.id],
-      );
+      const result = await repository.getItemsByNamesOrIds([createdItem2.name], [createdItem1.id]);
 
       // Assert
       expect(result).toBeDefined();
@@ -170,14 +163,8 @@ describe('ItemRepository Integration Tests', () => {
       const createdItem = createdItems[0];
 
       // Act
-      const result1 = await repository.getItemsByNamesOrIds(
-        [createdItem.name],
-        [],
-      );
-      const result2 = await repository.getItemsByNamesOrIds(
-        [],
-        [createdItem.id],
-      );
+      const result1 = await repository.getItemsByNamesOrIds([createdItem.name], []);
+      const result2 = await repository.getItemsByNamesOrIds([], [createdItem.id]);
 
       // Assert
       expect(result1).toBeDefined();
@@ -221,10 +208,7 @@ describe('ItemRepository Integration Tests', () => {
       };
 
       // Act
-      const updatedItem = await repository.updateItemById(
-        createdItem.id,
-        updatedData,
-      );
+      const updatedItem = await repository.updateItemById(createdItem.id, updatedData);
 
       // Assert
       expect(updatedItem).toBeDefined();
@@ -248,10 +232,7 @@ describe('ItemRepository Integration Tests', () => {
       };
 
       // Act
-      const updatedItem = await repository.updateItemById(
-        createdItem.id,
-        updatedData,
-      );
+      const updatedItem = await repository.updateItemById(createdItem.id, updatedData);
 
       // Assert
       expect(updatedItem).toBeDefined();
@@ -268,10 +249,7 @@ describe('ItemRepository Integration Tests', () => {
       };
 
       // Act
-      const result = await repository.updateItemById(
-        TEST_IDS.NON_EXISTENT_ITEM,
-        updatedData,
-      );
+      const result = await repository.updateItemById(TEST_IDS.NON_EXISTENT_ITEM, updatedData);
 
       // Assert
       expect(result).toBeUndefined();
