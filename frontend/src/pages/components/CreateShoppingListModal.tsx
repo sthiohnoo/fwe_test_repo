@@ -16,6 +16,7 @@ import ReactSelectControl from '../../components/ReactSelectControl.tsx';
 import { GroupBase } from 'react-select';
 import { OptionBase } from 'chakra-react-select';
 import { useApiClient } from '../../hooks/useApiClient.ts';
+import { object, string } from 'yup';
 
 interface ItemOption extends OptionBase {
   id?: string;
@@ -37,12 +38,17 @@ export const CreateShoppingListModal = ({
 }) => {
   const client = useApiClient();
 
+  const CreateShoppingListSchema = object({
+    name: string().required('Name is required'),
+  });
+
   return (
     <Modal {...restProps}>
       <ModalOverlay />
 
       <Formik<ShoppingListFormValues>
         initialValues={initialValues ?? { name: '', description: '', items: [] }}
+        validationSchema={CreateShoppingListSchema}
         onSubmit={(values, formikHelpers) => {
           const transformedItems =
             values.items?.map((item) => ({
