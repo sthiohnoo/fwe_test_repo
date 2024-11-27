@@ -1,4 +1,5 @@
 import {
+  Button,
   IconButton,
   Table,
   TableContainer,
@@ -22,6 +23,7 @@ export const ShoppingListTable = ({
   onClickDeleteItem,
   onClickToggleFavorite,
   onClickToggleIsPurchased,
+  onClickUpdateQuantity,
 }: {
   data: ShoppingList[];
   onClickDeleteShoppingList: (shoppingList: ShoppingList) => void;
@@ -30,6 +32,7 @@ export const ShoppingListTable = ({
   onClickDeleteItem: (shoppingList: ShoppingList, itemId: string) => void;
   onClickToggleFavorite: (shoppingList: ShoppingList) => void;
   onClickToggleIsPurchased: (shoppingList: ShoppingList, itemId: string) => void;
+  onClickUpdateQuantity: (shoppingList: ShoppingList, itemId: string, quantity: number) => void;
 }) => {
   const headerBg = useColorModeValue('lightblue', 'darkblue');
   const cellBg = useColorModeValue('gray.50', 'gray.700');
@@ -104,7 +107,20 @@ export const ShoppingListTable = ({
                             )}
                           </Td>
                           <Td bg={cellBg} width="15%" textAlign="center">
-                            {item.quantity}
+                            <Button
+                              width="40px"
+                              height="40px"
+                              variant={'outline'}
+                              colorScheme={'purple'}
+                              onClick={() => {
+                                if (item.item?.id && item.quantity) {
+                                  onClickUpdateQuantity(entry, item.item.id, item.quantity);
+                                  //TODO: popover placement fix
+                                }
+                              }}
+                            >
+                              {item.quantity}
+                            </Button>
                           </Td>
                           <Td bg={cellBg}>
                             <IconButton

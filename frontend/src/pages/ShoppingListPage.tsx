@@ -16,6 +16,7 @@ import axios from 'axios';
 import { SearchIcon, StarIcon } from '@chakra-ui/icons';
 import { IoHomeOutline } from 'react-icons/io5';
 import { SearchOpenFoodApiModal } from '../components/SearchOpenFoodApiModal.tsx';
+import { UpdateQuantityPopover } from './components/UpdateQuantityPopover.tsx';
 
 export const ShoppingListPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,6 +30,11 @@ export const ShoppingListPage = () => {
     onOpen: onOpenFoodOpen,
     onClose: onOpenFoodClose,
   } = useDisclosure(); // Disclosure for SearchOpenFoodApiModal
+  const {
+    isOpen: isUpdateQuantityOpen,
+    onOpen: onUpdateQuantityOpen,
+    onClose: onUpdateQuantityClose,
+  } = useDisclosure(); // Disclosure for UpdateQuantityPopover
 
   const client = useApiClient();
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
@@ -161,6 +167,30 @@ export const ShoppingListPage = () => {
     await loadShoppingLists();
   };
 
+  const [popoverData, setPopoverData] = useState<{
+    listId: string;
+    itemId: string;
+    quantity: number;
+  } | null>(null);
+  const onClickOpenUpdateQuantityPopover = async (
+    list: ShoppingList,
+    itemId: string,
+    initialQuantity: number,
+  ) => {
+    console.log('Popover has to be implemented for: ', list.id, itemId, initialQuantity);
+    setPopoverData({ listId: list.id, itemId, quantity: initialQuantity });
+    onUpdateQuantityOpen();
+  };
+  const onSubmitUpdateQuantity = async (quantity: number) => {
+    if (popoverData) {
+      await client.patchUpdateQuantity(popoverData.listId, popoverData.itemId, {
+        quantity,
+      });
+      await loadShoppingLists();
+      setPopoverData(null);
+    }
+  };
+
   // Freestyle Task #1
   const [isShowingFavorites, setIsShowingFavorites] = useState(false);
   const onClickToggleFavorite = async (list: ShoppingList) => {
@@ -268,6 +298,14 @@ export const ShoppingListPage = () => {
             }
           }}
         />
+        {popoverData && (
+          <UpdateQuantityPopover
+            isOpen={isUpdateQuantityOpen}
+            onClose={onUpdateQuantityClose}
+            initialQuantity={popoverData.quantity}
+            onSubmit={onSubmitUpdateQuantity}
+          />
+        )}
         <SearchOpenFoodApiModal isOpen={isOpenFoodOpen} onClose={onOpenFoodClose} />{' '}
         <AddItemTableModal
           isOpen={isItemTableOpen}
@@ -282,6 +320,7 @@ export const ShoppingListPage = () => {
           onClickDeleteItem={onClickDeleteItem}
           onClickToggleFavorite={onClickToggleFavorite}
           onClickToggleIsPurchased={onClickToggleIsPurchased}
+          onClickUpdateQuantity={onClickOpenUpdateQuantityPopover}
         />
       </Box>
     </BaseLayout>
