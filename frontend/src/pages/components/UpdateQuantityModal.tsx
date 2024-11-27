@@ -1,17 +1,18 @@
 import {
   Button,
-  Popover,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react';
 import { number, object } from 'yup';
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 
-export const UpdateQuantityPopover = ({
+export const UpdateQuantityModal = ({
   isOpen,
   onClose,
   initialQuantity,
@@ -27,10 +28,11 @@ export const UpdateQuantityPopover = ({
   });
 
   return (
-    <Popover isOpen={isOpen} onClose={onClose} placement="bottom">
-      <PopoverContent>
-        <PopoverHeader>Change Quantity</PopoverHeader>
-        <PopoverCloseButton />
+    <Modal isOpen={isOpen} onClose={onClose} size={'xs'}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Change Quantity</ModalHeader>
+        <ModalCloseButton />
         <Formik
           initialValues={{ quantity: initialQuantity }}
           validationSchema={UpdateQuantitySchema}
@@ -42,23 +44,23 @@ export const UpdateQuantityPopover = ({
           enableReinitialize={true}
         >
           <Form>
-            <PopoverBody>
+            <ModalBody>
               <InputControl
                 name={'quantity'}
                 inputProps={{ type: 'number', placeholder: 'Quantity?' }}
               />
-            </PopoverBody>
-            <PopoverFooter>
+            </ModalBody>
+            <ModalFooter>
               <SubmitButton colorScheme="blue" mr={3}>
                 Change
               </SubmitButton>
               <Button variant="ghost" onClick={onClose}>
                 Cancel
               </Button>
-            </PopoverFooter>
+            </ModalFooter>
           </Form>
         </Formik>
-      </PopoverContent>
-    </Popover>
+      </ModalContent>
+    </Modal>
   );
 };

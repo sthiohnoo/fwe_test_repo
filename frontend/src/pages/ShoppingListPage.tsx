@@ -16,7 +16,7 @@ import axios from 'axios';
 import { SearchIcon, StarIcon } from '@chakra-ui/icons';
 import { IoHomeOutline } from 'react-icons/io5';
 import { SearchOpenFoodApiModal } from '../components/SearchOpenFoodApiModal.tsx';
-import { UpdateQuantityPopover } from './components/UpdateQuantityPopover.tsx';
+import { UpdateQuantityModal } from './components/UpdateQuantityModal.tsx';
 
 export const ShoppingListPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +34,7 @@ export const ShoppingListPage = () => {
     isOpen: isUpdateQuantityOpen,
     onOpen: onUpdateQuantityOpen,
     onClose: onUpdateQuantityClose,
-  } = useDisclosure(); // Disclosure for UpdateQuantityPopover
+  } = useDisclosure(); // Disclosure for UpdateQuantityModal
 
   const client = useApiClient();
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
@@ -291,7 +291,6 @@ export const ShoppingListPage = () => {
               }) ?? [];
 
             if (shoppingListsToBeUpdated) {
-              // TODO: i cannot update the items(quantity and ispurchased)
               onUpdateShoppingList({ ...updatedShoppingList, items: updatedItems });
             } else {
               onCreateShoppingList({ ...updatedShoppingList });
@@ -299,7 +298,7 @@ export const ShoppingListPage = () => {
           }}
         />
         {popoverData && (
-          <UpdateQuantityPopover
+          <UpdateQuantityModal
             isOpen={isUpdateQuantityOpen}
             onClose={onUpdateQuantityClose}
             initialQuantity={popoverData.quantity}

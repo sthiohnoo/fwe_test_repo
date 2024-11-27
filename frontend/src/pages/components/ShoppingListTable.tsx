@@ -115,7 +115,6 @@ export const ShoppingListTable = ({
                               onClick={() => {
                                 if (item.item?.id && item.quantity) {
                                   onClickUpdateQuantity(entry, item.item.id, item.quantity);
-                                  //TODO: popover placement fix
                                 }
                               }}
                             >
