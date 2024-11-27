@@ -8,7 +8,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
@@ -42,14 +41,10 @@ export const UpdateItemModal = ({
       <ModalContent>
         <ModalHeader textAlign="center" fontSize="2xl" fontWeight="bold">
           Update Item
-          <HStack justifyContent={'space-evenly'} fontWeight="normal" color={'gray'}>
-            <Text>["{itemName}"]</Text>
-            <Text>["{itemDescription}"]</Text>
-          </HStack>
         </ModalHeader>
         <ModalCloseButton />
         <Formik<UpdateItemFormValues>
-          initialValues={{ name: '', description: '' }}
+          initialValues={{ name: itemName, description: itemDescription }}
           validationSchema={UpdateItemSchema}
           onSubmit={(values, formikHelpers) => {
             formikHelpers.setSubmitting(false);
@@ -61,8 +56,16 @@ export const UpdateItemModal = ({
             <Form>
               <ModalBody>
                 <HStack spacing={3} w="full">
-                  <InputControl name={'name'} label={'Name'} />
-                  <InputControl name={'description'} label={'Description'} />
+                  <InputControl
+                    name={'name'}
+                    label={'Name'}
+                    inputProps={{ placeholder: itemName }}
+                  />
+                  <InputControl
+                    name={'description'}
+                    label={'Description'}
+                    inputProps={{ placeholder: itemDescription }}
+                  />
                 </HStack>
               </ModalBody>
               <ModalFooter>

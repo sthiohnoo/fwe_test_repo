@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ItemTable } from './components/ItemTable.tsx';
 import { useApiClient } from '../hooks/useApiClient.ts';
 import { Item, PostItemsRequestInner, PutItemsIdRequest } from '../adapter/api/__generated';
-import { UpdateItemModal } from '../components/updateItemModal.tsx';
+import { UpdateItemModal } from './components/updateItemModal.tsx';
 import { CreateItemModal } from './components/CreateItemModal.tsx';
 import axios from 'axios';
 

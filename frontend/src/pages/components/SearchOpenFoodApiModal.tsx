@@ -19,7 +19,7 @@ import {
 import { Form, Formik } from 'formik';
 import { InputControl, SubmitButton } from 'formik-chakra-ui';
 import { object, string } from 'yup';
-import { useFetchApi } from '../hooks/useFetchApi';
+import { useFetchApi } from '../../hooks/useFetchApi.ts';
 
 export type SearchFormValues = {
   categoryTag: string;

@@ -11,11 +11,11 @@ import {
 import { Box, Button, HStack, IconButton, Input, Select, useDisclosure } from '@chakra-ui/react';
 import { ShoppingListTable } from './components/ShoppingListTable.tsx';
 import { CreateShoppingListModal } from './components/CreateShoppingListModal.tsx';
-import { AddItemFormValues, AddItemTableModal } from '../components/AddItemTableModal.tsx';
+import { AddItemFormValues, AddItemTableModal } from './components/AddItemTableModal.tsx';
 import axios from 'axios';
 import { SearchIcon, StarIcon } from '@chakra-ui/icons';
 import { IoHomeOutline } from 'react-icons/io5';
-import { SearchOpenFoodApiModal } from '../components/SearchOpenFoodApiModal.tsx';
+import { SearchOpenFoodApiModal } from './components/SearchOpenFoodApiModal.tsx';
 import { UpdateQuantityModal } from './components/UpdateQuantityModal.tsx';
 
 export const ShoppingListPage = () => {

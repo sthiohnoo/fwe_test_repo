@@ -17,8 +17,8 @@ import {
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useApiClient } from '../hooks/useApiClient.ts';
-import { Item } from '../adapter/api/__generated';
+import { useApiClient } from '../../hooks/useApiClient.ts';
+import { Item } from '../../adapter/api/__generated';
 import { InputControl, SelectControl, SubmitButton } from 'formik-chakra-ui';
 import { Form, Formik } from 'formik';
 import { number, object } from 'yup';
