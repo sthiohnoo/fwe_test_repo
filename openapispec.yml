@@ -374,6 +374,16 @@ paths:
       x-stoplight:
         id: 2veqkoueizhww
       description: update Quantity of an item in shoppingList
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+                  x-stoplight:
+                    id: 2me4fxg54ck90
   /items:
     get:
       summary: Your GET endpoint

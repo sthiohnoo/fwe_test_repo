@@ -33,7 +33,15 @@ export const SearchOpenFoodApiModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const { setInputValueName, setInputValueScore, apiData, setApiData, setTrigger } = useFetchApi();
+  const {
+    setInputValueName,
+    setInputValueScore,
+    apiData,
+    setApiData,
+    setTrigger,
+    loading,
+    setLoading,
+  } = useFetchApi();
 
   const SearchSchema = object({
     categoryTag: string().required('Category Tag is required'),
@@ -58,6 +66,7 @@ export const SearchOpenFoodApiModal = ({
           validationSchema={SearchSchema}
           onSubmit={(values, formikHelpers) => {
             formikHelpers.setSubmitting(false);
+            setLoading(true);
             setInputValueName(values.categoryTag);
             setInputValueScore(values.nutritionGrade);
             setTrigger(true);
@@ -80,7 +89,9 @@ export const SearchOpenFoodApiModal = ({
                 </HStack>
               </ModalBody>
               <ModalFooter>
-                <SubmitButton colorScheme="blue">Search</SubmitButton>
+                <SubmitButton colorScheme="blue" isLoading={loading}>
+                  Search
+                </SubmitButton>
                 <Button onClick={handleClose}>Cancel</Button>
               </ModalFooter>
             </Form>

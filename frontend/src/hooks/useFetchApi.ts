@@ -7,6 +7,7 @@ export const useFetchApi = () => {
   const [inputValueScore, setInputValueScore] = useState<string | null>(null);
   const [apiData, setApiData] = useState<any[]>([]);
   const [trigger, setTrigger] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   /**
    * The API providers "Open Food Facts" enforce a rate limit, and therefore this safety measure(Bottleneck) has been implemented.
@@ -17,10 +18,12 @@ export const useFetchApi = () => {
   });
 
   const limitedFetchApi = limiter.wrap(async (name: string, score: string) => {
+    setLoading(true);
     const response = await fetch(
       `https://world.openfoodfacts.net/api/v2/search?categories_tags_en=${name}&nutrition_grades_tags=${score}&fields=nutrition_grades,categories_tags_en,product_name`,
     );
     const data = await response.json();
+    setLoading(false);
     console.log(data);
     return data;
   });
@@ -45,5 +48,7 @@ export const useFetchApi = () => {
     apiData,
     setApiData,
     setTrigger,
+    loading,
+    setLoading,
   };
 };
