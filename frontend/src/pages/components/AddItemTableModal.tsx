@@ -13,6 +13,7 @@ import {
   Th,
   Thead,
   Tr,
+  useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useState } from 'react';
@@ -38,7 +39,9 @@ export const AddItemTableModal = ({
   onClose: () => void;
   onSubmit: (values: AddItemFormValues) => Promise<void>;
 }) => {
-  //const { isOpen, onOpen, onClose } = useDisclosure();
+  const tableRowBg = useColorModeValue('white', 'gray.700');
+  const selectedRowBg = useColorModeValue('blue.100', 'blue.600');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const client = useApiClient();
   const [items, setItems] = useState<Item[]>([]);
@@ -89,8 +92,12 @@ export const AddItemTableModal = ({
                 <Table variant="simple">
                   <Thead>
                     <Tr>
-                      <Th>Name</Th>
-                      <Th>Description</Th>
+                      <Th borderBottom="1px" borderColor={borderColor}>
+                        Name
+                      </Th>
+                      <Th borderBottom="1px" borderColor={borderColor}>
+                        Description
+                      </Th>
                     </Tr>
                   </Thead>
                   <Tbody>
@@ -101,11 +108,15 @@ export const AddItemTableModal = ({
                           selectItem(item.id);
                           setFieldValue('id', item.id);
                         }}
-                        bg={selectedItem === item.id ? 'blue.100' : 'white'}
+                        bg={selectedItem === item.id ? selectedRowBg : tableRowBg}
                         cursor="pointer"
                       >
-                        <Td>{item.name}</Td>
-                        <Td>{item.description}</Td>
+                        <Td borderBottom="1px" borderColor={borderColor}>
+                          {item.name}
+                        </Td>
+                        <Td borderBottom="1px" borderColor={borderColor}>
+                          {item.description}
+                        </Td>
                       </Tr>
                     ))}
                   </Tbody>
