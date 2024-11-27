@@ -155,7 +155,7 @@ export class ShoppingListController {
 
     const validatedData = updateShoppingListZodSchema.parse(req.body);
 
-    if (validatedData.items) {
+    if (validatedData.items && validatedData.items.length > 0) {
       const existingListInList =
         await this.shoppingListItemRepository.getListInListById(validatedId);
       if (!existingListInList) {
