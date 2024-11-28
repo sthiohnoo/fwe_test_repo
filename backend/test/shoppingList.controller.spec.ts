@@ -299,7 +299,7 @@ describe('ShoppingListController Integration Tests', () => {
 
       // Assert
       expect(response.status).toBe(404);
-      expect(response.body.errors).toContain('Item not found in ShoppingLists');
+      expect(response.body.errors).toContain('Item not found in any ShoppingList');
     });
   });
 

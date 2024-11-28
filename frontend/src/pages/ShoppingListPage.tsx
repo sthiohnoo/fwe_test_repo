@@ -86,6 +86,7 @@ export const ShoppingListPage = () => {
         isPurchased: String(values.isPurchased) === 'true',
       };
 
+      //TODO: TOAST messsage, if item already in list
       await client.putShoppingListsShoppingListIdItemsItemId(
         shoppingListsToBeUpdated.id,
         values.id,

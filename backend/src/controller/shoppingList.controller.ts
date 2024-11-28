@@ -29,49 +29,33 @@ export class ShoppingListController {
 
   async getShoppingListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
-
     const withRelations = z
       .boolean()
       .default(true)
       .parse(req.query.withRelations === 'true' || req.query.withRelations === undefined);
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
 
-    const validatedShoppingListId = z
-      .string()
-      .uuid({
-        message: 'Invalid shoppingListId format. please provide a valid UUID',
-      })
-      .parse(shoppingListId);
+    if (!(await this.checkShoppingListExists(validatedShoppingListId, res))) {
+      return;
+    }
 
     const shoppingLists = await this.shoppingListRepository.getShoppingListById(
       validatedShoppingListId,
       withRelations,
     );
-
-    if (!shoppingLists) {
-      res.status(404).json({ errors: ['ShoppingList not found'] });
-      return;
-    }
     res.send(shoppingLists);
   }
 
   async getShoppingListsWithSearchingItemById(req: Request, res: Response): Promise<void> {
     const { itemId } = req.params;
+    const validatedItemId = this.isValidItemId(itemId);
 
-    const validatedItemId = z
-      .string()
-      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
-      .parse(itemId);
-
-    const existingListWithItem =
-      await this.shoppingListItemRepository.getItemInAllListsById(validatedItemId);
-    if (!existingListWithItem) {
-      res.status(404).json({ errors: ['Item not found in ShoppingLists'] });
+    if (!(await this.checkItemExistsInAnyShoppingList(validatedItemId, res))) {
       return;
     }
 
     const shoppingLists =
       await this.shoppingListItemRepository.getListsInListByItemId(validatedItemId);
-
     res.send(shoppingLists);
   }
 
@@ -133,23 +117,14 @@ export class ShoppingListController {
     const shoppingListWithItems = await this.shoppingListRepository.getShoppingListById(
       createdShoppingList.id,
     );
-
     res.status(201).send(shoppingListWithItems);
   }
 
   async updateShoppingListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
 
-    const validatedId = z
-      .string()
-      .uuid({
-        message: 'Invalid shoppingListId format. please provide a valid UUID',
-      })
-      .parse(shoppingListId);
-
-    const existingShoppingList = await this.shoppingListRepository.getShoppingListById(validatedId);
-    if (!existingShoppingList) {
-      res.status(404).json({ errors: ['ShoppingList not found'] });
+    if (!(await this.checkShoppingListExists(validatedShoppingListId, res))) {
       return;
     }
 
@@ -157,7 +132,7 @@ export class ShoppingListController {
 
     if (validatedData.items && validatedData.items.length > 0) {
       const existingListInList =
-        await this.shoppingListItemRepository.getListInListById(validatedId);
+        await this.shoppingListItemRepository.getListInListById(validatedShoppingListId);
       if (!existingListInList) {
         res.status(404).json({
           errors: ['Update canceled! Updating list has no items'],
@@ -179,13 +154,13 @@ export class ShoppingListController {
     }
 
     const updatedShoppingList = await this.shoppingListRepository.updateShoppingListById(
-      validatedId,
+      validatedShoppingListId,
       validatedData,
     );
 
     if (validatedData.items) {
       for (const item of validatedData.items) {
-        await this.shoppingListItemRepository.updateListItemById(validatedId, item.id, {
+        await this.shoppingListItemRepository.updateListItemById(validatedShoppingListId, item.id, {
           quantity: item.quantity,
           isPurchased: item.isPurchased,
         });
@@ -196,60 +171,32 @@ export class ShoppingListController {
 
   async addItemToList(req: Request, res: Response): Promise<void> {
     const { shoppingListId, itemId } = req.params;
-
     const validatedData = addItemToListZodSchema.parse({
       ...req.body,
       listId: shoppingListId,
       itemId: itemId,
     });
 
-    const existingShoppingList = await this.shoppingListRepository.getShoppingListById(
-      validatedData.listId,
-    );
-    if (!existingShoppingList) {
-      res.status(404).json({ errors: ['ShoppingList not found'] });
+    if (!(await this.checkShoppingListExists(validatedData.listId, res))) {
       return;
     }
-
-    const existingItem = await this.itemRepository.getItemById(validatedData.itemId);
-    if (!existingItem) {
-      res.status(404).json({ errors: ['Item not found'] });
+    if (!(await this.checkItemExists(validatedData.itemId, res))) {
       return;
     }
-
-    const existingItemInList = await this.shoppingListItemRepository.getItemInListById(
-      validatedData.listId,
-      validatedData.itemId,
-    );
-    if (existingItemInList) {
-      res.status(409).json({ errors: ['Item already in the ShoppingList'] });
+    if (await this.checkItemIsAlreadyInList(validatedData.listId, validatedData.itemId, res)) {
       return;
     }
 
     const addedItemInList = await this.shoppingListItemRepository.addItemToList(validatedData);
-
     res.status(201).send(addedItemInList);
   }
 
   async deleteItemInListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId, itemId } = req.params;
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
+    const validatedItemId = this.isValidItemId(itemId);
 
-    const validatedShoppingListId = z
-      .string()
-      .uuid({
-        message: 'Invalid shoppingListId format. please provide a valid UUID',
-      })
-      .parse(shoppingListId);
-
-    const validatedItemId = z
-      .string()
-      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
-      .parse(itemId);
-
-    const existingListInList =
-      await this.shoppingListItemRepository.getListInListById(validatedShoppingListId);
-    if (!existingListInList) {
-      res.status(404).json({ errors: ['ShoppingList has no Items'] });
+    if (!(await this.checkShoppingListHasItems(validatedShoppingListId, res))) {
       return;
     }
 
@@ -266,45 +213,25 @@ export class ShoppingListController {
 
   async deleteShoppingListById(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
-    const validatedId = z
-      .string()
-      .uuid({ message: 'Invalid shoppingListId format. please provide a valid UUID' })
-      .parse(shoppingListId);
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
 
-    const existingShoppingList = await this.shoppingListRepository.getShoppingListById(validatedId);
-
-    if (!existingShoppingList) {
-      res.status(404).json({ errors: ['ShoppingList not found'] });
+    if (!(await this.checkShoppingListExists(validatedShoppingListId, res))) {
       return;
     }
 
-    await this.shoppingListItemRepository.deleteListInListById(validatedId);
-    await this.shoppingListRepository.deleteShoppingListById(validatedId);
+    await this.shoppingListItemRepository.deleteListInListById(validatedShoppingListId);
+    await this.shoppingListRepository.deleteShoppingListById(validatedShoppingListId);
     res.status(204).send({});
   }
 
   async toggleIsPurchased(req: Request, res: Response): Promise<void> {
     const { shoppingListId, itemId } = req.params;
+    const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
+    const validatedItemId = this.isValidItemId(itemId);
 
-    const validatedShoppingListId = z
-      .string()
-      .uuid({
-        message: 'Invalid shoppingListId format. please provide a valid UUID',
-      })
-      .parse(shoppingListId);
-
-    const validatedItemId = z
-      .string()
-      .uuid({ message: 'Invalid itemId format. please provide a valid UUID' })
-      .parse(itemId);
-
-    const existingListInList =
-      await this.shoppingListItemRepository.getListInListById(validatedShoppingListId);
-    if (!existingListInList) {
-      res.status(404).json({ errors: ['ShoppingList has no Items'] });
+    if (!(await this.checkShoppingListHasItems(validatedShoppingListId, res))) {
       return;
     }
-
     const existingItemInList = await this.shoppingListItemRepository.getItemInListById(
       validatedShoppingListId,
       validatedItemId,
@@ -320,22 +247,22 @@ export class ShoppingListController {
       validatedItemId,
       { isPurchased: newIsPurchasedStatus },
     );
-
     res.send(updatedItem);
   }
 
   async updateQuantity(req: Request, res: Response): Promise<void> {
     const { shoppingListId, itemId } = req.params;
     const { quantity } = req.body;
-
     const validatedShoppingListId = this.isValidShoppingListId(shoppingListId);
     const validatedItemId = this.isValidItemId(itemId);
     const validatedQuantity = z.number().min(1).parse(quantity);
 
-    if (!(await this.shoppingListHasItems(validatedShoppingListId, res))) {
+    if (!(await this.checkShoppingListHasItems(validatedShoppingListId, res))) {
       return;
     }
-    if (!(await this.ItemExistsInShoppingList(validatedShoppingListId, validatedItemId, res))) {
+    if (
+      !(await this.checkItemExistsInShoppingList(validatedShoppingListId, validatedItemId, res))
+    ) {
       return;
     }
 
@@ -344,7 +271,6 @@ export class ShoppingListController {
       validatedItemId,
       { quantity: validatedQuantity },
     );
-
     res.send(updatedItem);
   }
 
@@ -364,18 +290,10 @@ export class ShoppingListController {
   async updateFavoriteStatus(req: Request, res: Response): Promise<void> {
     const { shoppingListId } = req.params;
     const { isFavorite } = req.body;
-
     const validatedIsFavorite = z.boolean().parse(isFavorite);
-    const validatedId = z
-      .string()
-      .uuid({
-        message: 'Invalid shoppingListId format. please provide a valid UUID',
-      })
-      .parse(shoppingListId);
+    const validatedId = this.isValidShoppingListId(shoppingListId);
 
-    const existingShoppingList = await this.shoppingListRepository.getShoppingListById(validatedId);
-    if (!existingShoppingList) {
-      res.status(404).json({ errors: ['ShoppingList not found'] });
+    if (!(await this.checkShoppingListExists(validatedId, res))) {
       return;
     }
 
@@ -401,7 +319,26 @@ export class ShoppingListController {
       .parse(shoppingListId);
   }
 
-  private async shoppingListHasItems(shoppingListId: string, res: Response): Promise<boolean> {
+  private async checkShoppingListExists(shoppingListId: string, res: Response): Promise<boolean> {
+    const existingShoppingList =
+      await this.shoppingListRepository.getShoppingListById(shoppingListId);
+    if (!existingShoppingList) {
+      res.status(404).json({ errors: ['ShoppingList not found'] });
+      return false;
+    }
+    return true;
+  }
+
+  private async checkItemExists(itemId: string, res: Response): Promise<boolean> {
+    const existingItem = await this.itemRepository.getItemById(itemId);
+    if (!existingItem) {
+      res.status(404).json({ errors: ['Item not found'] });
+      return false;
+    }
+    return true;
+  }
+
+  private async checkShoppingListHasItems(shoppingListId: string, res: Response): Promise<boolean> {
     const existingListInList =
       await this.shoppingListItemRepository.getListInListById(shoppingListId);
     if (!existingListInList) {
@@ -411,7 +348,17 @@ export class ShoppingListController {
     return true;
   }
 
-  private async ItemExistsInShoppingList(
+  private async checkItemExistsInAnyShoppingList(itemId: string, res: Response): Promise<boolean> {
+    const existingListWithItem =
+      await this.shoppingListItemRepository.getItemInAllListsById(itemId);
+    if (!existingListWithItem) {
+      res.status(404).json({ errors: ['Item not found in any ShoppingList'] });
+      return false;
+    }
+    return true;
+  }
+
+  private async checkItemExistsInShoppingList(
     shoppingListId: string,
     itemId: string,
     res: Response,
@@ -425,5 +372,21 @@ export class ShoppingListController {
       return false;
     }
     return true;
+  }
+
+  private async checkItemIsAlreadyInList(
+    listId: string,
+    itemId: string,
+    res: Response,
+  ): Promise<boolean> {
+    const existingItemInList = await this.shoppingListItemRepository.getItemInListById(
+      listId,
+      itemId,
+    );
+    if (existingItemInList) {
+      res.status(409).json({ errors: ['Item already in the ShoppingList'] });
+      return true;
+    }
+    return false;
   }
 }
