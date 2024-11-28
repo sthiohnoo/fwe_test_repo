@@ -245,7 +245,7 @@ export const ShoppingListPage = () => {
             <Select
               value={searchType}
               onChange={(e) => setSearchType(e.target.value)}
-              flex=" 0 0 25%"
+              flex=" 0 0 28%"
             >
               <option value="name">Name</option>
               <option value="description">Description</option>
