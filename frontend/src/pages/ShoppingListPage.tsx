@@ -56,7 +56,9 @@ export const ShoppingListPage = () => {
   }, [client]);
 
   useEffect(() => {
-    loadShoppingLists();
+    loadShoppingLists().catch((error) => {
+      console.error('Failed to load shoppingLists:', error);
+    });
   }, [loadShoppingLists]);
 
   const onSubmitCreateShoppingList = async (data: PostShoppingListsRequest) => {
@@ -311,9 +313,15 @@ export const ShoppingListPage = () => {
               }) ?? [];
 
             if (shoppingListsToBeUpdated) {
-              onSubmitUpdateShoppingList({ ...updatedShoppingList, items: updatedItems });
+              onSubmitUpdateShoppingList({ ...updatedShoppingList, items: updatedItems }).catch(
+                (error) => {
+                  console.error('Failed to update shoppingLists:', error);
+                },
+              );
             } else {
-              onSubmitCreateShoppingList({ ...updatedShoppingList });
+              onSubmitCreateShoppingList({ ...updatedShoppingList }).catch((error) => {
+                console.error('Failed to create shoppingLists:', error);
+              });
             }
           }}
         />

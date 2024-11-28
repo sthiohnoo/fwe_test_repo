@@ -24,7 +24,9 @@ export const ItemsPage = () => {
   }, [client]);
 
   useEffect(() => {
-    loadItems();
+    loadItems().catch((error) => {
+      console.error('Failed to load items:', error);
+    });
   }, [loadItems]);
 
   const onClickOpenCreateItemModal = async () => {

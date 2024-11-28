@@ -26,6 +26,12 @@ export type SearchFormValues = {
   nutritionGrade: string;
 };
 
+interface Product {
+  product_name: string;
+  categories_tags_en?: string[];
+  nutrition_grades: string;
+}
+
 export const SearchOpenFoodApiModal = ({
   isOpen,
   onClose,
@@ -108,7 +114,7 @@ export const SearchOpenFoodApiModal = ({
             </Thead>
             <Tbody>
               {apiData.length > 0 ? (
-                apiData.map((product: any, index: number) => (
+                apiData.map((product: Product, index: number) => (
                   <Tr key={index}>
                     <Td>{product.product_name || 'N/A'}</Td>
                     <Td>{product.categories_tags_en?.join(', ') || 'N/A'}</Td>

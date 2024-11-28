@@ -140,7 +140,7 @@ export const ShoppingListTable = ({
                 <Td>{format(new Date(entry.createdAt), 'dd.MM.yyyy')}</Td>
                 <Td>
                   <IconButton
-                    aria-label={'Toggle Favortie'}
+                    aria-label={'Toggle Favorite'}
                     icon={<StarIcon color={entry.isFavorite ? 'yellow.400' : 'black'} />}
                     onClick={() => onClickToggleFavorite(entry)}
                   />{' '}
