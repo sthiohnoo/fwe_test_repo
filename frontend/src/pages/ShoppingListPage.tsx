@@ -8,7 +8,16 @@ import {
   PutShoppingListsShoppingListIdItemsItemIdRequest,
   ShoppingList,
 } from '../adapter/api/__generated';
-import { Box, Button, HStack, IconButton, Input, Select, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  HStack,
+  IconButton,
+  Input,
+  Select,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
 import { ShoppingListTable } from './components/ShoppingListTable.tsx';
 import { CreateShoppingListModal } from './components/CreateShoppingListModal.tsx';
 import { AddItemFormValues, AddItemTableModal } from './components/AddItemTableModal.tsx';
@@ -37,6 +46,8 @@ export const ShoppingListPage = () => {
   } = useDisclosure(); // Disclosure for UpdateQuantityModal
 
   const client = useApiClient();
+  const toast = useToast();
+
   const [shoppingLists, setShoppingLists] = useState<ShoppingList[]>([]);
 
   const loadShoppingLists = useCallback(async () => {
@@ -87,12 +98,22 @@ export const ShoppingListPage = () => {
       };
 
       //TODO: TOAST messsage, if item already in list
-      await client.putShoppingListsShoppingListIdItemsItemId(
-        shoppingListsToBeUpdated.id,
-        values.id,
-        request,
-      );
-      await loadShoppingLists();
+      try {
+        await client.putShoppingListsShoppingListIdItemsItemId(
+          shoppingListsToBeUpdated.id,
+          values.id,
+          request,
+        );
+        await loadShoppingLists();
+      } catch (_error) {
+        toast({
+          description: 'Cannot add Item. Item already exists in ShoppingList',
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+          position: 'top',
+        });
+      }
     }
   };
 
