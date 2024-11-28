@@ -19,7 +19,7 @@ import { SearchOpenFoodApiModal } from './components/SearchOpenFoodApiModal.tsx'
 import { UpdateQuantityModal } from './components/UpdateQuantityModal.tsx';
 
 export const ShoppingListPage = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Disclosure for CreateShoppingListModal
   const {
     isOpen: isItemTableOpen,
     onOpen: onItemTableOpen,
@@ -48,13 +48,13 @@ export const ShoppingListPage = () => {
     loadShoppingLists();
   }, [loadShoppingLists]);
 
-  const onCreateShoppingList = async (data: PostShoppingListsRequest) => {
+  const onSubmitCreateShoppingList = async (data: PostShoppingListsRequest) => {
     await client.postShoppingLists(data);
     await loadShoppingLists();
     onClose();
   };
 
-  const onDeleteShoppingList = async (list: ShoppingList) => {
+  const onClickDeleteShoppingList = async (list: ShoppingList) => {
     await client.deleteShoppingListsId(list.id);
     await loadShoppingLists();
     setShoppingListToBeUpdated(null);
@@ -63,11 +63,11 @@ export const ShoppingListPage = () => {
   const [shoppingListsToBeUpdated, setShoppingListToBeUpdated] = useState<ShoppingList | null>(
     null,
   );
-  const onClickUpdateShoppingList = async (list: ShoppingList) => {
+  const onClickOpenUpdateShoppingListModal = async (list: ShoppingList) => {
     setShoppingListToBeUpdated(list);
     onOpen();
   };
-  const onUpdateShoppingList = async (list: PutShoppingListsIdRequest) => {
+  const onSubmitUpdateShoppingList = async (list: PutShoppingListsIdRequest) => {
     await client.putShoppingListsId(shoppingListsToBeUpdated?.id ?? '', list);
 
     await loadShoppingLists();
@@ -168,27 +168,26 @@ export const ShoppingListPage = () => {
     await loadShoppingLists();
   };
 
-  const [popoverData, setPopoverData] = useState<{
+  const [updateQuantityData, setUpdateQuantityData] = useState<{
     listId: string;
     itemId: string;
     quantity: number;
   } | null>(null);
-  const onClickOpenUpdateQuantityPopover = async (
+  const onClickOpenUpdateQuantityModal = async (
     list: ShoppingList,
     itemId: string,
     initialQuantity: number,
   ) => {
-    console.log('Popover has to be implemented for: ', list.id, itemId, initialQuantity);
-    setPopoverData({ listId: list.id, itemId, quantity: initialQuantity });
+    setUpdateQuantityData({ listId: list.id, itemId, quantity: initialQuantity });
     onUpdateQuantityOpen();
   };
   const onSubmitUpdateQuantity = async (quantity: number) => {
-    if (popoverData) {
-      await client.patchUpdateQuantity(popoverData.listId, popoverData.itemId, {
+    if (updateQuantityData) {
+      await client.patchUpdateQuantity(updateQuantityData.listId, updateQuantityData.itemId, {
         quantity,
       });
       await loadShoppingLists();
-      setPopoverData(null);
+      setUpdateQuantityData(null);
     }
   };
 
@@ -292,17 +291,17 @@ export const ShoppingListPage = () => {
               }) ?? [];
 
             if (shoppingListsToBeUpdated) {
-              onUpdateShoppingList({ ...updatedShoppingList, items: updatedItems });
+              onSubmitUpdateShoppingList({ ...updatedShoppingList, items: updatedItems });
             } else {
-              onCreateShoppingList({ ...updatedShoppingList });
+              onSubmitCreateShoppingList({ ...updatedShoppingList });
             }
           }}
         />
-        {popoverData && (
+        {updateQuantityData && (
           <UpdateQuantityModal
             isOpen={isUpdateQuantityOpen}
             onClose={onUpdateQuantityClose}
-            initialQuantity={popoverData.quantity}
+            initialQuantity={updateQuantityData.quantity}
             onSubmit={onSubmitUpdateQuantity}
           />
         )}
@@ -314,13 +313,13 @@ export const ShoppingListPage = () => {
         />{' '}
         <ShoppingListTable
           data={shoppingLists}
-          onClickDeleteShoppingList={onDeleteShoppingList}
-          onClickUpdateShoppingList={onClickUpdateShoppingList}
+          onClickDeleteShoppingList={onClickDeleteShoppingList}
+          onClickUpdateShoppingList={onClickOpenUpdateShoppingListModal}
           onClickAddItemToShoppingList={onClickOpenItemListToAdd}
           onClickDeleteItem={onClickDeleteItem}
           onClickToggleFavorite={onClickToggleFavorite}
           onClickToggleIsPurchased={onClickToggleIsPurchased}
-          onClickUpdateQuantity={onClickOpenUpdateQuantityPopover}
+          onClickUpdateQuantity={onClickOpenUpdateQuantityModal}
         />
       </Box>
     </BaseLayout>
