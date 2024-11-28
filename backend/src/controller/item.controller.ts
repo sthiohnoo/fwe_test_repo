@@ -86,7 +86,7 @@ export class ItemController {
     const validatedData = updateItemZodSchema.parse(req.body);
 
     const existingItemName = await this.itemRepository.getItemByName(validatedData.name);
-    if (existingItemName) {
+    if (existingItemName && existingItemName.id !== validatedItemId) {
       res.status(409).send({ errors: ['Update canceled! ItemName already exists'] });
       return;
     }
