@@ -155,8 +155,6 @@ ___
 - [ ] __Health Check:__ Checks the status of the application.
 - [ ] __Freestyle Task #1 / #2__
 
-### A brief explanation about the codes in backend [➡️](#brief-explanation-backend-code)
-
 ---
 
 ### Main: ShoppingList Page & Item Page
@@ -235,6 +233,90 @@ are attempted, the user will be informed with an error message.
 
 ### Additional Functionalities
 
+### Database Connection
+
+The application uses a PostgreSQL database to store and retrieve data. With Drizzle ORM, tables in the database can be
+easily created, modified, and deleted. Schemas are defined to describe the structure of the tables. Drizzle
+ORM uses these schemas to generate migrations. Migrations are scripts that contain the necessary SQL commands to create
+or modify tables. Once a migration is executed, the table is created or updated in the database according to the schema
+definition. If changes to the table structure are necessary, they must first be made in the schema. Then, a new
+migration is generated and executed to apply the changes to the database.
+
+In this project, three schemas or tables were designed:
+
+1. Shopping Lists Table: This table stores all shopping lists. Each shopping list is stored here with its relevant
+   information, such as ID, name, description, isFavorite, and createdAt.
+2. Items Table: This table stores all available items that can be added to a shopping list. Each item is stored with its
+   ID, name, and description.
+3. Relationship Table: To represent the relationship between individual items and shopping lists, a third table was
+   created. This serves as a relationship table and stores additional information, such as:
+    - The quantity of items in a shopping list.
+    - The status of an item (e.g., whether it has been checked off).
+
+   The relationship table allows modeling a many-to-many relationship between shopping lists and items while also
+   capturing details about this relationship.
+
+```typescript
+// ShoppingList schema
+export const shoppingList = pgTable('shopping_list', {
+  ...commonSchema,
+  isFavorite: boolean('is_favorite').default(false).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
+
+export const shoppingListRelations = relations(shoppingList, ({ many }) => ({
+  shoppingListItems: many(shoppingListItem),
+}));
+```
+
+```typescript
+// Item schema
+export const item = pgTable(
+  'item',
+  {
+    ...commonSchema,
+  },
+  (table) => ({
+    unq: unique().on(table.name),
+  }),
+);
+
+export const itemRelations = relations(item, ({ many }) => ({
+  shoppingListItems: many(shoppingListItem),
+}));
+```
+
+```typescript
+// ShoppingListItem schema
+export const shoppingListItem = pgTable(
+  'shopping_list_item',
+  {
+    listId: uuid('list_id')
+      .references(() => shoppingList.id)
+      .notNull(),
+    itemId: uuid('item_id')
+      .references(() => item.id)
+      .notNull(),
+    quantity: integer('quantity').notNull(),
+    isPurchased: boolean('is_purchased').default(false).notNull(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.listId, t.itemId] }),
+  }),
+);
+
+export const shoppingListItemRelations = relations(shoppingListItem, ({ one }) => ({
+  shoppingList: one(shoppingList, {
+    fields: [shoppingListItem.listId],
+    references: [shoppingList.id],
+  }),
+  item: one(item, {
+    fields: [shoppingListItem.itemId],
+    references: [item.id],
+  }),
+}));
+```
+
 ### Freestyle Task #1
 
 You might have a list of purchases that you make regularly over a certain period. Perhaps you want to save ingredients
@@ -278,78 +360,105 @@ returns a list of food items that match the criteria. Here in the example, `Oran
 
 ---
 
-### Brief Explanation Backend Code
-
-### Functionalities shoppingList.controller
-
-- __getShoppingLists :__
-  Method retrieves all shopping lists with its relations and returns them. If no shopping list is found, an empty array
-  is returned.
-- __getShoppingListsById :__
-  Method retrieves a shopping list by its ID with its relation and returns it. If no shopping list is found, a 404 error
-  is returned. If
-  the ID is not in the correct format, a 400 error is returned.
-- __getShoppingListsWithSearchingItemById :__
-  Method retrieves shopping lists containing a specific item by its ID and returns them. If no shopping list is found, a
-  404 error is returned. If the ID is not in the correct format, a 400 error is returned.
-- __searchShoppingListsWithNameOrDescription :__
-  Method retrieves shopping lists with a specific name or description and returns them. If no shopping list is found, a
-  404 error is returned. If both name and description are empty, all shopping lists are returned.
-- __createShoppingList :__
-  Method creates a new shopping list and returns it. We need to specify a name, while the description is optional.
-  Additionally, items can be added by ID or name. If the item does not already exist, it will be automatically created.
-  If an item is added during the creation of the shopping list, its properties "quantity" and "isPurchased" will be set
-  to default values.
-- __updateShoppingListById :__
-  Method updates a shopping list by its ID and returns it. The method can optionally change the name, description, and
-  also the properties of the items. If the quantity of an item is to be changed, it is checked to ensure it is not less
-  than 1. Errors such as "invalid ID format for both ShoppingList and Item", "non-existent Item/ShoppingList", "attempt
-  to update ShoppingList without items", or "attempt to update ShoppingList that does not contain the item" are caught
-  and the update process is aborted.
-- __addItemsToShoppingListById :__
-  Method adds item to a shopping list by its ID and returns it. When adding, the quantity of the item (>1) can be
-  specified and optionally the status "isPurchased" can be set. Errors such as "invalid ID format for both ShoppingList
-  and Item", "non-existent Item/ShoppingList", or "Item already exists in the ShoppingList" are caught and the process
-  is aborted.
-- __deleteItemInListById :__
-  Method deletes an item from a shopping list by its ID and returns 204 with No Content.
-  If the shopping list has no items, or if the shopping list does not contain the item to be deleted, this is caught and
-  an error is returned. Errors such as invalid ID formats are also caught.
-- __deleteShoppingListById :__
-  This method deletes a shopping list by its ID and returns 204 with No Content. Errors such as "invalid ID format" or "
-  non-existent shopping list" are caught and an error is returned. If the shopping list had items, the corresponding
-  entry in the relation table is also deleted.
-- __getFavoriteShoppingLists :__
-  Method retrieves all favorite shopping lists and returns them. If no favorite shopping list is found, an empty array
-  is
-  returned.
-- __updateFavoriteStatus :__
-  The method updates the favorite status of a shopping list by its ID and returns it. Shopping lists can either be
-  marked as favorites or unfavorited. Errors such as "invalid ID format," "non-existent shopping list," or "non-boolean
-  inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
-  shopping list.
-
-### Functionalities item.controller
-
-- __getItems :__
-  Method retrieves all items and returns them. If no item is found, an empty array is returned.
-- __getItemsById :__
-  Method retrieves an item by its ID and returns it. If no item is found, a 404 error is returned. If the ID is not in
-  the correct format, a 400 error is returned.
-- __getItemsByName :__
-  Method retrieves items with a specific name and returns them. If no item is found, a 404 error is returned.
-- __createItem :__
-  Method creates a new item and returns it. We need to specify a name with a minimum length of one character, but the
-  description is optional. If you try to create an item that already exists, you will receive a 409 error.
-- __updateItemById :__
-  Method updates an item by its ID and returns it. The method can optionally change the name and the description.
-  Errors such as "invalid ID format", "non-existent Item" or "Item with same name exists" are caught and the update
-  process is aborted.
-- __deleteItemById :__
-  Method deletes an item by its ID and returns 204 with No Content. If the item is not found, a 404 error is returned.
-  If the ID is not in the correct format, a 400 error is returned. If the item to be deleted is used in a shopping list,
-  you will receive a 409 error.
+---
 
 ## Routes
+
+Here in this section, you will find an overview of the structure of the routes.
+
+__ShoppingList Routes__
+
+- [ ] GET /shoppingLists
+    - Description: Retrieves all shopping lists.
+    - Response: 200 OK, array of shopping lists.
+- [ ] GET /shoppingLists/search
+    - Description: Retrieves shopping lists with a specific name or description.
+    - Response: 200 OK, array of shopping lists.
+    - Errors: 404 Not Found.
+- [ ] GET /shoppingLists/:shoppingListId
+    - Description: Retrieves a shopping list by its ID.
+    - Response: 200 OK, shopping list object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] GET /shoppingLists/items/:itemId
+    - Description: Retrieves shopping lists containing a specific item by its ID.
+    - Response: 200 OK, array of shopping lists.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] POST /shoppingLists
+    - Description: Creates a new shopping list.
+    - Request Body: JSON object with name (required), description (optional) and items array (optional). The items array
+      contains multiple objects, each representing an item with its own properties such as id, name, and description.
+    - Response: 201 Created, shopping list object.
+- [ ] PUT /shoppingLists/:shoppingListId
+    - Description: Updates a shopping list by its ID.
+    - Request Body: JSON object with name (optional), description (optional), and items array(optional). The items array
+      contains multiple objects, each representing an item with its relation properties such as quantity and
+      isPurchased.
+    - Response: 200 OK, updated shopping list object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] PUT /shoppingLists/:shoppingListId/items/:id
+    - Description: Adds an item to a shopping list by its ID.
+    - Request Body: JSON object with quantity (required) and isPurchased (optional).
+    - Response: 201 Created, item object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format), 409 Conflict (item already in list).
+    - > `note` Adding an item is logically updating a shopping list, but it is technically creating a new row in the
+      shoppingListItem table. Therefore, I wasn't sure if the correct request is a PUT or POST. However, I decided to
+      use for response a 201 for the creation.
+- [ ] PATCH /shoppingLists/toggle/:shoppingListId/:itemId
+    - Description: Toggles the status of an item in a shopping list by its ID.
+    - Response: 200 OK, updated shoppingList object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] PATCH /shoppingLists/updateQuantity/:shoppingListId/:itemId
+    - Description: Updates the quantity of an item in a shopping list by its ID.
+    - Request Body: JSON object with quantity (required).
+    - Response: 200 OK, updated shoppingList object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] DELETE /shoppingLists/:shoppingListId/items/:itemId
+    - Description: Deletes an item from a shopping list by its ID.
+    - Response: 204 No Content.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] DELETE /shoppingLists/:shoppingListId
+    - Description: Deletes a shopping list by its ID.
+    - Response: 204 No Content.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] GET /shoppingLists/search/favorites
+    - Description: Retrieves all favorite shopping lists.
+    - Response: 200 OK, array of shopping lists.
+- [ ] PUT /shoppingLists/:shoppingListId/favorites
+    - Description: Updates the favorite status of a shopping list by its ID.
+    - Request Body: JSON object with isFavorite (required).
+    - Response: 200 OK, updated shopping list object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+
+__Item Routes__
+
+- [ ] GET /items
+    - Description: Retrieves all items.
+    - Response: 200 OK, array of items.
+- [ ] GET /items/:itemId
+    - Description: Retrieves an item by its ID.
+    - Response: 200 OK, item object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format).
+- [ ] GET /items/name/:itemName
+    - Description: Retrieves items with a specific name.
+    - Response: 200 OK, array of items.
+    - Errors: 404 Not Found.
+- [ ] POST /items
+    - Description: Creates a new item.
+    - Request Body: JSON array of objects, each with name (required) and description (optional).
+    - Response: 201 Created, item object.
+    - Errors: 409 Conflict (item already exists).
+- [ ] PUT /items/:itemId
+    - Description: Updates an item by its ID.
+    - Request Body: JSON object with name (optional) and description (optional).
+    - Response: 200 OK, updated item object.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format), 409 Conflict (item with same name exists).
+- [ ] DELETE /items/:id
+    - Description: Deletes an item by its ID.
+    - Response: 204 No Content.
+    - Errors: 404 Not Found, 400 Bad Request (invalid ID format), 409 Conflict (item in use).
+
+---
+
+---
 
 ## Tests
