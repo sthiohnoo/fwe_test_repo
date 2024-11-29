@@ -1,92 +1,21 @@
-# FWE-WS-24-25-1120617
+# FWE WS24/25 Homework-Project: ShoppingList Web Application
 
-## Getting started
+![ShoppingListPage](./docs/img/frontend/pages/shoppingListPageLightAndDark.png)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Table of Contents
 
-Already a pro? Just edit this README.md and make it your own. Want to make it
-easy? [Use the template at the bottom](#editing-this-readme)!
+1. [Installation / Getting started](#installation--getting-started)
+2. [Application Functionalities](#application-functionalities)
+3. [Routes](#routes)
+4. [Tests](#tests)
 
-## Add your files
+---
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file)
-  or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line)
-  or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://code.fbi.h-da.de/sthiohnoo/fwe-ws-24-25-1120617.git
-git branch -M main
-git push -uf origin main
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://code.fbi.h-da.de/sthiohnoo/fwe-ws-24-25-1120617/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to
-structure it however you want - this is just a starting point!). Thanks
-to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are
-suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long
-is better than too short. If you think your README is too long, consider utilizing another form of documentation rather
-than cutting out information.
-
-## Name
-
-Choose a self-explaining name for your project.
-
-## Description
-
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be
-unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your
-project, this is a good place to list differentiating factors.
-
-## Badges
-
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the
-project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see
-GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
 ## Installation / Getting started
 
-_Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew.
-However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing
-specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a
-specific context like a particular programming language version or operating system or has dependencies that have to be
-installed manually, also add a Requirements subsection._
-
-### Step 0: Prerequisites
+### Prerequisites
 
 Ensure the following software components are installed on your PC:
 
@@ -130,18 +59,23 @@ Ensure the following software components are installed on your PC:
     docker-compose --version
     ```
 
-### Step 1: Clone the Repository
+### Clone the Repository
 
 Clone the repository to your local machine:
 
 ```bash
 git clone https://code.fbi.h-da.de/sthiohnoo/fwe-ws-24-25-1120617.git
-cd fwe-ws-24-25-1120617
+```
+
+### Backend Setup
+
+### Step 1: Navigate to the Backend Directory
+
+```bash
+cd fwe-ws-24-25-1120617/backend
 ```
 
 ### Step 2: Install Dependencies
-
-# TODO: Ab hier muss alles in backend-Ordner gemacht werden. Sollte ich das Projekt aufsetzten in fornt- und backend trennen?
 
 Install the necessary dependencies using npm:
 
@@ -173,9 +107,7 @@ Run the database migrations to create the necessary tables:
 npm run db:migrate
 ```
 
-### Step 6: Start the Application
-
-Start the application:
+### Step 6: Start the Backend
 
 ```bash
 npm start
@@ -183,13 +115,13 @@ npm start
 
 ## Frontend Setup
 
-### Step 1: Install Dependencies
-
-Navigate to the frontend directory:
+### Step 1: Navigate to the frontend directory:
 
 ```bash
 cd frontend
 ```
+
+### Step 2: Install Dependencies
 
 Install the necessary dependencies using npm:
 
@@ -197,24 +129,156 @@ Install the necessary dependencies using npm:
 npm install
 ```
 
-### Do I need this?
+### Step 3: Start the Frontend
 
 ```bash
-npx @chakra-ui/cli snippet add
+npm run preview
 ```
+
+### Step 4: Access the Application
+
+Open a browser and navigate to `http://localhost:5173/` or click the link in the terminal.
+
+---
+___
 
 ## Application Functionalities
 
-### Main Functionalities
+### Main Functionalities [➡️](#main-shoppinglist-page--item-page)
 
-- __Manage Shopping Lists:__ Create, read, update, and delete shopping lists.
-- __Manage Items:__ Create, read, update, and delete items in the shopping list.
+- [ ] __Manage Shopping Lists:__ Create, read, update, and delete shopping lists.
+- [ ] __Manage Items:__ Create, read, update, and delete items.
+
+### Additional Functionalities [➡️](#additional-functionalities)
+
+- [ ] __Database Connection:__ Connects to a PostgreSQL database to store and retrieve data.
+- [ ] __Health Check:__ Checks the status of the application.
+- [ ] __Freestyle Task #1 / #2__
+
+### A brief explanation about the codes in backend [➡️](#brief-explanation-backend-code)
+
+---
+
+### Main: ShoppingList Page & Item Page
+
+This web application has two different pages, each responsible for managing the shopping lists and items, but also
+offering other functionalities. Switching between these two pages is done by clicking on the button in the top right
+corner of the navigation bar. Additionally, there is another button next to it with a moon (or sun) symbol to switch
+between light and dark mode. When opening/reloading the pages, all existing shopping lists and items are displayed by
+default.
+![ShoppingListPage](./docs/img/frontend/pages/shoppingListPage.png)
+
+Let us first take a look at the selection bar above the shopping list table. Starting from the left, we have a button
+for creating new shopping lists. Next, there are two input fields for searching specific shopping lists. The three icons
+on the right edge are used for executing freestyle tasks and will be described in more detail in the corresponding
+[section](#freestyle-task-1).
+![Toolbar](./docs/img/frontend/pages/shoppingListPageToolbar.png)
+
+<div style="display: flex; align-items: center;">
+    <img src="./docs/img/frontend/modals/createShoppingListModal.png" alt="createShoppingListModal" width="350" height="300" style="margin-right: 10px;">
+    <span>When creating a shopping list, a modal opens to allow detailed information about the shopping list to be entered. This
+includes the name, description, and the items to be added. Only the name is required for creation. Existing items can be
+selected using the select box. Items that do not yet exist can also be added. These will automatically be created as new
+items once the shopping list is saved. The status and quantity of all items added in this way are set to false and 1 by default.
+
+The first search field allows us to search for shopping lists based on their name or description. The linked select box
+to the left of the input field enables switching between searching by name and description. The input field next to it
+is used to search for shopping lists containing specific items. All shopping lists that include the searched item will
+be displayed.
+
+> `note` Ideally, I would have designed the search functionality for the shopping list by item name in such a way that
+> it
+> allows
+> searching with only part of the name. Currently, however, the full name must be entered; otherwise, an empty list is
+> returned. _(Example: __ItemName:__ `Item 1`, __Input:__ `Item` &#8594; __Result:__ `Empty list`, __Input:__ `Item 1`
+&#8594; __Result__: `Shopping lists with
+Item 1`)_. This could be implemented by establishing the database query with "LIKE." However, this change to the
+> existing
+> code caused errors in other parts of the application, so I decided not to implement it. Implementing a completely new
+> function for the search was not feasible due to time constraints and a lack of motivation. 😊</span>
+</div>
+
+Next, let's take a closer look at an entry in the ShoppingList table. Each entry contains the columns Name, Description,
+Items, Created At, and Actions. In the Items column, all items contained in the ShoppingList are displayed. The item
+name, item description, status (whether purchased or not), and the desired quantity are shown. The status and quantity
+are displayed through a button, which provides a convenient way to change the status or edit the quantity.
+![exampleShoppingList](./docs/img/frontend/pages/exampleShoppingList.png)
+
+Here is a more detailed explanation of the individual icon buttons:
+> `note` The icons used here in the README do not exactly match the ones in the application.
+
+| IconButtons | Function                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ✔️ / ❌      | ✔️(true) and ❌(false) symbolize whether the item has already been purchased or not. By simply clicking, you can toggle the states.                                                                                                                                                                                                                                                                                             |
+| 1️⃣         | The number inside the button represents the desired quantity of the item. By clicking, a modal opens where you can easily change the quantity.                                                                                                                                                                                                                                                                                 |
+| 🗑️         | The trash can is used in two areas. Once next to each item in a shopping list and once in the actions of each individual shopping list. The functionality is very similar. On the one hand, it should delete the desired item from the shopping list, and on the other hand, you can delete an entire shopping list.                                                                                                           |
+| ⭐           | The star is used to mark or unmark a shopping list as a favorite. As a feature of the freestyle task, it is explained in more detail in the corresponding [section](#freestyle-task-1).                                                                                                                                                                                                                                        |
+| 📝          | The update symbol opens a modal where the name and description of the shopping list can be changed. <br/>  `note` Initially, the idea was to change not only the name and description but also the status and quantity of an item. This behavior was also implemented in the backend, but due to the complexity of the implementation in the frontend, the editing of item properties was separated into individual functions. |
+| ➕           | The plus symbol is used to add new items to a shopping list. A modal opens, listing all existing items. An item can be selected, and the quantity and whether it has already been purchased can be specified. For quickly searching for a specific item, a search field is also available. The found item is automatically selected.                                                                                           |
+
+![allModalsShoppingList](./docs/img/frontend/modals/allModalsForShoppingList.png)
+
+---
+
+Next, let's take a look at the item page. Since the basic structure is almost the same as the shopping list page, we
+will only briefly go over individual elements. Just like on the shopping list page, there is a button at the top left to
+open a modal to create new items. Within the modal, the user has the option to create one or more items simultaneously.
+Next to the create button is a search field for searching for specific items by name. An item has a name and a
+description. In the
+actions column, there are the same icons for editing and deleting an item as on the shopping list page. One difference
+from the shopping list is that an item cannot have the same name. This must be considered when creating and editing an
+item. When deleting, it must also be ensured that the item is not contained in a shopping list. If the mentioned actions
+are attempted, the user will be informed with an error message.
+![ItemPage](./docs/img/frontend/pages/itemPage.png)
+
+---
 
 ### Additional Functionalities
 
-- __Database Connection:__ Connects to a PostgreSQL database to store and retrieve data.
-- __Health Check:__ Checks the status of the application.
-- __Freestyle Task #1 / #2__
+### Freestyle Task #1
+
+You might have a list of purchases that you make regularly over a certain period. Perhaps you want to save ingredients
+from recipes so you don't have to research them every time. This feature was developed exactly for that purpose. You can
+now save shopping lists as favorites, so you can easily access important shopping lists at a later time without any
+problems. There is a star icon ⭐ next to each shopping list in the actions-column. By clicking on it, you can mark a
+shopping list as a favorite. The star icon changes its color to yellow to indicate that the shopping list is a favorite.
+If you click on the star icon again, the shopping list is no longer marked as a favorite. The color turns back to black.
+To display all shopping lists marked as favorites, there is another icon in the selection bar next to the search field.
+If you want to display all existing shopping lists again, you can either click on the home icon or reload the page.
+
+![FavoriteShoppingList](./docs/img/frontend/pages/showFavoriteShowAll.png)
+
+### Freestyle Task #2
+
+If you want to buy certain items, you might wonder if there are alternatives with better quality. For this purpose, a
+feature has been developed to search for specific items (in this case, groceries) paired with the Nutri-Score. The user
+is
+provided with a list of similar groceries with the desired Nutri-Score through the search. The API from Open Food Facts
+is
+used to obtain external data.
+
+In the top right corner of the selection bar of the shopping list page, there is a search icon 🔍 that you can click on
+
+![Search Modal](./docs/img/frontend/searchOpenFood/searchModal.png)
+
+When clicked, a modal opens where you can search for groceries by category tags and desired Nutri-Score. The search
+returns a list of food items that match the criteria. Here in the example, `Orange Juice` with Nutri-Score `c`.
+
+![Search Modal Result](./docs/img/frontend/searchOpenFood/searchModalwithResult.png)
+
+> __Important Note__
+>
+>The website that provides this external API requires limiting the rate of API requests per minute to
+> protect their infrastructure. To ensure this protection, a delay of 6 seconds between requests has been implemented
+> using `Bottleneck`. However, this is not the best solution, as every request, regardless of whether previous requests
+> have been made or not, must wait 6 seconds for a response. For the purposes of this project, however, this is
+> sufficient
+> for now.
+[Documentation Open Api Facts](https://openfoodfacts.github.io/openfoodfacts-server/api/).
+
+---
+
+### Brief Explanation Backend Code
 
 ### Functionalities shoppingList.controller
 
@@ -255,6 +319,15 @@ npx @chakra-ui/cli snippet add
   This method deletes a shopping list by its ID and returns 204 with No Content. Errors such as "invalid ID format" or "
   non-existent shopping list" are caught and an error is returned. If the shopping list had items, the corresponding
   entry in the relation table is also deleted.
+- __getFavoriteShoppingLists :__
+  Method retrieves all favorite shopping lists and returns them. If no favorite shopping list is found, an empty array
+  is
+  returned.
+- __updateFavoriteStatus :__
+  The method updates the favorite status of a shopping list by its ID and returns it. Shopping lists can either be
+  marked as favorites or unfavorited. Errors such as "invalid ID format," "non-existent shopping list," or "non-boolean
+  inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
+  shopping list.
 
 ### Functionalities item.controller
 
@@ -277,102 +350,6 @@ npx @chakra-ui/cli snippet add
   If the ID is not in the correct format, a 400 error is returned. If the item to be deleted is used in a shopping list,
   you will receive a 409 error.
 
-### Freestyle Task #1
+## Routes
 
-You might have a list of purchases that you make regularly over a certain period. Perhaps you want to save ingredients
-from recipes so you don't have to research them every time. This feature was developed exactly for that purpose. You can
-now save shopping lists as favorites, so you can easily access important shopping lists at a later time without any
-problems.
-
-- __getFavoriteShoppingLists :__
-  Method retrieves all favorite shopping lists and returns them. If no favorite shopping list is found, an empty array
-  is
-  returned.
-- __updateFavoriteStatus :__
-  The method updates the favorite status of a shopping list by its ID and returns it. Shopping lists can either be
-  marked as favorites or unfavorited. Errors such as "invalid ID format," "non-existent shopping list," or "non-boolean
-  inputs" are handled, and the process is aborted. The "isFavorite" status is initially set to "false" when creating a
-  shopping list.
-
-### Freestyle Task #2
-
-If you want to buy certain items, you might wonder if there are alternatives with better quality. For this purpose, a
-feature has been developed to search for specific items (in this case, groceries) paired with the Nutri-Score. The user
-is
-provided with a list of similar groceries with the desired Nutri-Score through the search. The API from Open Food Facts
-is
-used to obtain external data.
-
-<div style="display: flex; align-items: center;">
-    <img src="./docs/img/frontend/searchOpenFood/searchIcon.png" alt="Search Icon" width="40" height="40" style="margin-right: 10px;">
-    <span>At the top right corner of the page, there is a search icon that you can click on</span>
-</div>
-
-
-![Search Modal](./docs/img/frontend/searchOpenFood/searchModal.png)
-
-When clicked, a modal opens where you can search for groceries by category tags and desired Nutri-Score. The search
-returns a list of food items that match the criteria. Here in the example, `Orange Juice` with Nutri-Score `c`.
-
-![Search Modal Result](./docs/img/frontend/searchOpenFood/searchModalwithResult.png)
-
-> __Important Note__
->
->The website that provides this external API requires limiting the rate of API requests per minute to
-> protect their infrastructure. To ensure this protection, a delay of 6 seconds between requests has been implemented
-> using `Bottleneck`. However, this is not the best solution, as every request, regardless of whether previous requests
-> have been made or not, must wait 6 seconds for a response. For the purposes of this project, however, this is sufficient
-> for now.
-[Documentation Open Api Facts](https://openfoodfacts.github.io/openfoodfacts-server/api/).
-
-## Anmerkungen an den Dozenten
-
-Ideally, I would have designed the search functionality for the shopping list by item name in such a way that it allows
-searching with only part of the name. Currently, however, the full name must be entered; otherwise, an empty list is
-returned. _(Example: __ItemName:__ `Item 1`, __Input:__ `Item` &#8594; __Result:__ `Empty list`, __Input:__ `Item 1`
-&#8594; __Result__: `Shopping lists with
-Item`)_. This could be implemented by establishing the database query with "LIKE." However, this change to the existing
-code
-caused errors in other parts of the application, so I decided not to implement it. Implementing a completely new
-function for the search was not feasible due to time constraints and a lack of motivation. :)
-
-## Usage
-
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of
-usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably
-include in the README.
-
-## Support
-
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address,
-etc.
-
-## Roadmap
-
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started.
-Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps
-explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce
-the likelihood that the changes inadvertently break something. Having instructions for running tests is especially
-helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-
-Show your appreciation to those who have contributed to the project.
-
-## License
-
-For open source projects, say how it is licensed.
-
-## Project status
-
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has
-slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or
-owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## Tests
