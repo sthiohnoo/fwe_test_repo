@@ -516,6 +516,80 @@
 						"header": []
 					},
 					"response": []
+				},
+				{
+					"name": "toggleIsPurchased",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/shoppingLists/:shoppingListId/items/:itemId/toggle",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shoppingLists",
+								":shoppingListId",
+								"items",
+								":itemId",
+								"toggle"
+							],
+							"variable": [
+								{
+									"key": "shoppingListId",
+									"value": "9b1c9a9c-2757-473b-8611-6262b69bdb18"
+								},
+								{
+									"key": "itemId",
+									"value": "926c23bc-2808-40b0-a376-80ac6c4d568c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateQuantity",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"quantity\": 1000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/shoppingLists/updateQuantity/:shoppingListId/:itemId",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shoppingLists",
+								"updateQuantity",
+								":shoppingListId",
+								":itemId"
+							],
+							"variable": [
+								{
+									"key": "shoppingListId",
+									"value": "9b1c9a9c-2757-473b-8611-6262b69bdb18"
+								},
+								{
+									"key": "itemId",
+									"value": "926c23bc-2808-40b0-a376-80ac6c4d568c"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

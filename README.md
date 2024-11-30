@@ -462,3 +462,41 @@ __Item Routes__
 ---
 
 ## Tests
+
+In this project, we have two main types of tests: repository tests and controller tests. Each type of test serves a
+different purpose and focuses on different aspects of the application. We use Jest and Supertest for testing, and we
+also utilize helper functions to mock data.
+
+__Repository Tests__
+
+Repository tests (...repository.spec.ts) focus on the data access layer. These tests verify the functionality
+of the repository methods that interact directly with the database. They ensure that CRUD (Create, Read, Update, Delete)
+operations are performed correctly.
+
+__Controller Tests__
+
+Controller tests (...controller.spec.ts) focus on the API endpoints. These tests verify the HTTP requests and
+responses to ensure that the endpoints are functioning correctly and returning the expected results. They also test the
+integration between the controller and the repository.
+
+__Running Tests__
+
+To run the tests, use the following command:
+
+```bash 
+cd backend
+npm test
+```
+
+To display the test coverage, use the following command:
+
+```bash
+npm run test:coverage
+```
+
+__Testing with Postman__
+
+In addition to automated tests, you can also test the API endpoints manually using Postman. To test with Postman, import
+the collection file `FWE.postman_collection.json` which you can find in
+`/backend/docs`into Postman.
+The collection contains requests for all API endpoints, including examples of request bodies.
