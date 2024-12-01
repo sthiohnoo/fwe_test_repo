@@ -107,7 +107,13 @@ Run the database migrations to create the necessary tables:
 npm run db:migrate
 ```
 
-### Step 6: Start the Backend
+### Step 6: Build the Backend
+
+```bash
+npm run build
+```
+
+### Step 7: Start the Backend
 
 ```bash
 npm start
@@ -129,7 +135,13 @@ Install the necessary dependencies using npm:
 npm install
 ```
 
-### Step 3: Start the Frontend
+### Step 3: Build the Frontend
+
+```bash
+npm run build
+```
+
+### Step 4: Start the Frontend
 
 ```bash
 npm run preview
@@ -492,6 +504,16 @@ To display the test coverage, use the following command:
 
 ```bash
 npm run test:coverage
+```
+
+If you also want to test the built files in the dist directory, then remove `'<rootDir>/dist/'` from the following lines
+from jest.config.js:
+
+```typescript
+  testPathIgnorePatterns: ['<rootDir>/test/helpers/', '<rootDir>/dist/'],
+  coveragePathIgnorePatterns
+:
+['<rootDir>/test/helpers/', '<rootDir>/dist/'],
 ```
 
 __Testing with Postman__
