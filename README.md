@@ -509,11 +509,9 @@ npm run test:coverage
 If you also want to test the built files in the dist directory, then remove `'<rootDir>/dist/'` from the following lines
 from jest.config.js:
 
-```typescript
+```
   testPathIgnorePatterns: ['<rootDir>/test/helpers/', '<rootDir>/dist/'],
-  coveragePathIgnorePatterns
-:
-['<rootDir>/test/helpers/', '<rootDir>/dist/'],
+  coveragePathIgnorePatterns: ['<rootDir>/test/helpers/', '<rootDir>/dist/'],
 ```
 
 __Testing with Postman__
