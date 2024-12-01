@@ -149,7 +149,7 @@ npm run preview
 
 ### Step 4: Access the Application
 
-Open a browser and navigate to `http://localhost:5173/` or click the link in the terminal.
+Open a browser and navigate to `http://localhost:4173/` or click the link in the terminal.
 
 ---
 ___
